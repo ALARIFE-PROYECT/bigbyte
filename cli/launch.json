@@ -1,0 +1,10 @@
+{
+  "type": "node",
+  "request": "launch",
+  "name": "Debug TS with ts-node",
+  "runtimeArgs": ["-r", "ts-node/register"],
+  "args": ["${workspaceFolder}/src/test/service/configuration.test.ts"],
+  "cwd": "${workspaceFolder}",
+  "protocol": "inspector",
+  "internalConsoleOptions": "openOnSessionStart"
+}

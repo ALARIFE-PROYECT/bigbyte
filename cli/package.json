@@ -1,0 +1,52 @@
+{
+  "name": "@bigbyte/cli",
+  "version": "0.1.0",
+  "author": "Jose Eduardo Soria Garcia <pepesoriagarcia99@gmail.com>",
+  "license": "ISC",
+  "private": false,
+  "bin": {
+    "hexa": "./lib/index.js"
+  },
+  "type": "commonjs",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "files": [
+    "lib/**/*"
+  ],
+  "exports": {
+    ".": {
+      "import": "./lib/index.js",
+      "require": "./lib/index.js",
+      "types": "./lib/index.d.ts"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./lib/index.d.ts"
+      ]
+    }
+  },
+  "scripts": {
+    "copy-banner": "node copy.js ./src/constant/banner.txt ./lib/constant/banner.txt",
+    "build": "npx tsc && npm run copy-banner",
+    "npm:link": "npm run build && npm link",
+    "npm:publish": "npm run build && npm publish --access public",
+    "yalc:install": "npx yalc add @bigbyte/utils && npm i",
+    "yalc:publish": "npm run build && npx yalc publish --push",
+    "test": "npx tsc --project tsconfig.test.json && node --test dist/test",
+    "test:one": "npx tsc --project tsconfig.test.json && node --test"
+  },
+  "dependencies": {
+    "@bigbyte/utils": "file:.yalc/@bigbyte/utils",
+    "chokidar": "~4",
+    "log-update": "~4",
+    "reflect-metadata": "~0.2",
+    "tslib": "~2"
+  },
+  "devDependencies": {
+    "@types/node": "~22",
+    "ts-node": "~10",
+    "typescript": "~5"
+  }
+}

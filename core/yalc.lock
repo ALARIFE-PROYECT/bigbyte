@@ -1,0 +1,9 @@
+{
+  "version": "v1",
+  "packages": {
+    "@bigbyte/utils": {
+      "signature": "142f5ab05b08addc30d23d400d7b495b",
+      "file": true
+    }
+  }
+}

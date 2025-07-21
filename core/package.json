@@ -1,0 +1,47 @@
+{
+  "name": "@bigbyte/core",
+  "version": "0.1.0",
+  "author": "Jose Eduardo Soria Garcia <pepesoriagarcia99@gmail.com>",
+  "license": "ISC",
+  "private": false,
+  "type": "commonjs",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "files": [
+    "lib/**/*"
+  ],
+  "exports": {
+    ".": {
+      "import": "./lib/index.js",
+      "require": "./lib/index.js",
+      "types": "./lib/index.d.ts"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./lib/index.d.ts"
+      ]
+    }
+  },
+  "scripts": {
+    "build": "npx tsc",
+    "npm:link": "npm run build && npm link",
+    "npm:publish": "npm run build && npm publish --access public",
+    "yalc:install": "npx yalc add @bigbyte/utils && npm i",
+    "yalc:publish": "npm run build && npx yalc publish --push",
+    "test": "npx tsc --project tsconfig.test.json && node --test dist/test"
+  },
+  "dependencies": {
+    "@bigbyte/utils": "file:.yalc/@bigbyte/utils",
+    "chokidar": "~4.0.3",
+    "reflect-metadata": "~0.2.2",
+    "tslib": "~2.3",
+    "uuid": "~11.1",
+    "zone.js": "~0.14"
+  },
+  "devDependencies": {
+    "@types/node": "~22",
+    "typescript": "~5"
+  }
+}

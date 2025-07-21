@@ -1,0 +1,107 @@
+{
+  "name": "@bigbyte/utils",
+  "version": "0.1.0",
+  "author": "Jose Eduardo Soria Garcia <pepesoriagarcia99@gmail.com>",
+  "license": "ISC",
+  "private": false,
+  "type": "commonjs",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "files": [
+    "lib/**/*"
+  ],
+  "exports": {
+    ".": {
+      "import": "./lib/index.js",
+      "require": "./lib/index.js",
+      "types": "./lib/index.d.ts"
+    },
+    "./registry": {
+      "import": "./lib/registry.js",
+      "require": "./lib/registry.js",
+      "types": "./lib/registry.d.ts"
+    },
+    "./cli": {
+      "import": "./lib/cli.js",
+      "require": "./lib/cli.js",
+      "types": "./lib/cli.d.ts"
+    },
+    "./ipc": {
+      "import": "./lib/ipc.js",
+      "require": "./lib/ipc.js",
+      "types": "./lib/ipc.d.ts"
+    },
+    "./constant": {
+      "import": "./lib/constant/index.js",
+      "require": "./lib/constant/index.js",
+      "types": "./lib/constant/index.d.ts"
+    },
+    "./environment": {
+      "import": "./lib/service/Environment.js",
+      "require": "./lib/service/Environment.js",
+      "types": "./lib/service/Environment.d.ts"
+    },
+    "./arguments": {
+      "import": "./lib/service/Arguments.js",
+      "require": "./lib/service/Arguments.js",
+      "types": "./lib/service/Arguments.d.ts"
+    },
+    "./logger": {
+      "import": "./lib/service/Logger.js",
+      "require": "./lib/service/Logger.js",
+      "types": "./lib/service/Logger.d.ts"
+    },
+    "./integration": {
+      "import": "./lib/model/integration/index.js",
+      "require": "./lib/model/integration/index.js",
+      "types": "./lib/model/integration/index.d.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./lib/index.d.ts"
+      ],
+      "registry": [
+        "./lib/registry.d.ts"
+      ],
+      "cli": [
+        "./lib/cli.d.ts"
+      ],
+      "ipc": [
+        "./lib/ipc.d.ts"
+      ],
+      "constant": [
+        "./lib/constant/index.d.ts"
+      ],
+      "environment": [
+        "./lib/service/environment.d.ts"
+      ],
+      "arguments": [
+        "./lib/service/arguments.d.ts"
+      ],
+      "logger": [
+        "./lib/service/Logger.d.ts"
+      ],
+      "integration": [
+        "./lib/model/integration/index.d.js"
+      ]
+    }
+  },
+  "scripts": {
+    "build": "npx tsc",
+    "yalc:publish": "npm run build && npx yalc publish --push",
+    "test": "npx tsc --project tsconfig.test.json && node --test dist/test"
+  },
+  "dependencies": {
+    "moment": "~2.30",
+    "tslib": "~2.3",
+    "uuid": "~11.1",
+    "zone.js": "~0.14"
+  },
+  "devDependencies": {
+    "@types/node": "~22",
+    "@types/uuid": "~10",
+    "typescript": "~5"
+  }
+}
