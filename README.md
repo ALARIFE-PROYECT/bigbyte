@@ -32,40 +32,6 @@ This module simplifies decoupling and encourages service reuse.
 - Log file storage with rotation.
 - Integration with external observability systems like Grafana, Loki, or other metrics platforms.
 
-### 🌐 Http
-
-The **Http** module enables building REST APIs using a declarative decorator-based approach:
-- Clean and organized definition of controllers and routes.
-- Middleware for filters, validations, and custom responses.
-- Centralized error handling.
-
-### 🧬 Data
-
-**Data** simplifies integration with both relational and non-relational databases through decorated interfaces:
-- Decorators to declare entities, columns, and relationships.
-- Injectable repositories.
-- Seamless integration with the dependency injection system.
-
-### 🍃 Mongosee
-
-**Mongosee** extends `Data` to work specifically with MongoDB databases:
-- Schema and model definition using decorators.
-- Injection of models into services.
-- Support for validations, indexes, and simple migrations.
-
-### 🔐 Security
-
-The **Security** module enables JWT-based authentication management:
-- Decorators to protect routes or methods.
-- Automatic injection of the authenticated user.
-- Support for custom strategies.
-
-### ☁️ Cloud
-
-**Cloud** provides tools for building distributed and cloud-native solutions:
-- Decorators to define microservices, queues, events, and serverless functions.
-- Configuration of external services such as message queues, buckets, and scalable functions.
-
 ---
 
 ## 📖 Philosophy
@@ -74,13 +40,13 @@ BigByte is designed with the principles of **modularity**, **strict typing**, an
 
 ---
 
-## 🚀 Getting Started
+<!-- ## 🚀 Getting Started
 
 ```bash
 npx bigbyte-cli new my-app
 cd my-app
 npm run start:dev
-```
+``` -->
 
 ## ✅ Contributing
 Contributions are welcome! If you have ideas, improvements, or would like to help with development, feel free to create [addons](./README.ADDONS.ES.md). This will help the framework grow and become even more efficient.
