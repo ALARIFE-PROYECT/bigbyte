@@ -1,4 +1,4 @@
-export const BIN_NAME = 'hexa';
+export const BIN_NAME = 'bbyte';
 export const LIBRARY_NAME = 'cli';
 
 /** Path */

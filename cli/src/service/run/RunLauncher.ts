@@ -1,4 +1,4 @@
-import { ChildProcess, fork } from "node:child_process";
+import { ChildProcess, fork, ForkOptions } from "node:child_process";
 
 import Logger from "@bigbyte/utils/logger";
 import { CommandData } from "@bigbyte/utils/lib/model/integration";
@@ -58,11 +58,15 @@ export const launchRun = () => {
             }
         });
 
-
-        rootProcess = fork(appPath, argv, {
-            env: { ...Object.fromEntries(commandData.environmentValues) },
+        let forkOptions: ForkOptions = {
             // silent: true
-        });
+        };
+
+        if ('injectEnvironment' in commandData.command && commandData.command.injectEnvironment === true && commandData.environmentValues) {
+            forkOptions.env = { ...Object.fromEntries(commandData.environmentValues) } as NodeJS.ProcessEnv;
+        }
+
+        rootProcess = fork(appPath, argv, forkOptions);
 
         initIpc(rootProcess);
 

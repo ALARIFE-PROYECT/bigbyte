@@ -1,3 +1,4 @@
+import { NativeType } from "../NativeType";
 import { HelpBase } from "./Help";
 
 /**
@@ -24,6 +25,21 @@ export interface Flag extends HelpBase {
     env?: string;
 
     type: FlagType;
+
+    /**
+     * * Tipo del valor
+     * Para tipar valores del flag.
+     * 
+     * Se indica para que el argv escale al environment tipado
+     * Solo se usa en los FlagType => "value"
+     */
+    valueType?: 'string' | 'boolean' | 'number';
+
+    /**
+     * valor por defecto del flag
+     * Se indica cuando el argv escala al environment
+     */
+    defaultValue?: NativeType;
 }
 
 /**
@@ -34,6 +50,6 @@ export interface Flag extends HelpBase {
  */
 export interface FlagData {
     flag: Flag;
-    value: string | boolean;
+    value: NativeType;
 }
 

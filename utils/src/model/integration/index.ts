@@ -1,6 +1,5 @@
 export * from './Flag'
 export * from './Configuration'
-export * from './Environment'
 export * from './Help'
 export * from './Command'
 

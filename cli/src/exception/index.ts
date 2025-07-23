@@ -6,3 +6,4 @@ export * from './MissingArgumentError';
 export * from './MissingConfigurationError';
 export * from './MissingDependencyError';
 export * from './MissingFileError';
+export * from './ConfigurationError'

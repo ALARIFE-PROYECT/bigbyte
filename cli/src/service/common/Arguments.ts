@@ -1,13 +1,15 @@
 import path from "node:path";
 import { existsSync } from "node:fs";
+import { NativeType } from "@bigbyte/utils";
 import { Command, Flag, FlagType, FlagData, MainFile } from "@bigbyte/utils/integration";
 import { ROOT_PATH } from "@bigbyte/utils/constant";
 import Logger from "@bigbyte/utils/logger";
 
+
 import { MissingArgumentError } from "../../exception/MissingArgumentError";
 
 import { BIN_NAME, LIBRARY_NAME } from "../../constant";
-import { MissingFileError } from "../../exception";
+import { MissingFileError, ConfigurationError } from "../../exception";
 
 
 
@@ -67,10 +69,23 @@ export const readArguments = (command: Command, argv: string[]): FlagData[] => {
                     });
                 } else if (flag.type === FlagType.value) {
                     const argvSplit = argument.split('=');
-                    const value = argvSplit[1];
+                    const flagValue = argvSplit[1];
 
-                    if (!value) {
+                    if (!flagValue) {
                         throw new MissingArgumentError(`--${flag.name}`, `The flag "${argument}" requires a value. Use "${BIN_NAME} help ${command.name}" for instructions.`);
+                    }
+
+                    if (!flag.valueType) {
+                        throw new ConfigurationError(flag.name, `The flag "${flag.name}" does not have a value type defined. Please check the command configuration.`);
+                    }
+
+                    let value: NativeType;
+                    if (flag.valueType === 'string') {
+                        value = String(flagValue);
+                    } else if (flag.valueType === 'boolean') {
+                        value = flagValue.toLowerCase() === 'true';
+                    } else if (flag.valueType === 'number') {
+                        value = Number(flagValue);
                     }
 
                     flagsData.push({ flag, value });
@@ -97,7 +112,7 @@ export const readArguments = (command: Command, argv: string[]): FlagData[] => {
             });
         }
     }
-    
+
     log.dev(`Flags data: ${flagsData}`);
     return flagsData;
 }

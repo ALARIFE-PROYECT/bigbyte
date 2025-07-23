@@ -1,5 +1,5 @@
 import Logger from "@bigbyte/utils/logger";
-import { Addon, Command, Configuration, Environment, Flag, FlagType } from "@bigbyte/utils/integration";
+import { Addon, Command, Configuration, Flag, FlagType } from "@bigbyte/utils/integration";
 
 import { LIBRARY_NAME } from "../../constant";
 import { ConfigurationError } from "../../exception/ConfigurationError";
@@ -7,30 +7,11 @@ import { ConfigurationError } from "../../exception/ConfigurationError";
 
 const log = new Logger('Configuration', LIBRARY_NAME);
 
-const evnDefaultValues = new Map<string, string>();
-
 const commands: Command[] = [];
 let newCommands: Command[] = [];
 let commandDeclaration: Command[] = [];
 
-
-const processEnvironment = ({ DEFAULT_VALUES }: Environment) => {
-    if (DEFAULT_VALUES) {
-        Object.entries(DEFAULT_VALUES).forEach(([key, value]) => {
-            if (!evnDefaultValues.has(key)) {
-                evnDefaultValues.set(key, String(value));
-            } else {
-                log.warn(`Environment variable ${key} is already set to ${evnDefaultValues.get(key)}. Skipping update to ${value}.`);
-            }
-        });
-    }
-}
-
 const processConfiguration = (configuration: Configuration) => {
-    if (configuration.environment) {
-        processEnvironment(configuration.environment);
-    }
-
     if (configuration.newCommands) {
         // se comprueba que no se añadan comandos con el mismo nombre
         configuration.newCommands.forEach((newCommand) => {
@@ -60,6 +41,11 @@ const checkCommandFlags = (command: Command) => {
 
                 if (!Object.values(FlagType).includes(flag.type)) {
                     throw new ConfigurationError(command.name, `Flag in command ${command.name} has an invalid type: ${flag.type}.`);
+                }
+
+                if(!flag.env && flag.defaultValue) {
+                    throw new ConfigurationError(command.name, `The flag in the ${command.name} command has a default value but does not have an environment value key set.`);
+
                 }
             });
         } else if (typeof command.flags === 'string') {
@@ -112,7 +98,6 @@ const combinedCommands = () => {
          */
         if (Array.isArray(commands[index].flags) && Array.isArray(declaredCommand.flags)) {
             (commands[index].flags as Flag[]).push(...declaredCommand.flags);
-
         }
     });
 };
@@ -134,8 +119,4 @@ export const readConfigurations = (addons: Addon[]): Command[] => {
 
 export const getCommand = (name: string): Command | undefined => {
     return commands.find(command => command.name === name);
-}
-
-export const getEnvDefaultValue = (): Map<string, string> => {
-    return evnDefaultValues;
 }

@@ -7,10 +7,11 @@ import { MissingArgumentError } from "./exception";
 
 import { readAddons } from "./service/common/Addon"
 import { getMainFile, readArguments } from "./service/common/Arguments";
-import { getCommand, getEnvDefaultValue, readConfigurations } from "./service/common/Configuration";
+import { getCommand, readConfigurations } from "./service/common/Configuration";
 import { readEnvironments } from "./service/common/Environment";
 import { launchCommand } from "./service/common/CommandLauncher";
 import { getDependencies } from "./service/common/Package";
+import { NativeType } from "@bigbyte/utils/.";
 
 const dependencies: Dependency[] = getDependencies();
 const addons: Addon[] = readAddons(dependencies);
@@ -37,16 +38,18 @@ if ('requiresMainFile' in command && command.requiresMainFile === true) {
 }
 
 const flagsData: FlagData[] = readArguments(command, argv);
-const envDefaultValues: Map<string, string> = getEnvDefaultValue();
 
-const environmentValues: Map<string, string> = readEnvironments(envDefaultValues, flagsData);
+let environmentValues: Map<string, NativeType> | undefined = undefined;
+if ('injectEnvironment' in command && command.injectEnvironment === true) {
+    environmentValues = readEnvironments(command, flagsData);
+}
+
 
 launchCommand({
     mainFile,
     command,
     flagsData,
     environmentValues,
-    envDefaultValues,
     dependencies,
     addons,
     commands
