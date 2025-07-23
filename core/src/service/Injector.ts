@@ -1,20 +1,10 @@
 /**
- * Es un servicio que se guardara en el CoreRegistry directamente para inyectarlo en los servicios del user y usarlo
+ * * Servicio
  * 
+ * Servicio que permite usar el registry de componentes programaticamente.
  */
 
-
-// ejemplo
-// constructor(injector: Injector) {
-//     this.#injector = injector;
-// }
-
-// hello(): void {
-//     this.userService = this.#injector.get(UserService, null);
-// }
-
-
-import { ComponentType, CoreComponentRegistry } from "@bigbyte/utils/registry";
+import { Component, ComponentType, CoreComponentRegistry } from "@bigbyte/utils/registry";
 
 import registry from "../container/CoreComponentRegistry";
 
@@ -25,12 +15,16 @@ export class Injector {
         this.registry = registry;
     }
 
-    // get<T>(service: new (...args: any[]) => T, ...args: any[]): T {
-    //     return this.registry.get(service, ...args);
+    // add(component: Component): void {
+    //     this.registry.add(component);
     // }
 
-    // add<T>(service: new (...args: any[]) => T, ...args: any[]): void {
-    //     this.registry.add(service, ...args);
+    // get<T> (target: Function): Component {
+    //     return this.registry.getByClass(target) as Component;
+    // }
+
+    // has() {
+
     // }
 }
 

@@ -1,46 +1,32 @@
-import { v4 as uuidv4 } from 'uuid';
+import { v4 } from "uuid";
+import { NativeType } from "../NativeType";
 
-export enum StoreValueType {
-    ENVIRONMENT = 'ENVIRONMENT',
-}
-
-export interface StoreValueOptions {
-    type?: StoreValueType | string;
-}
 
 export class StoreValue {
     #id: string;
 
-    #key?: string;
+    #key: string;
 
-    #value: any;
-
-    #type?: StoreValueType | string;
+    #value: NativeType;
 
     #createAt: Date = new Date();
 
-    constructor(value: any, key?: string, options: StoreValueOptions = {}) {
-        this.#id = uuidv4();
+    constructor(key: string, value: NativeType) {
+        this.#id = v4();
         this.#key = key;
         this.#value = value;
-        
-        this.#type = options.type;
     }
 
     get id(): string {
         return this.#id;
     }
 
-    get key(): string | undefined {
+    get key(): string {
         return this.#key;
     }
 
-    get value(): any {
+    get value(): string | boolean | number | undefined {
         return this.#value;
-    }
-
-    get type(): StoreValueType | string | undefined {
-        return this.#type;
     }
 
     get createAt(): Date {

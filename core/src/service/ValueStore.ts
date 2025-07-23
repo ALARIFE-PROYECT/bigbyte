@@ -1,26 +1,36 @@
+/**
+ * * Servicio
+ * 
+ * Servicio que permite usar el registry de valores programaticamente.
+ */
 
-
-// igual que el Inyecctor para el registry de components, pero para el registry de values
-
-import { ComponentType, CoreValueStore } from "@bigbyte/utils/registry";
+import { ComponentType, StoreValue } from "@bigbyte/utils/registry";
+import { NativeType } from "@bigbyte/utils";
 
 import coreComponentRegistry from "../container/CoreComponentRegistry";
-import CoreValueRegistry from "../container/coreValueStore";
+import coreValueStore from "../container/coreValueStore";
 
-class Store {
-    private store: CoreValueStore;
 
-    constructor() {
-        this.store = CoreValueRegistry;
+export class ValueStore {
+    getValue(key: string): NativeType {
+        return coreValueStore.getByKey(key)?.value;
     }
 
-    // get<T>(service: new (...args: any[]) => T, ...args: any[]): T {
-    //     return this.registry.get(service, ...args);
-    // }
+    getStoreValue(key: string): StoreValue | undefined {
+        return coreValueStore.getByKey(key);
+    }
 
-    // add<T>(service: new (...args: any[]) => T, ...args: any[]): void {
-    //     this.registry.add(service, ...args);
-    // }
+    getAllValues(): Map<string, NativeType> {
+        return coreValueStore.getAllValues();
+    }
+
+    has(key: string): boolean {
+        return coreValueStore.hasKey(key);
+    }
+
+    add(key: string, value: NativeType): void {
+        coreValueStore.add(key, value);
+    }
 }
 
-coreComponentRegistry.add(Store, [], { type: ComponentType.COMPONENT, injectable: true });
+coreComponentRegistry.add(ValueStore, [], { type: ComponentType.COMPONENT, injectable: true });

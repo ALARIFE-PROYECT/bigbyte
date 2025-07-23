@@ -1,9 +1,16 @@
-// no de como hacerlo
 
-// no me gusta que --debug sea un flag y una environment
-// no me gusta qeu la constante para comprobar que este flag o argument existe no sea usable en el resto de addons
+/**
+ * Busca los argumentos pasados al proceso de ejecución.
+ * * Heredados previamente por el cli.js
+ */
 
-export default {
+export interface ArgumentsService {
+    get(key: string): string | undefined;
+    getValue(key: string): string | undefined;
+    has(key: string): boolean;
+}
+
+export const argumentsService: ArgumentsService = {
     get(key: string): string | undefined {
         return process.argv.find((arg) => arg.includes(key));
     },
@@ -20,4 +27,4 @@ export default {
     has(key: string): boolean {
         return Boolean(process.argv.includes(key));
     }
-} 
+};

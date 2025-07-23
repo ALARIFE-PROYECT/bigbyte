@@ -1,9 +1,12 @@
-import { StoreValue, StoreValueType } from "./StoreValue";
+import { NativeType } from "../NativeType";
+import { StoreValue } from "./StoreValue";
 
 export interface CoreValueStore {
-    add: (value: any, type?: StoreValueType | string) => void;
-    getByType: (type: StoreValueType | string) => StoreValue[];
-    getById: (id: string) => StoreValue | undefined;
+    add: (key: string, value: NativeType) => void;
     getByKey: (key: string) => StoreValue | undefined;
-    has: (value: any) => boolean;
+    getById: (id: string) => StoreValue | undefined;
+    getAllStoreValues: () => StoreValue[];
+    getAllValues: () => Map<string, NativeType>;
+    hasKey: (key: string) => boolean;
+    hasValue: (value: any) => boolean;
 }

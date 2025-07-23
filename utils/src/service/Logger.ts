@@ -1,5 +1,5 @@
 import moment from "moment";
-import argv from "./Arguments";
+import { argumentsService } from "./Arguments";
 import { ARGV_FLAG_DEBUG } from "../constant";
 import { DEV_LIBRARIES_LOG, DEV_MODE, DEV_ORIGINS_LOG } from "../constant/development";
 
@@ -51,7 +51,7 @@ export default class Logger {
 
         return result;
     }
-    
+
     public error(...message: any[]) {
         console.error(this.message('ERROR', ...message));
     }
@@ -65,7 +65,7 @@ export default class Logger {
     }
 
     public debug(...message: any[]) {
-        if (argv.has(ARGV_FLAG_DEBUG)) {
+        if (argumentsService.has(ARGV_FLAG_DEBUG)) {
             console.log(this.message('DEBUG', ...message));
         }
     }
@@ -73,7 +73,7 @@ export default class Logger {
     public dev(...message: any[]) {
         const isLibrary = this.library && DEV_LIBRARIES_LOG.includes(this.library) || DEV_LIBRARIES_LOG.includes('*');
         const isOrigin = DEV_ORIGINS_LOG.includes(this.origin) || DEV_ORIGINS_LOG.includes('*');
-    
+
         if (DEV_MODE && (isLibrary || isOrigin)) {
             console.log(this.message('DEV', ...message));
         }

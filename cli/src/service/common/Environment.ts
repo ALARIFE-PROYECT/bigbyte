@@ -59,6 +59,8 @@ export const readEnvironments = (command: Command, flagsData: FlagData[]): Map<s
     }
 
     log.dev(`Environment variables: ${environment}`);
+    console.log("🚀 ~ readEnvironments ~ environment:", environment)
+
     return environment;
 }
 

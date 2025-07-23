@@ -11,13 +11,12 @@ import { ComponentType, declareDecorator, decoratorExecEvent, executeDecorator }
 import Logger from "@bigbyte/utils/logger";
 
 import coreComponentRegistry from '../container/CoreComponentRegistry';
-import coreValueRegistry, { setEnvironmentsInStore } from "../container/coreValueStore";
+import coreValueRegistry from "../container/coreValueStore";
 import { DECORATOR_APP_NAME, LIBRARY_NAME } from "../constant";
 
 import { OrderDecoratorsError } from "../exception/OrderDecoratorsError";
 
 const log = new Logger(DECORATOR_APP_NAME, LIBRARY_NAME);
-
 
 export const App = (): ClassDecorator => {
     declareDecorator(DECORATOR_APP_NAME);
@@ -33,8 +32,6 @@ export const App = (): ClassDecorator => {
         if (decorators.length > 0) {
             throw new OrderDecoratorsError(decorators);
         }
-
-        setEnvironmentsInStore();
 
         Reflect.defineMetadata(METADATA_COMPONENT_TYPE, componentType, Target);
         Reflect.defineMetadata(`${METADATA_DECORATOR_NAME}=${DECORATOR_APP_NAME}`, true, Target);

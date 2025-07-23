@@ -15,12 +15,28 @@
       "import": "./lib/index.js",
       "require": "./lib/index.js",
       "types": "./lib/index.d.ts"
+    },
+    "./injector": {
+      "import": "./lib/injector.js",
+      "require": "./lib/injector.js",
+      "types": "./lib/injector.d.ts"
+    },
+    "./store": {
+      "import": "./lib/store.js",
+      "require": "./lib/store.js",
+      "types": "./lib/store.d.ts"
     }
   },
   "typesVersions": {
     "*": {
       ".": [
         "./lib/index.d.ts"
+      ],
+      "injector": [
+        "./lib/injector.d.ts"
+      ],
+      "store": [
+        "./lib/store.d.ts"
       ]
     }
   },
@@ -28,7 +44,7 @@
     "build": "npx tsc",
     "npm:link": "npm run build && npm link",
     "npm:publish": "npm run build && npm publish --access public",
-    "yalc:install": "npx yalc add @bigbyte/utils && npm i",
+    "yalc:install": "npx yalc add @bigbyte/utils",
     "yalc:publish": "npm run build && npx yalc publish --push",
     "test": "npx tsc --project tsconfig.test.json && node --test dist/test"
   },
