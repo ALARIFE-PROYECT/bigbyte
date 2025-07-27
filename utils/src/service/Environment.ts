@@ -1,4 +1,3 @@
-import { NativeType } from "../model/NativeType";
 
 /**
  * Busca la environment variable en el entorno de ejecución.
@@ -7,14 +6,14 @@ import { NativeType } from "../model/NativeType";
  * * Trabaja en paralelo con el registry de coreValueStore
  */
 export interface EnvironmentService {
-    get(key: string): NativeType;
+    get(key: string): string | undefined;
     has(key: string): boolean;
     keys(): Array<string>;
     values(): Array<string | undefined>;
 }
 
 export const environmentService: EnvironmentService =  {
-    get(key: string): NativeType {
+    get(key: string): string | undefined {
         return process.env[key];
     },
     has(key: string): boolean {

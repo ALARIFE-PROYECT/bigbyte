@@ -1,4 +1,3 @@
-import { NativeType } from "../NativeType";
 import { Addon } from "./Addon";
 import { Command } from "./Command";
 import { Dependency } from "./Dependency";
@@ -20,7 +19,7 @@ export interface CommandData {
     /**
      * Valores de las variables de entorno.
      */
-    environmentValues?: Map<string, NativeType>;
+    environmentValues?: Map<string, string | undefined>;
 
     /**
      * Lista de dependencias del framework.

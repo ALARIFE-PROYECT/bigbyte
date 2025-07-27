@@ -11,7 +11,6 @@ import { getCommand, readConfigurations } from "./service/common/Configuration";
 import { readEnvironments } from "./service/common/Environment";
 import { launchCommand } from "./service/common/CommandLauncher";
 import { getDependencies } from "./service/common/Package";
-import { NativeType } from "@bigbyte/utils/.";
 
 const dependencies: Dependency[] = getDependencies();
 const addons: Addon[] = readAddons(dependencies);
@@ -39,7 +38,7 @@ if ('requiresMainFile' in command && command.requiresMainFile === true) {
 
 const flagsData: FlagData[] = readArguments(command, argv);
 
-let environmentValues: Map<string, NativeType> | undefined = undefined;
+let environmentValues: Map<string, string | undefined> | undefined = undefined;
 if ('injectEnvironment' in command && command.injectEnvironment === true) {
     environmentValues = readEnvironments(command, flagsData);
 }

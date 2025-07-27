@@ -5,22 +5,22 @@
  */
 
 import { ComponentType, StoreValue } from "@bigbyte/utils/registry";
-import { NativeType } from "@bigbyte/utils";
 
 import coreComponentRegistry from "../container/CoreComponentRegistry";
 import coreValueStore from "../container/coreValueStore";
 
 
 export class ValueStore {
-    getValue(key: string): NativeType {
-        return coreValueStore.getByKey(key)?.value;
+    getValue(key: string): string | undefined {
+        const value = coreValueStore.getByKey(key)?.value;
+        return value ? String(value) : undefined;
     }
 
     getStoreValue(key: string): StoreValue | undefined {
         return coreValueStore.getByKey(key);
     }
 
-    getAllValues(): Map<string, NativeType> {
+    getAllValues(): Map<string, string | undefined> {
         return coreValueStore.getAllValues();
     }
 
@@ -28,7 +28,7 @@ export class ValueStore {
         return coreValueStore.hasKey(key);
     }
 
-    add(key: string, value: NativeType): void {
+    add(key: string, value: string | undefined): void {
         coreValueStore.add(key, value);
     }
 }

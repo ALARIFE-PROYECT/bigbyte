@@ -2,7 +2,6 @@ import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 
 import { ROOT_PATH } from "@bigbyte/utils/constant";
-import { NativeType } from "@bigbyte/utils";
 import Logger from "@bigbyte/utils/logger";
 import { Command, Flag, FlagData, FlagOptions } from "@bigbyte/utils/integration";
 
@@ -12,13 +11,13 @@ import { ARGV_FLAG_ENV } from "../../constant/argv";
 
 const log = new Logger('Environment', LIBRARY_NAME);
 
-export const readEnvironments = (command: Command, flagsData: FlagData[]): Map<string, NativeType> => {
-    const environment: Map<string, NativeType> = new Map();
+export const readEnvironments = (command: Command, flagsData: FlagData[]): Map<string, string | undefined> => {
+    const environment: Map<string, string | undefined> = new Map();
 
     // añado valores por flags
     flagsData.forEach((flagData: FlagData) => {
         if (flagData.flag.env) {
-            environment.set(flagData.flag.env, flagData.value); // este value ya esta tipado correctamente
+            environment.set(flagData.flag.env, String(flagData.value)); // este value ya esta tipado correctamente
         }
     });
 
@@ -51,7 +50,7 @@ export const readEnvironments = (command: Command, flagsData: FlagData[]): Map<s
         if (defaultValues.length > 0) {
             defaultValues.forEach((key: string) => {
                 if (!environment.has(key)) {
-                    let value: NativeType = command.environment!.DEFAULT_VALUES![key];
+                    let value = command.environment!.DEFAULT_VALUES![key];
                     environment.set(key, value);
                 }
             });
@@ -64,21 +63,9 @@ export const readEnvironments = (command: Command, flagsData: FlagData[]): Map<s
     return environment;
 }
 
-export const readEnvironment = (command: Command, flagsData: FlagData[], envData: Map<string, NativeType>, envPath: string) => {
+export const readEnvironment = (command: Command, flagsData: FlagData[], envData: Map<string, string | undefined>, envPath: string) => {
     const getFlagDataByEnv = (env: string): FlagData | undefined => {
         return flagsData.find(flagData => flagData.flag.env === env);
-    }
-
-    const getValueType = (envName: string, value: string): NativeType => {
-        const flag = (command.flags as Flag[]).find((flag: Flag) => flag.env === envName);
-
-        if (!flag || flag.valueType === 'string') {
-            return String(value);
-        } else if (flag.valueType === 'boolean') {
-            return value.toLowerCase() === 'true';
-        } else if (flag.valueType === 'number') {
-            return Number(value);
-        }
     }
 
     const content = readFileSync(envPath, 'utf8');
@@ -86,32 +73,17 @@ export const readEnvironment = (command: Command, flagsData: FlagData[], envData
         const flags: FlagOptions | undefined = command.flags;
         const lines = content.split('\n');
 
-        if (typeof flags === 'string') {
-            // si el flags es string se añaden todos los valores sin tipar
-            lines.forEach((line: string) => {
-                if (line && !line.startsWith('#')) {
-                    const [key, value] = line.split('=');
+        // si el flags es string se añaden todos los valores sin tipar
+        lines.forEach((line: string) => {
+            if (line && !line.startsWith('#')) {
+                const [key, value] = line.split('=');
 
-                    if (envData.has(key)) {
-                        log.warn(`The environment ${key} is already configured from flag ${getFlagDataByEnv(key)?.flag.name}. The value of the flag is maintained over that of ${envPath}`);
-                    } else if (key && value) {
-                        envData.set(key, value.trim());
-                    }
+                if (envData.has(key)) {
+                    log.warn(`The environment ${key} is already configured from flag ${getFlagDataByEnv(key)?.flag.name}. The value of the flag is maintained over that of ${envPath}`);
+                } else if (key && value) {
+                    envData.set(key, value.trim());
                 }
-            });
-        } else if (Array.isArray(flags)) {
-            // si tiene flags, se añaden todos con el tipo correcto
-            lines.forEach((line: string) => {
-                if (line && !line.startsWith('#')) {
-                    const [key, value] = line.split('=');
-
-                    if (envData.has(key)) {
-                        log.warn(`The environment ${key} is already configured from flag ${getFlagDataByEnv(key)?.flag.name}. The value of the flag is maintained over that of ${envPath}`);
-                    } else if (key && value) {
-                        envData.set(key, getValueType(key, value.trim()));
-                    }
-                }
-            });
-        }
+            }
+        });
     }
 }

@@ -1,4 +1,4 @@
-import { NativeType, environmentService } from '@bigbyte/utils';
+import { environmentService } from '@bigbyte/utils';
 import Logger from '@bigbyte/utils/logger';
 
 import { StoreValue, CoreValueStore } from '@bigbyte/utils/registry';
@@ -14,7 +14,7 @@ const log = new Logger('ValueStore', LIBRARY_NAME);
  */
 export const coreValueStore: StoreValue[] = new Array<StoreValue>();
 
-const add = (key: string, value: NativeType): void => {
+const add = (key: string, value: string | undefined): void => {
     if (environmentService.has(key)) {
         log.warn(`The value with key "${key}" already exists in the ValueStore.`);
     } else {
@@ -53,8 +53,8 @@ const getAllStoreValues = (): StoreValue[] => {
     return [...coreValueStore, ...environments]
 }
 
-const getAllValues = (): Map<string, NativeType> => {
-    const map = new Map<string, NativeType>();
+const getAllValues = (): Map<string, string | undefined> => {
+    const map = new Map<string, string | undefined>();
 
     environmentService.keys().forEach((key: string) => {
         const value = environmentService.get(key);
@@ -62,7 +62,7 @@ const getAllValues = (): Map<string, NativeType> => {
     });
 
     coreValueStore.forEach((sv: StoreValue) => {
-        map.set(sv.key, sv.value);
+        map.set(sv.key, sv.value ? String(sv.value) : undefined);
     });
 
     return map;

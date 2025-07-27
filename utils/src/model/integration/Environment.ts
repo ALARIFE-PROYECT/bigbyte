@@ -1,6 +1,6 @@
 
 export type DEFAULT_VALUES = {
-    [key: string]: string | number | undefined;
+    [key: string]: string | undefined;
 };
 
 export interface Environment {

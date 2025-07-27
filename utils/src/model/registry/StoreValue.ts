@@ -1,5 +1,4 @@
 import { v4 } from "uuid";
-import { NativeType } from "../NativeType";
 
 
 export class StoreValue {
@@ -7,11 +6,11 @@ export class StoreValue {
 
     #key: string;
 
-    #value: NativeType;
+    #value?: string;
 
     #createAt: Date = new Date();
 
-    constructor(key: string, value: NativeType) {
+    constructor(key: string, value?: string) {
         this.#id = v4();
         this.#key = key;
         this.#value = value;
