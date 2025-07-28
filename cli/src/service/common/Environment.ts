@@ -17,7 +17,8 @@ export const readEnvironments = (command: Command, flagsData: FlagData[]): Map<s
     // añado valores por flags
     flagsData.forEach((flagData: FlagData) => {
         if (flagData.flag.env) {
-            environment.set(flagData.flag.env, String(flagData.value)); // este value ya esta tipado correctamente
+            // El flagData.value ya es tipo string siempre
+            environment.set(flagData.flag.env, flagData.value);
         }
     });
 
@@ -39,7 +40,7 @@ export const readEnvironments = (command: Command, flagsData: FlagData[]): Map<s
     if (Array.isArray(command.flags)) {
         command.flags.forEach((flag: Flag) => {
             if (flag.env && !environment.has(flag.env) && 'defaultValue' in flag) {
-                environment.set(flag.env, flag.defaultValue);
+                environment.set(flag.env, !!flag.defaultValue ? String(flag.defaultValue) : undefined);
             }
         });
     }
@@ -51,15 +52,13 @@ export const readEnvironments = (command: Command, flagsData: FlagData[]): Map<s
             defaultValues.forEach((key: string) => {
                 if (!environment.has(key)) {
                     let value = command.environment!.DEFAULT_VALUES![key];
-                    environment.set(key, value);
+                    environment.set(key, !!value ? String(value) : undefined);
                 }
             });
         }
     }
 
     log.dev(`Environment variables: ${environment}`);
-    console.log("🚀 ~ readEnvironments ~ environment:", environment)
-
     return environment;
 }
 
@@ -70,10 +69,7 @@ export const readEnvironment = (command: Command, flagsData: FlagData[], envData
 
     const content = readFileSync(envPath, 'utf8');
     if (content) {
-        const flags: FlagOptions | undefined = command.flags;
         const lines = content.split('\n');
-
-        // si el flags es string se añaden todos los valores sin tipar
         lines.forEach((line: string) => {
             if (line && !line.startsWith('#')) {
                 const [key, value] = line.split('=');

@@ -64,7 +64,7 @@ export const readArguments = (command: Command, argv: string[]): FlagData[] => {
                 if (flag.type === FlagType.switch) {
                     flagsData.push({
                         flag,
-                        value: true
+                        value: 'true'
                     });
                 } else if (flag.type === FlagType.value) {
                     const argvSplit = argument.split('=');
@@ -74,7 +74,7 @@ export const readArguments = (command: Command, argv: string[]): FlagData[] => {
                         throw new MissingArgumentError(`--${flag.name}`, `The flag "${argument}" requires a value. Use "${BIN_NAME} help ${command.name}" for instructions.`);
                     }
 
-                    flagsData.push({ flag, value });
+                    flagsData.push({ flag, value: String(value) });
                 } else if (flag.type === FlagType.file) {
                     const argvSplit = argument.split('=');
 

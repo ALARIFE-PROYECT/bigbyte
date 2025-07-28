@@ -1,16 +1,18 @@
 /**
  * * Decorador
  * 
- * Decora la clase principal para iniciar el proceso
+ * Decora la clase principal para iniciar el Logger
  */
 
 import "reflect-metadata";
 import { IpcMessage, THREAD_LOG_READY, THREAD_LOG_EMIT } from "@bigbyte/utils/ipc";
-import UtilsLogger from "@bigbyte/utils/logger";
 import { METADATA_CORE_COMPONENT_REGISTRY, METADATA_DECORATOR_NAME } from "@bigbyte/utils/constant";
 import { ComponentType, declareDecorator, executeDecorator, MissingComponentRegistryError } from "@bigbyte/utils/registry";
+import UtilsLogger from "@bigbyte/utils/logger";
 
 import { DECORATOR_LOGGER_NAME, LIBRARY_NAME, METADATA_LOGGER_DECORATED } from "../constant";
+import { configureLogger } from "../service/ConfigureLogger";
+import { LoggerService } from "../service/LoggerService";
 
 
 const log = new UtilsLogger(DECORATOR_LOGGER_NAME, LIBRARY_NAME);
@@ -18,7 +20,7 @@ const log = new UtilsLogger(DECORATOR_LOGGER_NAME, LIBRARY_NAME);
 /**
  * ! Debe ser el ultimo decorador aplicado a la clase principal siempre
  */
-export const Logger = (): ClassDecorator => {
+export const AppLogger = (): ClassDecorator => {
     declareDecorator(DECORATOR_LOGGER_NAME);
 
     return (Target: Function): void => {
@@ -44,7 +46,8 @@ export const Logger = (): ClassDecorator => {
             throw new MissingComponentRegistryError();
         }
 
-        // coreRegistry.add(LoggerService, [], { type: ComponentType.COMPONENT, injectable: true, recreate: true, invoker: Target });
+        configureLogger();
+        coreRegistry.add(LoggerService, [], { type: ComponentType.COMPONENT, injectable: true });
 
         executeDecorator(DECORATOR_LOGGER_NAME);
     }

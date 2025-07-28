@@ -7,14 +7,45 @@
 import coreValueRegistry from "../container/coreValueStore";
 
 export const Value = (key: string): PropertyDecorator => {
-    return (target: Object, propertyKey: string | symbol) => {
-        const storeVale = coreValueRegistry.getByKey(key);
-            console.log("🚀 ~ return ~ storeVale?.value:", storeVale?.value)
-        
+    return function (target: any, propertyKey: string | symbol) {
+        // const privateKey = Symbol(); // Clave privada para almacenar el valor
+
         Object.defineProperty(target, propertyKey, {
-            value: storeVale?.value,
-            writable: false,
-            configurable: false,
+            get: function () {
+                const storeVale = coreValueRegistry.getByKey(key);
+                console.log("🚀 ~ Value ~ storeVale:", storeVale)
+                return storeVale?.value;
+            },
+            // set: function (newValue: any) {
+            //     this[privateKey] = newValue;
+            // },
+            enumerable: true,
+            configurable: true,
         });
-    }
+
+        console.log("🚀 ~ Value ~ target:", target)
+
+    };
+    // return (target: Object, propertyKey: string | symbol) => {
+    //     // const storeVale = coreValueRegistry.getByKey(key);
+
+    //     // Object.defineProperty(target, propertyKey, {
+    //     //     value: storeVale?.value
+    //     // });
+
+    //     const privateKey = Symbol(); // Clave privada para almacenar el valor
+
+    //     Object.defineProperty(target, propertyKey, {
+    //         get: function () {
+    //             const storeVale = coreValueRegistry.getByKey(key);
+    //             console.log("🚀 ~ Value ~ storeVale:", storeVale)
+    //             return storeVale?.value;
+    //         },
+    //         // set: function (newValue: any) {
+    //         //     this[privateKey] = newValue;
+    //         // },
+    //         enumerable: true,
+    //         configurable: true,
+    //     });
+    // }
 }

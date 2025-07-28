@@ -24,16 +24,12 @@ const add = (key: string, value: string | undefined): void => {
 };
 
 const getByKey = (key: string): StoreValue | undefined => {
-    console.log('env: ', process.env);
-    
-    console.log("🚀 ~ key:", key)
     const storeValue = coreValueStore.find(v => v.key === key);
-    console.log("🚀 ~ storeValue:", storeValue)
+
     if (storeValue) {
         return storeValue;
     } else {
         const value = environmentService.get(key);
-        console.log("🚀 ~ value:", value)
         return { key, value } as StoreValue;
     }
 }

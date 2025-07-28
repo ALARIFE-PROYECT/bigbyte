@@ -11,7 +11,7 @@
 
 // setInterval(miFuncion, 5000); // milisegundos
 
-export default () => {
+export const initInterval = (path: string, timeInterval?: string, sizeInterval?: string) => {
     // const logFileMode = environment.get(TRACE_LOG_FILE_MODE) === 'true';
     // const logFile = environment.get(TRACE_LOG_FILE_MODE);
 

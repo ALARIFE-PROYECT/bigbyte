@@ -29,7 +29,7 @@ export default async (commandData: CommandData) => {
 
     const getActive = (env: string): boolean => {
         const value = commandData.environmentValues?.get(env);
-        return Boolean(value);
+        return !!value && value.toLowerCase() === 'true';
     }
 
     const debugIsActive = getActive(ENV_DEBUG_MODE);

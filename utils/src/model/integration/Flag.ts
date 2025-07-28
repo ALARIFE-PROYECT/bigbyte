@@ -40,6 +40,6 @@ export interface Flag extends HelpBase {
  */
 export interface FlagData {
     flag: Flag;
-    value: string | boolean | number | undefined;
+    value: string | undefined;
 }
 

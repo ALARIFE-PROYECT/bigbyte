@@ -7,3 +7,4 @@ export * from './MissingConfigurationError';
 export * from './MissingDependencyError';
 export * from './MissingFileError';
 export * from './ConfigurationError'
+export * from './CompilationError';

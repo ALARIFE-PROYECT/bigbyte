@@ -4,11 +4,9 @@ import { exec, ExecException } from "node:child_process";
 
 import { ROOT_PATH } from "@bigbyte/utils/constant";
 
-import { MissingConfigurationError } from "../../exception/MissingConfigurationError";
-import { MissingFileError } from "../../exception/MissingFileError";
-import { FormatError } from "../../exception/FormatError";
-import { CompilationErrorData } from "../../exception/CompilationError";
+import { MissingConfigurationError, MissingFileError, FormatError, CompilationErrorData } from "../../exception";
 import { TsConfigData } from "../../model/TsConfigData";
+import { loadingScreen } from "../Loading";
 
 
 let tscConfigPath = path.join(ROOT_PATH, 'tsconfig.json'); // ruta del tsconfig.json
@@ -104,6 +102,8 @@ export const readTsConfig = (): TsConfigData => {
 }
 
 export const compileTypeScript = async (fileChanged?: string) => {
+  const emitter = loadingScreen('Compiling TypeScript.');
+
   let command = `npx tsc`;
 
   if (fileChanged) {
@@ -115,6 +115,8 @@ export const compileTypeScript = async (fileChanged?: string) => {
 
   return new Promise((resolve, reject) => {
     exec(command, (error: ExecException | null, stdout: string, stderr: string) => {
+      emitter.emit('finish');
+
       if (error) {
         return reject({
           resume: stdout + stderr,
