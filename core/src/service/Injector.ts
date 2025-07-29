@@ -4,28 +4,24 @@
  * Servicio que permite usar el registry de componentes programaticamente.
  */
 
-import { Component, ComponentType, CoreComponentRegistry } from "@bigbyte/utils/registry";
+import { Component, ComponentType } from "@bigbyte/utils/registry";
 
 import registry from "../container/CoreComponentRegistry";
 
 export class Injector {
-    private registry: CoreComponentRegistry;
-
-    constructor() {
-        this.registry = registry;
+    add(Target: Function): void {
+        const paramTypes = Reflect.getMetadata('design:paramtypes', Target);
+        registry.add(Target, paramTypes, {
+            type: ComponentType.COMPONENT,
+            injectable: true
+        });
     }
 
-    // add(component: Component): void {
-    //     this.registry.add(component);
-    // }
+    get(Target: Function): Component | undefined {
+        return registry.getByClass(Target, false);
+    }
 
-    // get<T> (target: Function): Component {
-    //     return this.registry.getByClass(target) as Component;
-    // }
-
-    // has() {
-
-    // }
+    has(value: any): boolean {
+        return registry.has(value);
+    }
 }
-
-registry.add(Injector, [], { type: ComponentType.COMPONENT, injectable: true });

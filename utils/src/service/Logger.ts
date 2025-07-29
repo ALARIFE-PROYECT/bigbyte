@@ -9,20 +9,21 @@ export interface LoggerOptions {
     header?: boolean;
 }
 
-
 export default class Logger {
 
     private origin: string;
-
-    private library?: string;
 
     private options: LoggerOptions = {
         header: true
     }
 
-    constructor(origin: string, library?: string) {
+    /**
+     * Constructor
+     * 
+     * @param origin Libreria o nombre del origen del log.
+     */
+    constructor(origin: string) {
         this.origin = origin;
-        this.library = library;
     }
 
     private message(type: 'INFO' | 'DEBUG' | 'ERROR' | 'WARN' | 'DEV', ...message: any[]) {
@@ -30,10 +31,6 @@ export default class Logger {
         let result = '';
 
         if (this.options.header === true) {
-            if (this.library) {
-                result += `[${this.library}] `;
-            }
-
             result += `[${this.origin}] ${date} ${type} `;
         }
 
@@ -71,7 +68,7 @@ export default class Logger {
     }
 
     public dev(...message: any[]) {
-        const isLibrary = this.library && DEV_LIBRARIES_LOG.includes(this.library) || DEV_LIBRARIES_LOG.includes('*');
+        const isLibrary = this.origin && DEV_LIBRARIES_LOG.includes(this.origin) || DEV_LIBRARIES_LOG.includes('*');
         const isOrigin = DEV_ORIGINS_LOG.includes(this.origin) || DEV_ORIGINS_LOG.includes('*');
 
         if (DEV_MODE && (isLibrary || isOrigin)) {

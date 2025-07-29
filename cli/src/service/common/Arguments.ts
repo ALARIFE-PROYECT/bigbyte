@@ -8,11 +8,11 @@ import Logger from "@bigbyte/utils/logger";
 import { MissingArgumentError } from "../../exception/MissingArgumentError";
 
 import { BIN_NAME, LIBRARY_NAME } from "../../constant";
-import { MissingFileError, ConfigurationError } from "../../exception";
+import { MissingFileError } from "../../exception";
 
 
 
-const log = new Logger('Arguments', LIBRARY_NAME);
+const log = new Logger(LIBRARY_NAME);
 
 /**
  * Configura y valida el path del archivo a ejecutar

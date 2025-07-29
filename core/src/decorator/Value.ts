@@ -4,7 +4,7 @@
  * Decora una propiedad de una clase para inyectar un valor.
  * * Los valores inyectados no son modificables.
  */
-import coreValueRegistry from "../container/coreValueStore";
+import coreValueRegistry from "../container/CoreValueStore";
 
 export const Value = (key: string): PropertyDecorator => {
     return function (target: any, propertyKey: string | symbol) {

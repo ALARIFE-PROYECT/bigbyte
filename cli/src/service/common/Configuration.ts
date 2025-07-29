@@ -5,7 +5,7 @@ import { LIBRARY_NAME } from "../../constant";
 import { ConfigurationError } from "../../exception/ConfigurationError";
 
 
-const log = new Logger('Configuration', LIBRARY_NAME);
+const log = new Logger(LIBRARY_NAME);
 
 const commands: Command[] = [];
 let newCommands: Command[] = [];

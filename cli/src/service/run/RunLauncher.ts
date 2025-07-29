@@ -10,7 +10,7 @@ import { ROOT_PATH } from "@bigbyte/utils/constant";
 import { TsConfigData } from "../../model/TsConfigData";
 
 
-const log = new Logger('Launcher', LIBRARY_NAME);
+const log = new Logger(LIBRARY_NAME);
 
 let commandData: CommandData;
 let tsConfigData: TsConfigData;

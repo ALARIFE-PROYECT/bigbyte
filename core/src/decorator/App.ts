@@ -11,12 +11,14 @@ import { ComponentType, declareDecorator, decoratorExecEvent, executeDecorator }
 import Logger from "@bigbyte/utils/logger";
 
 import coreComponentRegistry from '../container/CoreComponentRegistry';
-import coreValueRegistry from "../container/coreValueStore";
+import coreValueRegistry from "../container/CoreValueStore";
 import { DECORATOR_APP_NAME, LIBRARY_NAME } from "../constant";
 
 import { OrderDecoratorsError } from "../exception/OrderDecoratorsError";
+import { Injector } from "../injector";
+import { ValueStore } from "../store";
 
-const log = new Logger(DECORATOR_APP_NAME, LIBRARY_NAME);
+const log = new Logger(LIBRARY_NAME);
 
 export const App = (): ClassDecorator => {
     declareDecorator(DECORATOR_APP_NAME);
@@ -33,12 +35,18 @@ export const App = (): ClassDecorator => {
             throw new OrderDecoratorsError(decorators);
         }
 
+        // Definicion d emetadatos
         Reflect.defineMetadata(METADATA_COMPONENT_TYPE, componentType, Target);
         Reflect.defineMetadata(`${METADATA_DECORATOR_NAME}=${DECORATOR_APP_NAME}`, true, Target);
 
         Reflect.defineMetadata(METADATA_CORE_COMPONENT_REGISTRY, coreComponentRegistry, Target);
         Reflect.defineMetadata(METADATA_CORE_VALUE_REGISTRY, coreValueRegistry, Target);
 
+        // Registro de servicios
+        coreComponentRegistry.add(Injector, [], { type: ComponentType.COMPONENT, injectable: true });
+        coreComponentRegistry.add(ValueStore, [], { type: ComponentType.COMPONENT, injectable: true });
+
+        // Registro de evento
         decoratorExecEvent.on('last', () => {
             const paramTypes = Reflect.getMetadata("design:paramtypes", Target) ?? [];
             coreComponentRegistry.add(Target, paramTypes, { type: componentType, injectable: false });

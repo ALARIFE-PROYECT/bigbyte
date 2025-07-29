@@ -1,5 +1,5 @@
 import { Logger } from "winston";
-import { logger } from "./ConfigureLogger";
+import { logger } from "./logger";
 
 export class LoggerService {
 

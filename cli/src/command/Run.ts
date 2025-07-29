@@ -3,7 +3,6 @@ import { CommandData, Dependency } from "@bigbyte/utils/integration";
 import { ENV_DEBUG_MODE, ROOT_PATH } from "@bigbyte/utils/constant";
 import { PackageModel } from "@bigbyte/utils/cli";
 
-import { ARGV_COMMAND_RUN } from "../constant/argv";
 import { LIBRARY_NAME } from "../constant";
 
 import { initChangeDetector } from "../service/run/Watcher";
@@ -18,7 +17,7 @@ import { displayBanner } from "../service/run/Banner";
 import { readJsonFile } from "../util/File";
 
 
-const log = new Logger(ARGV_COMMAND_RUN, LIBRARY_NAME);
+const log = new Logger(LIBRARY_NAME);
 
 export default async (commandData: CommandData) => {
     const init = performance.now();

@@ -13,7 +13,7 @@ import coreComponentRegistry from '../container/CoreComponentRegistry';
 import { DECORATOR_COMPONENT_NAME, DECORATOR_SERVICE_NAME, LIBRARY_NAME } from "../constant";
 import { ComponentType, declareDecorator, executeDecorator } from "@bigbyte/utils/registry";
 
-const log = new Logger(DECORATOR_COMPONENT_NAME, LIBRARY_NAME);
+const log = new Logger(LIBRARY_NAME);
 
 export const Component = (): ClassDecorator => {
     declareDecorator(DECORATOR_COMPONENT_NAME);

@@ -4,7 +4,7 @@ import Logger from "@bigbyte/utils/logger";
 
 import { DEFAULT_BANNER_PATH, LIBRARY_NAME } from "../../constant";
 
-const log = new Logger('Banner', LIBRARY_NAME);
+const log = new Logger(LIBRARY_NAME);
 log.setOptions({ header: false })
 
 interface ServerProperty {

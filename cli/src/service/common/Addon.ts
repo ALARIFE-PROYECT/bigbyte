@@ -8,7 +8,7 @@ import { INTEGRATION_CONFIGURATION_PATH, LIBRARY_NAME } from "../../constant";
 import { Addon, Configuration, Dependency } from "@bigbyte/utils/integration";
 
 
-const log = new Logger('Addon', LIBRARY_NAME);
+const log = new Logger(LIBRARY_NAME);
 
 export const readAddons = (dependencies: Dependency[]): Addon[] => {
     const addons: Addon[] = [];

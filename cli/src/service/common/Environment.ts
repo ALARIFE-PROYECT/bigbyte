@@ -3,13 +3,13 @@ import path from "node:path";
 
 import { ROOT_PATH } from "@bigbyte/utils/constant";
 import Logger from "@bigbyte/utils/logger";
-import { Command, Flag, FlagData, FlagOptions } from "@bigbyte/utils/integration";
+import { Command, Flag, FlagData } from "@bigbyte/utils/integration";
 
 import { DEFAULT_ENV_FILE_PATH, LIBRARY_NAME } from "../../constant";
 import { ARGV_FLAG_ENV } from "../../constant/argv";
 
 
-const log = new Logger('Environment', LIBRARY_NAME);
+const log = new Logger(LIBRARY_NAME);
 
 export const readEnvironments = (command: Command, flagsData: FlagData[]): Map<string, string | undefined> => {
     const environment: Map<string, string | undefined> = new Map();

@@ -4,10 +4,8 @@
  * Servicio que permite usar el registry de valores programaticamente.
  */
 
-import { ComponentType, StoreValue } from "@bigbyte/utils/registry";
-
-import coreComponentRegistry from "../container/CoreComponentRegistry";
-import coreValueStore from "../container/coreValueStore";
+import { StoreValue } from "@bigbyte/utils/registry";
+import coreValueStore from "../container/CoreValueStore";
 
 
 export class ValueStore {
@@ -32,5 +30,3 @@ export class ValueStore {
         coreValueStore.add(key, value);
     }
 }
-
-coreComponentRegistry.add(ValueStore, [], { type: ComponentType.COMPONENT, injectable: true });

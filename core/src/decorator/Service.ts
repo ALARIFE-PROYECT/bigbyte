@@ -14,7 +14,7 @@ import { DECORATOR_SERVICE_NAME, LIBRARY_NAME } from '../constant';
 import coreRegistry from '../container/CoreComponentRegistry';
 
 
-const log = new Logger(DECORATOR_SERVICE_NAME, LIBRARY_NAME);
+const log = new Logger(LIBRARY_NAME);
 
 export const Service = (): ClassDecorator => {
     declareDecorator(DECORATOR_SERVICE_NAME);

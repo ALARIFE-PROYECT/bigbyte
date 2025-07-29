@@ -7,15 +7,15 @@
 import "reflect-metadata";
 import { IpcMessage, THREAD_LOG_READY, THREAD_LOG_EMIT } from "@bigbyte/utils/ipc";
 import { METADATA_CORE_COMPONENT_REGISTRY, METADATA_DECORATOR_NAME } from "@bigbyte/utils/constant";
-import { ComponentType, declareDecorator, executeDecorator, MissingComponentRegistryError } from "@bigbyte/utils/registry";
-import UtilsLogger from "@bigbyte/utils/logger";
+import { ComponentType, declareDecorator, executeDecorator, MissingComponentRegistryError, decoratorExecEvent } from "@bigbyte/utils/registry";
+import UtilsLogger, { logBuffer } from "@bigbyte/utils/logger";
 
 import { DECORATOR_LOGGER_NAME, LIBRARY_NAME, METADATA_LOGGER_DECORATED } from "../constant";
 import { configureLogger } from "../service/ConfigureLogger";
 import { LoggerService } from "../service/LoggerService";
 
 
-const log = new UtilsLogger(DECORATOR_LOGGER_NAME, LIBRARY_NAME);
+const log = new UtilsLogger(LIBRARY_NAME);
 
 /**
  * ! Debe ser el ultimo decorador aplicado a la clase principal siempre
@@ -29,25 +29,37 @@ export const AppLogger = (): ClassDecorator => {
         Reflect.defineMetadata(METADATA_LOGGER_DECORATED, true, Target);
         Reflect.defineMetadata(`${METADATA_DECORATOR_NAME}=${DECORATOR_LOGGER_NAME}`, true, Target);
 
-        process.on("message", (data: IpcMessage) => {
-            console.log("🚀 ~ process.on ~ data:", data)
-            if (data.type === THREAD_LOG_EMIT) {
-                // TODO: se debe añadir al archivo de log o enviar a grafana si asi fuera necesario
-            }
-        });
-
-        if (process?.send) {
-            process?.send({ type: THREAD_LOG_READY });
-        }
-
         const coreRegistry = Reflect.getMetadata(METADATA_CORE_COMPONENT_REGISTRY, Target);
 
         if (!coreRegistry) {
             throw new MissingComponentRegistryError();
         }
 
-        configureLogger();
+
         coreRegistry.add(LoggerService, [], { type: ComponentType.COMPONENT, injectable: true });
+
+        // Se debe ejecutar cuando todos los decoradores muestren sus logs
+        decoratorExecEvent.on('last', () => {
+            const libraryLogger: Array<string> = [];
+
+            // Datos de logger del thread del cli
+            process.on("message", (message: IpcMessage) => {
+                if (message.type === THREAD_LOG_EMIT) {
+                    console.log("🚀 ~ AppLogger ~ message.data:", message.data)
+                    libraryLogger.push(...message.data as Array<string>);
+                }
+            });
+
+            if (process?.send) {
+                process?.send({ type: THREAD_LOG_READY });
+            }
+
+            // datos de logger de los addons del thread del MainProcess
+            libraryLogger.push(...logBuffer);
+            console.log("🚀 ~ AppLogger ~ logBuffer:", logBuffer)
+
+            configureLogger(libraryLogger);
+        });
 
         executeDecorator(DECORATOR_LOGGER_NAME);
     }

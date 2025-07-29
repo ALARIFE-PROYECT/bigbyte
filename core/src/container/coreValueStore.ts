@@ -5,7 +5,7 @@ import { StoreValue, CoreValueStore } from '@bigbyte/utils/registry';
 import { LIBRARY_NAME } from '../constant';
 
 
-const log = new Logger('ValueStore', LIBRARY_NAME);
+const log = new Logger(LIBRARY_NAME);
 
 /**
  * CoreValueRegistry es un contenedor de inyeccion de valores que se utiliza para almacenar los valores del core y sus addons.

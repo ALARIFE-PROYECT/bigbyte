@@ -13,10 +13,10 @@ const add = (Target: Function, dependenciesClass: Function[], options?: Componen
     coreComponentRegistry.push(component);
 };
 
-const getByClass = (Target: Function): Component => {
+const getByClass = (Target: Function, strict: boolean = true): Component | undefined => {
     const injectable = coreComponentRegistry.find(injectable => injectable.class === Target);
 
-    if (!injectable) {
+    if (!injectable && strict === true) {
         throw new MissingDependencyError(Target);
     }
 
@@ -37,7 +37,8 @@ const getAllByClass = (items: Function[] = []): Array<Component> => {
     const result: Array<Component> = new Array();
 
     items.forEach((target: Function) => {
-        result.push(getByClass(target));
+        // siempre existe por strict proboca la excepcion
+        result.push(getByClass(target)!);
     });
 
     return result;

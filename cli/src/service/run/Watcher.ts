@@ -8,7 +8,7 @@ import { compileTypeScript } from "./TypeScriptCompiler";
 import { relaunchRun } from "./RunLauncher";
 
 
-const log = new Logger('Watcher', LIBRARY_NAME);
+const log = new Logger(LIBRARY_NAME);
 let watcherProcess: FSWatcher;
 
 /**
