@@ -3,6 +3,8 @@
  * 
  * Decora una propiedad de una clase para inyectar un valor.
  * * Los valores inyectados no son modificables.
+ * 
+ * ! No funcionara para proviedades privadas de ECMAScript (#property).
  */
 import coreValueRegistry from "../container/CoreValueStore";
 

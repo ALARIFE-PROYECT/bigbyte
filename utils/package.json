@@ -67,7 +67,7 @@
     "test": "npx tsc --project tsconfig.test.json && node --test dist/test"
   },
   "dependencies": {
-    "chalk": "^5.4.1",
+    "chalk": "~5.4.1",
     "moment": "~2.30",
     "tslib": "~2.3",
     "uuid": "~11.1",
