@@ -1,8 +1,10 @@
 /** Names */
 export const LIBRARY_NAME = 'LOGGER';
 
-export const DECORATOR_LOGGER_NAME = '@Logger';
+export const DECORATOR_LOGGER_NAME = '@AppLogger';
 export const DECORATOR_SLF4TS_NAME = '@Slf4ts';
+
+export const DEFAULT_TRACE_FILE_NAME = 'trace.log';
 
 /** Metadata */
 export const METADATA_LOGGER_DECORATED = 'metadata:logger';

@@ -22,8 +22,3 @@ export const ARGV_FLAG_DEBUG = '--debug';
 /** Environment */
 export const NODE_ENV = 'NODE_ENV';
 export const ENV_DEBUG_MODE = 'DEBUG_MODE';
-
-/** Communication threads */
-export const THREAD_LOG_READY = 'log_ready';
-export const THREAD_LOG_EMIT = 'log_emit';
-

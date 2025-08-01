@@ -4,23 +4,30 @@ import Logger from "@bigbyte/utils/logger";
 
 import { DEFAULT_BANNER_PATH, LIBRARY_NAME } from "../../constant";
 
-const log = new Logger(LIBRARY_NAME);
-log.setOptions({ header: false })
 
 interface ServerProperty {
     key: string;
     value: string;
 }
 
+const logBanner = new Logger(LIBRARY_NAME);
+logBanner.setOptions({ banner: true, header: false });
+
+const logData = new Logger(LIBRARY_NAME);
+logData.setOptions({ header: false })
+
 export const displayBanner = (serverProperties: ServerProperty[]) => {
     const mainBanner = `${ROOT_PATH}/banner.txt`;
     const path = existsSync(mainBanner) ? mainBanner : DEFAULT_BANNER_PATH;
     const banner = readFileSync(path, { encoding: 'utf8' });
 
-    log.info(banner);
-    log.info('\n');
+    logBanner.info(banner);
+
+    logData.info('\n');
 
     serverProperties.forEach((property: ServerProperty) => {
-        log.info(`${property.key}: ${property.value}`);
+        logData.info(`${property.key}: ${property.value}`);
     });
+
+    logData.info('\n');
 };

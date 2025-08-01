@@ -36,8 +36,6 @@
     "@bigbyte/utils": "file:.yalc/@bigbyte/utils",
     "reflect-metadata": "~0.2.2",
     "tslib": "~2.3",
-    "winston": "~3",
-    "winston-transport": "~4",
     "zone.js": "~0.14"
   },
   "devDependencies": {

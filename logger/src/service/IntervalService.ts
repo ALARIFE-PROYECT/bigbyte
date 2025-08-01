@@ -12,6 +12,25 @@
 // setInterval(miFuncion, 5000); // milisegundos
 
 export const initInterval = (path: string, timeInterval?: string, sizeInterval?: string) => {
+//         const logFileTimeInterval = environmentService.get(ENV_TRACE_LOG_FILE_TIME_INTERVAL);
+//         const logFileSizeInterval = environmentService.get(ENV_TRACE_LOG_FILE_SIZE_INTERVAL);
+//         if (logFileTimeInterval || logFileSizeInterval) {
+//             log.info(`Logger configured to rotate logs every ${logFileTimeInterval ? `${logFileTimeInterval} minutes.` : `${logFileSizeInterval} bytes.`}`);
+
+//             initInterval(path, logFileTimeInterval, logFileTimeInterval);
+//         }
+
+
+
+
+
+
+
+
+
+
+
+
     // const logFileMode = environment.get(TRACE_LOG_FILE_MODE) === 'true';
     // const logFile = environment.get(TRACE_LOG_FILE_MODE);
 

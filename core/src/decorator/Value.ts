@@ -13,7 +13,7 @@ export const Value = (key: string): PropertyDecorator => {
         Object.defineProperty(target, propertyKey, {
             get: function () {
                 const storeVale = coreValueRegistry.getByKey(key);
-                console.log("🚀 ~ Value ~ storeVale:", storeVale)
+                // console.log("🚀 ~ Value ~ storeVale:", storeVale)
                 return storeVale?.value;
             },
             // set: function (newValue: any) {
@@ -23,7 +23,7 @@ export const Value = (key: string): PropertyDecorator => {
             configurable: true,
         });
 
-        console.log("🚀 ~ Value ~ target:", target)
+        // console.log("🚀 ~ Value ~ target:", target)
 
     };
     // return (target: Object, propertyKey: string | symbol) => {

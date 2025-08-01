@@ -1,5 +1,5 @@
 export const BIN_NAME = 'bbyte';
-export const LIBRARY_NAME = 'cli';
+export const LIBRARY_NAME = 'CLI';
 
 /** Path */
 export const CLI_PACKAGE_PATH = `${__dirname}/../..`;

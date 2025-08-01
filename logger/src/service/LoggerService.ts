@@ -1,35 +1,22 @@
-import { Logger } from "winston";
 import { logger } from "./logger";
 
 export class LoggerService {
 
     constructor() { }
 
-    public error(...args: Parameters<Logger['error']>) {
+    public error(...args: any[]) {
         logger.error(...args);
     }
 
-    public warn(...args: Parameters<Logger['warn']>) {
+    public warn(...args: any[]) {
         logger.warn(...args);
     }
 
-    public info(...args: Parameters<Logger['info']>) {
+    public info(...args: any[]) {
         logger.info(...args);
     }
 
-    public http(...args: Parameters<Logger['http']>) {
-        logger.http(...args);
-    }
-
-    public verbose(...args: Parameters<Logger['verbose']>) {
-        logger.verbose(...args);
-    }
-
-    public debug(...args: Parameters<Logger['debug']>) {
+    public debug(...args: any[]) {
         logger.debug(...args);
-    }
-
-    public silly(...args: Parameters<Logger['silly']>) {
-        logger.silly(...args);
     }
 }

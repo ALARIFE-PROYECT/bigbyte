@@ -1,12 +1,11 @@
 import { ChildProcess, fork, ForkOptions } from "node:child_process";
+import { join } from "node:path";
 
 import Logger from "@bigbyte/utils/logger";
-import { CommandData } from "@bigbyte/utils/lib/model/integration";
+import { CommandData } from "@bigbyte/utils/integration";
+import { ROOT_PATH } from "@bigbyte/utils/constant";
 
 import { LIBRARY_NAME } from "../../constant";
-import { initIpc } from "./Ipc";
-import { join } from "node:path";
-import { ROOT_PATH } from "@bigbyte/utils/constant";
 import { TsConfigData } from "../../model/TsConfigData";
 
 
@@ -67,8 +66,6 @@ export const launchRun = () => {
         }
 
         rootProcess = fork(appPath, argv, forkOptions);
-
-        initIpc(rootProcess);
 
         rootProcess.stderr?.on("data", (data) => {
             console.log("🚀 ~ rootProcess.on ~ data:", data.toString())

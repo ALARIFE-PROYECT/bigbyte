@@ -1,6 +1,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 
+import { argumentsService } from "@bigbyte/utils";
 import { ROOT_PATH } from "@bigbyte/utils/constant";
 import Logger from "@bigbyte/utils/logger";
 import { Command, Flag, FlagData } from "@bigbyte/utils/integration";
@@ -9,7 +10,8 @@ import { DEFAULT_ENV_FILE_PATH, LIBRARY_NAME } from "../../constant";
 import { ARGV_FLAG_ENV } from "../../constant/argv";
 
 
-const log = new Logger(LIBRARY_NAME);
+
+let log: Logger;
 
 export const readEnvironments = (command: Command, flagsData: FlagData[]): Map<string, string | undefined> => {
     const environment: Map<string, string | undefined> = new Map();
@@ -27,12 +29,12 @@ export const readEnvironments = (command: Command, flagsData: FlagData[]): Map<s
     if (envFileArgv) {
         const envFilePath: string = envFileArgv.value as string; // este archivo ya esta validado
         log.dev(`Using default environment file: ${envFilePath}`);
-        readEnvironment(command, flagsData, environment, envFilePath);
+        readEnvironment(flagsData, environment, envFilePath);
     } else {
         const defaultEnvFile: string = path.join(ROOT_PATH, DEFAULT_ENV_FILE_PATH);
         if (existsSync(defaultEnvFile)) {
             log.dev(`Using default environment file: ${defaultEnvFile}`);
-            readEnvironment(command, flagsData, environment, defaultEnvFile);
+            readEnvironment(flagsData, environment, defaultEnvFile);
         }
     }
 
@@ -62,7 +64,7 @@ export const readEnvironments = (command: Command, flagsData: FlagData[]): Map<s
     return environment;
 }
 
-export const readEnvironment = (command: Command, flagsData: FlagData[], envData: Map<string, string | undefined>, envPath: string) => {
+export const readEnvironment = (flagsData: FlagData[], envData: Map<string, string | undefined>, envPath: string) => {
     const getFlagDataByEnv = (env: string): FlagData | undefined => {
         return flagsData.find(flagData => flagData.flag.env === env);
     }
@@ -82,4 +84,28 @@ export const readEnvironment = (command: Command, flagsData: FlagData[], envData
             }
         });
     }
+}
+
+export const environmentPreSet = () => {
+    const ENV_TRACE_LOG_FILE = 'TRACE_LOG_FILE'
+    const argvFlagEnv = argumentsService.get(ARGV_FLAG_ENV) || path.join(ROOT_PATH, DEFAULT_ENV_FILE_PATH);
+
+    if (existsSync(argvFlagEnv)) {
+        const content = readFileSync(argvFlagEnv, 'utf8');
+
+        if (content) {
+            const lines = content.split('\n');
+            lines.forEach((line: string) => {
+                if (line && !line.startsWith('#')) {
+                    const [key, value] = line.split('=');
+
+                    if (key === ENV_TRACE_LOG_FILE && value) {
+                        process.env[key] = value.trim();
+                    }
+                }
+            });
+        }
+    }
+
+    log = new Logger(LIBRARY_NAME);
 }

@@ -1,4 +1,4 @@
 export * from './constant';
 
-export * from './service/Environment';
-export * from './service/Arguments';
+export * from './service/EnvironmentService';
+export * from './service/ArgumentService';

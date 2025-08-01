@@ -26,25 +26,10 @@
       "require": "./lib/cli.js",
       "types": "./lib/cli.d.ts"
     },
-    "./ipc": {
-      "import": "./lib/ipc.js",
-      "require": "./lib/ipc.js",
-      "types": "./lib/ipc.d.ts"
-    },
     "./constant": {
       "import": "./lib/constant/index.js",
       "require": "./lib/constant/index.js",
       "types": "./lib/constant/index.d.ts"
-    },
-    "./environment": {
-      "import": "./lib/service/Environment.js",
-      "require": "./lib/service/Environment.js",
-      "types": "./lib/service/Environment.d.ts"
-    },
-    "./arguments": {
-      "import": "./lib/service/Arguments.js",
-      "require": "./lib/service/Arguments.js",
-      "types": "./lib/service/Arguments.d.ts"
     },
     "./logger": {
       "import": "./lib/service/Logger.js",
@@ -59,26 +44,14 @@
   },
   "typesVersions": {
     "*": {
-      ".": [
-        "./lib/index.d.ts"
-      ],
       "registry": [
         "./lib/registry.d.ts"
       ],
       "cli": [
         "./lib/cli.d.ts"
       ],
-      "ipc": [
-        "./lib/ipc.d.ts"
-      ],
       "constant": [
         "./lib/constant/index.d.ts"
-      ],
-      "environment": [
-        "./lib/service/environment.d.ts"
-      ],
-      "arguments": [
-        "./lib/service/arguments.d.ts"
       ],
       "logger": [
         "./lib/service/Logger.d.ts"
@@ -94,6 +67,7 @@
     "test": "npx tsc --project tsconfig.test.json && node --test dist/test"
   },
   "dependencies": {
+    "chalk": "^5.4.1",
     "moment": "~2.30",
     "tslib": "~2.3",
     "uuid": "~11.1",

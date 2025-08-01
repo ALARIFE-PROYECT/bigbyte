@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 
+import { environmentPreSet, readEnvironments } from "./service/common/Environment";
+environmentPreSet();
+
 import { Addon, Command, CommandData, Dependency, FlagData, MainFile } from "@bigbyte/utils/integration";
 
 import { BIN_NAME } from "./constant";
@@ -8,7 +11,7 @@ import { MissingArgumentError } from "./exception";
 import { readAddons } from "./service/common/Addon"
 import { getMainFile, readArguments } from "./service/common/Arguments";
 import { getCommand, readConfigurations } from "./service/common/Configuration";
-import { readEnvironments } from "./service/common/Environment";
+
 import { launchCommand } from "./service/common/CommandLauncher";
 import { getDependencies } from "./service/common/Package";
 
