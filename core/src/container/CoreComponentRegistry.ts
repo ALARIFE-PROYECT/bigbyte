@@ -1,4 +1,4 @@
-import { Component, ComponentOptions, ComponentType, CoreComponentRegistry } from '@bigbyte/utils/registry';
+import { Component, ComponentOptions, CoreComponentRegistry } from '@bigbyte/utils/registry';
 import { MissingDependencyError } from '../exception/MissingDependencyError';
 
 /**
