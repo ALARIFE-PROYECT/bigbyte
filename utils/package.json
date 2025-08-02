@@ -76,6 +76,6 @@
   "devDependencies": {
     "@types/node": "~22",
     "@types/uuid": "~10",
-    "typescript": "~5"
+    "typescript": "~5.9"
   }
 }

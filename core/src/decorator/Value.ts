@@ -3,51 +3,25 @@
  * 
  * Decora una propiedad de una clase para inyectar un valor.
  * * Los valores inyectados no son modificables.
+ * * No se puede aplicar a propiedades privadas de ECMAScript (que comienzan con `#`).
  * 
- * ! No funcionara para proviedades privadas de ECMAScript (#property).
  */
+import { DecoratorError } from "@bigbyte/utils";
 import coreValueRegistry from "../container/CoreValueStore";
 
 export const Value = (key: string): PropertyDecorator => {
-    return function (target: any, propertyKey: string | symbol) {
-        // const privateKey = Symbol(); // Clave privada para almacenar el valor
+    return function (Target: any, propertyKey: string | symbol): void {
+        if(propertyKey.toString().startsWith('#')) {
+            throw new DecoratorError(`The property "${propertyKey.toString()}" is private and cannot be decorated with @Value.`);
+        }
 
-        Object.defineProperty(target, propertyKey, {
-            get: function () {
+        Object.defineProperty(Target, propertyKey, {
+            get() {
                 const storeVale = coreValueRegistry.getByKey(key);
-                // console.log("🚀 ~ Value ~ storeVale:", storeVale)
                 return storeVale?.value;
             },
-            // set: function (newValue: any) {
-            //     this[privateKey] = newValue;
-            // },
             enumerable: true,
-            configurable: true,
+            configurable: true
         });
-
-        // console.log("🚀 ~ Value ~ target:", target)
-
     };
-    // return (target: Object, propertyKey: string | symbol) => {
-    //     // const storeVale = coreValueRegistry.getByKey(key);
-
-    //     // Object.defineProperty(target, propertyKey, {
-    //     //     value: storeVale?.value
-    //     // });
-
-    //     const privateKey = Symbol(); // Clave privada para almacenar el valor
-
-    //     Object.defineProperty(target, propertyKey, {
-    //         get: function () {
-    //             const storeVale = coreValueRegistry.getByKey(key);
-    //             console.log("🚀 ~ Value ~ storeVale:", storeVale)
-    //             return storeVale?.value;
-    //         },
-    //         // set: function (newValue: any) {
-    //         //     this[privateKey] = newValue;
-    //         // },
-    //         enumerable: true,
-    //         configurable: true,
-    //     });
-    // }
 }
