@@ -9,8 +9,9 @@
 import { DecoratorError } from "@bigbyte/utils";
 import coreValueRegistry from "../container/CoreValueStore";
 
+
 export const Value = (key: string): PropertyDecorator => {
-    return function (Target: any, propertyKey: string | symbol): void {
+    return (Target: any, propertyKey: string | symbol): void =>  {
         if(propertyKey.toString().startsWith('#')) {
             throw new DecoratorError(`The property "${propertyKey.toString()}" is private and cannot be decorated with @Value.`);
         }
