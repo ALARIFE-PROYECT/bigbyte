@@ -6,11 +6,13 @@ import { MissingDependencyError } from '../exception/MissingDependencyError';
  */
 export const coreComponentRegistry: Component[] = new Array<Component>();
 
-const add = (Target: Function, dependenciesClass: Function[], options?: ComponentOptions): void => {
+const add = (Target: Function, dependenciesClass: Function[], options?: ComponentOptions): string => {
     const dependencies = getAllByClass(dependenciesClass);
     const component = new Component(Target, dependencies, options);
 
     coreComponentRegistry.push(component);
+
+    return component.id;
 };
 
 const getByClass = (Target: Function, strict: boolean = true): Component | undefined => {

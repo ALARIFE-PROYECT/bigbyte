@@ -2,7 +2,6 @@ export { METADATA_CORE_COMPONENT_REGISTRY, METADATA_CORE_VALUE_REGISTRY } from '
 
 export * from './model/registry/CoreComponentRegistry';
 export * from './model/registry/Component';
-export * from './model/registry/ComponentInvoker';
 export * from './exception/NonInjectableComponentError';
 export * from './exception/MissingComponentRegistryError';
 

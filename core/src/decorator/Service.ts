@@ -20,7 +20,6 @@ export const Service = (): ClassDecorator => {
     declareDecorator(DECORATOR_SERVICE_NAME);
 
     return (Target: Function): void => {
-        executeDecorator(DECORATOR_SERVICE_NAME);
         log.dev(`${DECORATOR_SERVICE_NAME} decorator applied to ${Target.name}`);
 
         const componentType = ComponentType.SERVICE;
@@ -30,5 +29,7 @@ export const Service = (): ClassDecorator => {
 
         const paramTypes = Reflect.getMetadata("design:paramtypes", Target) ?? [];
         coreRegistry.add(Target, paramTypes, { type: componentType });
+        
+        executeDecorator(DECORATOR_SERVICE_NAME);
     }
 }
