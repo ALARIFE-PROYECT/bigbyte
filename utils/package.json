@@ -26,6 +26,11 @@
       "require": "./lib/cli.js",
       "types": "./lib/cli.d.ts"
     },
+    "./decorator": {
+      "import": "./lib/decorator.js",
+      "require": "./lib/decorator.js",
+      "types": "./lib/decorator.d.js"
+    },
     "./constant": {
       "import": "./lib/constant/index.js",
       "require": "./lib/constant/index.js",
@@ -49,6 +54,9 @@
       ],
       "cli": [
         "./lib/cli.d.ts"
+      ],
+      "decorator": [
+        "./lib/decorator.d.ts"
       ],
       "constant": [
         "./lib/constant/index.d.ts"

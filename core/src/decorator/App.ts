@@ -7,7 +7,8 @@
 import "reflect-metadata";
 
 import { METADATA_CORE_COMPONENT_REGISTRY, METADATA_CORE_VALUE_REGISTRY, METADATA_COMPONENT_TYPE, METADATA_DECORATOR_NAME } from "@bigbyte/utils/constant";
-import { ComponentType, declareDecorator, decoratorExecEvent, executeDecorator } from "@bigbyte/utils/registry";
+import { ComponentType } from "@bigbyte/utils/registry";
+import { declareDecorator, decoratorExecEvent, executeDecorator, getDecorators } from "@bigbyte/utils/decorator";
 import Logger from "@bigbyte/utils/logger";
 
 import coreComponentRegistry from '../container/CoreComponentRegistry';
@@ -17,6 +18,7 @@ import { DECORATOR_APP_NAME, LIBRARY_NAME } from "../constant";
 import { OrderDecoratorsError } from "../exception/OrderDecoratorsError";
 import { Injector } from "../injector";
 import { ValueStore } from "../store";
+
 
 const log = new Logger(LIBRARY_NAME);
 
@@ -30,7 +32,7 @@ export const App = (): ClassDecorator => {
 
         // Valido que el decorador @App() es el primero que se aplica a la clase
         const keys = Reflect.getMetadataKeys(Target);
-        const decorators = keys.filter(e => e.includes(METADATA_DECORATOR_NAME)).map(e => e.split('=')[1]);
+        const decorators = getDecorators(keys);    
         if (decorators.length > 0) {
             throw new OrderDecoratorsError(decorators);
         }

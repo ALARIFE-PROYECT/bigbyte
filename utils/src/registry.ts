@@ -7,5 +7,3 @@ export * from './exception/MissingComponentRegistryError';
 
 export * from './model/registry/CoreValueStore';
 export * from './model/registry/StoreValue';
-
-export * from './service/Decorators';

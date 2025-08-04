@@ -6,11 +6,11 @@
 
 import "reflect-metadata";
 import { METADATA_CORE_COMPONENT_REGISTRY, METADATA_DECORATOR_NAME } from "@bigbyte/utils/constant";
-import { ComponentType, declareDecorator, executeDecorator, MissingComponentRegistryError, decoratorExecEvent } from "@bigbyte/utils/registry";
+import { ComponentType, MissingComponentRegistryError } from "@bigbyte/utils/registry";
+import { declareDecorator, executeDecorator } from "@bigbyte/utils/decorator";
 import UtilsLogger from "@bigbyte/utils/logger";
 
 import { DECORATOR_LOGGER_NAME, LIBRARY_NAME, METADATA_LOGGER_DECORATED } from "../constant";
-// import { configureLogger } from "../service/ConfigureLogger";
 import { LoggerService } from "../service/LoggerService";
 
 
@@ -32,11 +32,6 @@ export const AppLogger = (): ClassDecorator => {
         }
 
         coreRegistry.add(LoggerService, [], { type: ComponentType.COMPONENT, injectable: true });
-
-        // Se debe ejecutar cuando todos los decoradores muestren sus logs
-        decoratorExecEvent.on('last', () => {
-            // configureLogger();
-        });
 
         executeDecorator(DECORATOR_LOGGER_NAME);
     }
