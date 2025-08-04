@@ -9,9 +9,8 @@ import "reflect-metadata";
 import { METADATA_COMPONENT_TYPE, METADATA_DECORATOR_NAME } from "@bigbyte/utils/constant";
 import Logger from "@bigbyte/utils/logger";
 import { declareDecorator, DecoratorError, decoratorExecEvent, executeDecorator, getDecorators } from "@bigbyte/utils/decorator";
-import { ComponentType } from "@bigbyte/utils/registry";
+import { componentRegistry, ComponentType } from "@bigbyte/ioc";
 
-import coreComponentRegistry from '../container/CoreComponentRegistry';
 import { DECORATOR_COMPONENT_NAME, DECORATOR_SERVICE_NAME, LIBRARY_NAME } from "../constant";
 
 
@@ -24,6 +23,7 @@ export const Component = (): ClassDecorator => {
         log.dev(`${DECORATOR_COMPONENT_NAME} decorator applied to ${Target.name}`);
 
         const componentType = ComponentType.COMPONENT;
+        
         Reflect.defineMetadata(METADATA_COMPONENT_TYPE, componentType, Target);
         Reflect.defineMetadata(`${METADATA_DECORATOR_NAME}=${DECORATOR_SERVICE_NAME}`, true, Target);
 
@@ -36,7 +36,7 @@ export const Component = (): ClassDecorator => {
             }
 
             const paramTypes = Reflect.getMetadata("design:paramtypes", Target) ?? [];
-            coreComponentRegistry.add(Target, paramTypes, { type: componentType });
+            componentRegistry.add(Target, paramTypes, { type: componentType });
         });
 
         executeDecorator(DECORATOR_COMPONENT_NAME);

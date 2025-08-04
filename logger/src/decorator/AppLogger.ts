@@ -5,10 +5,10 @@
  */
 
 import "reflect-metadata";
-import { METADATA_CORE_COMPONENT_REGISTRY, METADATA_DECORATOR_NAME } from "@bigbyte/utils/constant";
-import { ComponentType, MissingComponentRegistryError } from "@bigbyte/utils/registry";
+import { METADATA_DECORATOR_NAME } from "@bigbyte/utils/constant";
 import { declareDecorator, executeDecorator } from "@bigbyte/utils/decorator";
 import UtilsLogger from "@bigbyte/utils/logger";
+import { componentRegistry, ComponentType } from "@bigbyte/ioc";
 
 import { DECORATOR_LOGGER_NAME, LIBRARY_NAME, METADATA_LOGGER_DECORATED } from "../constant";
 import { LoggerService } from "../service/LoggerService";
@@ -25,13 +25,7 @@ export const AppLogger = (): ClassDecorator => {
         Reflect.defineMetadata(METADATA_LOGGER_DECORATED, true, Target);
         Reflect.defineMetadata(`${METADATA_DECORATOR_NAME}=${DECORATOR_LOGGER_NAME}`, true, Target);
 
-        const coreRegistry = Reflect.getMetadata(METADATA_CORE_COMPONENT_REGISTRY, Target);
-
-        if (!coreRegistry) {
-            throw new MissingComponentRegistryError();
-        }
-
-        coreRegistry.add(LoggerService, [], { type: ComponentType.COMPONENT, injectable: true });
+        componentRegistry.add(LoggerService, [], { type: ComponentType.COMPONENT, injectable: true });
 
         executeDecorator(DECORATOR_LOGGER_NAME);
     }

@@ -1,7 +1,6 @@
 import Logger from "@bigbyte/utils/logger";
 import { CommandData, Dependency } from "@bigbyte/utils/integration";
 import { ENV_DEBUG_MODE, ROOT_PATH } from "@bigbyte/utils/constant";
-import { PackageModel } from "@bigbyte/utils/cli";
 
 import { LIBRARY_NAME } from "../constant";
 
@@ -15,6 +14,7 @@ import { MissingArgumentError } from "../exception";
 import { ENV_BANNER_MODE, ENV_DOCTOR_MODE, ENV_WATCH_MODE } from "../constant/environment";
 import { displayBanner } from "../service/run/Banner";
 import { readJsonFile } from "../util/File";
+import { PackageModel } from "../model/PackageModel";
 
 
 const log = new Logger(LIBRARY_NAME);

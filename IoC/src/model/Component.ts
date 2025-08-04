@@ -1,5 +1,5 @@
 import { v4 } from 'uuid';
-import { NonInjectableComponentError } from '../../exception/NonInjectableComponentError';
+import { NonInjectableComponentError } from '../exception/NonInjectableComponentError';
 
 export enum ComponentType {
     MAIN = 'MAIN',

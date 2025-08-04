@@ -2,7 +2,6 @@
 /**
  * TODO: Otros decoradores a añadir
  * * Qualifier
- * * Component
  * * Primary
  * * Lazy
  */

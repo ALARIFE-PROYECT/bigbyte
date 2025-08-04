@@ -7,12 +7,12 @@
 import 'reflect-metadata';
 
 import { METADATA_COMPONENT_TYPE, METADATA_DECORATOR_NAME } from '@bigbyte/utils/constant';
-import { ComponentType } from '@bigbyte/utils/registry';
 import { declareDecorator, DecoratorError, decoratorExecEvent, executeDecorator, getDecorators } from "@bigbyte/utils/decorator";
 import Logger from '@bigbyte/utils/logger';
+import { componentRegistry, ComponentType } from "@bigbyte/ioc";
+
 
 import { DECORATOR_SERVICE_NAME, LIBRARY_NAME } from '../constant';
-import coreRegistry from '../container/CoreComponentRegistry';
 
 
 const log = new Logger(LIBRARY_NAME);
@@ -37,7 +37,7 @@ export const Service = (): ClassDecorator => {
             }
 
             const paramTypes = Reflect.getMetadata("design:paramtypes", Target) ?? [];
-            coreRegistry.add(Target, paramTypes, { type: componentType });
+            componentRegistry.add(Target, paramTypes, { type: componentType });
         });
 
         executeDecorator(DECORATOR_SERVICE_NAME);

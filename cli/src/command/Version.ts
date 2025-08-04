@@ -1,6 +1,5 @@
-import { PackageModel } from "@bigbyte/utils/cli";
-
 import { CLI_PACKAGE_PATH } from "../constant";
+import { PackageModel } from "../model/PackageModel";
 import { readJsonFile } from "../util/File";
 
 export default () => {

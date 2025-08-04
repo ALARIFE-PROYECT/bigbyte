@@ -5,9 +5,6 @@ export const LIBRARY_ORGANIZATION_NAME = '@bigbyte'
 export const ROOT_PATH = process.cwd();
 
 /** Metadata */
-export const METADATA_CORE_COMPONENT_REGISTRY = 'metadata:core_value_registry';
-export const METADATA_CORE_VALUE_REGISTRY = 'metadata:core_component_registry';
-
 export const METADATA_COMPONENT_TYPE = 'metadata:component_type';
 export const METADATA_DECORATOR_NAME = 'metadata:decorator_name';
 

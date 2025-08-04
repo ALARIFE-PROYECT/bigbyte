@@ -6,8 +6,7 @@
  */
 import 'reflect-metadata';
 import { DecoratorError } from '@bigbyte/utils/decorator';
-
-import registry from '../container/CoreComponentRegistry';
+import { componentRegistry } from "@bigbyte/ioc";
 
 
 export const Inject = (): PropertyDecorator => {
@@ -17,7 +16,7 @@ export const Inject = (): PropertyDecorator => {
         }
 
         const componentType = Reflect.getMetadata('design:type', Target, propertyKey);
-        const component = registry.getByClass(componentType, false);
+        const component = componentRegistry.getByClass(componentType, false);
 
         if(!component) {
             throw new DecoratorError(`No component found for type "${componentType.name}" to inject into property "${String(propertyKey)}".`);

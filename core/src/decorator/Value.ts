@@ -7,7 +7,7 @@
  * 
  */
 import { DecoratorError } from '@bigbyte/utils/decorator';
-import coreValueRegistry from "../container/CoreValueStore";
+import { ctxStore } from '@bigbyte/ctx';
 
 
 export const Value = (key: string): PropertyDecorator => {
@@ -18,7 +18,7 @@ export const Value = (key: string): PropertyDecorator => {
 
         Object.defineProperty(Target, propertyKey, {
             get() {
-                const storeVale = coreValueRegistry.getByKey(key);
+                const storeVale = ctxStore.getByKey(key);
                 return storeVale?.value;
             },
             enumerable: true,

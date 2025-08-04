@@ -1,9 +1,10 @@
-import { PackageModel, PackageModelLock, PackageModelLockDependency } from '@bigbyte/utils/cli';
 import { LIBRARY_ORGANIZATION_NAME, ROOT_PATH } from "@bigbyte/utils/constant";
 import { Dependency } from '@bigbyte/utils/integration';
 
 import { MissingConfigurationError } from "../../exception";
 import { readJsonFile } from "../../util/File";
+import { PackageModelLock, PackageModelLockDependency } from "../../model/PackageModelLock";
+import { PackageModel } from "../../model/PackageModel";
 
 let packageJson: PackageModel | undefined;
 let packageJsonLock: PackageModelLock | undefined;

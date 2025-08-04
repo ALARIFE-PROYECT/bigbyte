@@ -3,7 +3,7 @@
     "./test/**/*.test.ts",
   ],
   "include": [
-    "./src/**/*.ts", "../utils/src/exception/MissingDependencyError.ts",
+    "./src/**/*.ts",
   ],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig to read more about this file */

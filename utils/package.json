@@ -16,16 +16,6 @@
       "require": "./lib/index.js",
       "types": "./lib/index.d.ts"
     },
-    "./registry": {
-      "import": "./lib/registry.js",
-      "require": "./lib/registry.js",
-      "types": "./lib/registry.d.ts"
-    },
-    "./cli": {
-      "import": "./lib/cli.js",
-      "require": "./lib/cli.js",
-      "types": "./lib/cli.d.ts"
-    },
     "./decorator": {
       "import": "./lib/decorator.js",
       "require": "./lib/decorator.js",
@@ -49,12 +39,6 @@
   },
   "typesVersions": {
     "*": {
-      "registry": [
-        "./lib/registry.d.ts"
-      ],
-      "cli": [
-        "./lib/cli.d.ts"
-      ],
       "decorator": [
         "./lib/decorator.d.ts"
       ],
@@ -78,7 +62,6 @@
     "chalk": "~5.4.1",
     "moment": "~2.30",
     "tslib": "~2.3",
-    "uuid": "~11.1",
     "zone.js": "~0.14"
   },
   "devDependencies": {

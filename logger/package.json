@@ -26,12 +26,13 @@
   },
   "scripts": {
     "build": "npx tsc",
-    "yalc:install": "npx yalc add @bigbyte/utils",
+    "yalc:install": "npx yalc add @bigbyte/utils && npx yalc add @bigbyte/ioc",
     "yalc:publish": "npm run build && npx yalc publish --push",
     "test": "npx tsc --project tsconfig.test.json && node --test dist/test"
   },
   "dependencies": {
     "@bigbyte/utils": "file:.yalc/@bigbyte/utils",
+    "@bigbyte/ioc": "file:.yalc/@bigbyte/ioc",
     "reflect-metadata": "~0.2.2",
     "tslib": "~2.3",
     "zone.js": "~0.14"
