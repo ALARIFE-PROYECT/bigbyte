@@ -8,7 +8,7 @@ import 'reflect-metadata';
 
 import { METADATA_COMPONENT_TYPE, METADATA_DECORATOR_NAME } from '@bigbyte/utils/constant';
 import { ComponentType } from '@bigbyte/utils/registry';
-import { declareDecorator, executeDecorator } from "@bigbyte/utils/decorator";
+import { declareDecorator, DecoratorError, decoratorExecEvent, executeDecorator, getDecorators } from "@bigbyte/utils/decorator";
 import Logger from '@bigbyte/utils/logger';
 
 import { DECORATOR_SERVICE_NAME, LIBRARY_NAME } from '../constant';
@@ -28,9 +28,18 @@ export const Service = (): ClassDecorator => {
         Reflect.defineMetadata(METADATA_COMPONENT_TYPE, componentType, Target);
         Reflect.defineMetadata(`${METADATA_DECORATOR_NAME}=${DECORATOR_SERVICE_NAME}`, true, Target);
 
-        const paramTypes = Reflect.getMetadata("design:paramtypes", Target) ?? [];
-        coreRegistry.add(Target, paramTypes, { type: componentType });
-        
+        decoratorExecEvent.on('last', () => {
+            // Valida que la clase no tenga mas de un decorador
+            const keys = Reflect.getMetadataKeys(Target);
+            const decorators = getDecorators(keys);
+            if (decorators.length > 1) {
+                throw new DecoratorError(`Class ${Target.name} is decorated with ${decorators.join(', ')} and @Service() does not allow it.`);
+            }
+
+            const paramTypes = Reflect.getMetadata("design:paramtypes", Target) ?? [];
+            coreRegistry.add(Target, paramTypes, { type: componentType });
+        });
+
         executeDecorator(DECORATOR_SERVICE_NAME);
     }
 }
