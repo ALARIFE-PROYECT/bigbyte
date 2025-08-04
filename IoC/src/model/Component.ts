@@ -39,10 +39,10 @@ export class Component {
 
     #createAt: Date = new Date();
 
-    constructor(Target: any, dependencies: Component[], options: ComponentOptions = defaultComponentOptions) {
+    constructor(Target: any, dependencies: Component[], options: ComponentOptions = {}) {
         this.#id = v4();
         this.#class = Target;
-        this.#options = { ...options, ...defaultComponentOptions };
+        this.#options = { ...defaultComponentOptions, ...options  };
 
         const dependenciesInstances = dependencies.map(c => {
             if (!c.options.injectable) {
