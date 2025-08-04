@@ -42,8 +42,6 @@
   },
   "scripts": {
     "build": "npx tsc",
-    "npm:link": "npm run build && npm link",
-    "npm:publish": "npm run build && npm publish --access public",
     "yalc:install": "npx yalc add @bigbyte/utils",
     "yalc:publish": "npm run build && npx yalc publish --push",
     "test": "npx tsc --project tsconfig.test.json && node --test dist/test"
