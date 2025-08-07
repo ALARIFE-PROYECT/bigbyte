@@ -3,7 +3,7 @@ import { argumentsService } from "./ArgumentService";
 import { ARGV_FLAG_DEBUG } from "../constant";
 import { DEV_LIBRARIES_LOG, DEV_MODE, DEV_ORIGINS_LOG } from "../constant/development";
 import { environmentService } from "./EnvironmentService";
-import { createWriteStream, WriteStream } from "node:fs";
+import { createWriteStream, existsSync, mkdirSync, WriteStream } from "node:fs";
 import chalk from "chalk";
 
 
@@ -17,6 +17,10 @@ const initStream = (): WriteStream | undefined => {
 
     if (path) {
         if (!stream) {
+            if(!existsSync(path)) {
+                mkdirSync(path, { recursive: true });
+            }
+
             stream = createWriteStream(path + '/trace.log', { flags: 'a' });
         }
 

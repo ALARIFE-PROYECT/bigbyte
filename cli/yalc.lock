@@ -2,7 +2,7 @@
   "version": "v1",
   "packages": {
     "@bigbyte/utils": {
-      "signature": "d3cb3980cd165596a83e0fd68ba90873",
+      "signature": "afaa2dac8af755b85687a53039468cf3",
       "file": true
     }
   }
