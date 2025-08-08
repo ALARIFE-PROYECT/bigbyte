@@ -40,6 +40,8 @@ export const App = (): ClassDecorator => {
         decoratorExecEvent.on('last', () => {
             const paramTypes = Reflect.getMetadata("design:paramtypes", Target) ?? [];
             componentRegistry.add(Target, paramTypes, { type: componentType, injectable: false });
+
+            decoratorExecEvent.emit('instantiated');
         });
 
         executeDecorator(DECORATOR_APP_NAME);

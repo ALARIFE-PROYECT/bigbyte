@@ -1,6 +1,6 @@
 import { EventEmitter } from "node:events";
 
-export type EventType = 'first' | 'last' | string;
+export type EventType = 'first' | 'last' | 'instantiated' | string;
 
 export const decoratorExecEvent = new EventEmitter(); // evento lanzado al ejecutar un decorador
 let decoratorSequence: string[] = [];
@@ -20,7 +20,7 @@ export const executeDecorator = (name: string) => {
 
     if (index === 0) {
         decoratorExecEvent.emit('last', name);
-
+        
         decoratorExecEvent.removeAllListeners();
         decoratorSequence = [];
     }
