@@ -8,3 +8,4 @@ export * from './MissingDependencyError';
 export * from './MissingFileError';
 export * from './ConfigurationError'
 export * from './CompilationError';
+export * from './DuplicateClassError';

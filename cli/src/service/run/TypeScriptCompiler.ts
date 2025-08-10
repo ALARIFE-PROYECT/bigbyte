@@ -7,6 +7,7 @@ import { ROOT_PATH } from "@bigbyte/utils/constant";
 import { MissingConfigurationError, MissingFileError, FormatError, CompilationErrorData } from "../../exception";
 import { TsConfigData } from "../../model/TsConfigData";
 import { loadingScreen } from "../Loading";
+import { scanClasspath } from "./ClasspathScanning";
 
 
 let tscConfigPath = path.join(ROOT_PATH, 'tsconfig.json'); // ruta del tsconfig.json
@@ -95,9 +96,12 @@ export const readTsConfig = (): TsConfigData => {
 
   tsconfigData = content;
 
+  const classpath = scanClasspath(tscConfigPath, buildRootDir);
+
   return {
     buildOutDir: buildOutDir,
-    buildRootDir: buildRootDir
+    buildRootDir: buildRootDir,
+    classpath
   }
 }
 

@@ -35,6 +35,11 @@
       "import": "./lib/model/integration/index.js",
       "require": "./lib/model/integration/index.js",
       "types": "./lib/model/integration/index.d.js"
+    },
+    "./classpath": {
+      "import": "./lib/classpath.js",
+      "require": "./lib/classpath.js",
+      "types": "./lib/classpath.d.js"
     }
   },
   "typesVersions": {
@@ -50,6 +55,9 @@
       ],
       "integration": [
         "./lib/model/integration/index.d.js"
+      ],
+      "classpath": [
+        "./lib/classpath.d.js"
       ]
     }
   },

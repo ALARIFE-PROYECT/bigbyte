@@ -19,3 +19,4 @@ export const ARGV_FLAG_DEBUG = '--debug';
 /** Environment */
 export const NODE_ENV = 'NODE_ENV';
 export const ENV_DEBUG_MODE = 'DEBUG_MODE';
+export const ENV_CLASS_PATH = 'CLASS_PATH';

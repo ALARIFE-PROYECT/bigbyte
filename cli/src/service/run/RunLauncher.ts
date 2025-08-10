@@ -3,7 +3,7 @@ import { join } from "node:path";
 
 import Logger from "@bigbyte/utils/logger";
 import { CommandData } from "@bigbyte/utils/integration";
-import { ROOT_PATH } from "@bigbyte/utils/constant";
+import { ENV_CLASS_PATH, ROOT_PATH } from "@bigbyte/utils/constant";
 
 import { LIBRARY_NAME } from "../../constant";
 import { TsConfigData } from "../../model/TsConfigData";
@@ -62,7 +62,10 @@ export const launchRun = () => {
         };
 
         if ('injectEnvironment' in commandData.command && commandData.command.injectEnvironment === true && commandData.environmentValues) {
-            forkOptions.env = { ...Object.fromEntries(commandData.environmentValues) } as NodeJS.ProcessEnv;
+            forkOptions.env = { 
+                ...Object.fromEntries(commandData.environmentValues),
+                [ENV_CLASS_PATH]: JSON.stringify(tsConfigData.classpath)
+             } as NodeJS.ProcessEnv;
         }
 
         rootProcess = fork(appPath, argv, forkOptions);
