@@ -1,5 +1,5 @@
 import { CommandData } from "@bigbyte/utils/integration";
-import { ConfigurationError } from "../../exception/ConfigurationError";
+import { ConfigurationError } from "../../exception";
 
 export const launchCommand = (data: CommandData) => {
     const { command } = data;

@@ -32,9 +32,9 @@
       "types": "./lib/service/Logger.d.ts"
     },
     "./integration": {
-      "import": "./lib/model/integration/index.js",
-      "require": "./lib/model/integration/index.js",
-      "types": "./lib/model/integration/index.d.js"
+      "import": "./lib/integration.js",
+      "require": "./lib/integration.js",
+      "types": "./lib/integration.d.js"
     },
     "./classpath": {
       "import": "./lib/classpath.js",
@@ -54,7 +54,7 @@
         "./lib/service/Logger.d.ts"
       ],
       "integration": [
-        "./lib/model/integration/index.d.js"
+        "./lib/integration.d.js"
       ],
       "classpath": [
         "./lib/classpath.d.js"

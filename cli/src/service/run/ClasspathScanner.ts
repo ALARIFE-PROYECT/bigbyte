@@ -6,7 +6,6 @@ import { ClasspathElement, ClasspathMethod, ClasspathProperty } from "@bigbyte/u
 import { DuplicateClassError } from "../../exception";
 
 
-
 const cleanTypeText = (typeText: string): string => {
     return typeText.replace(/import\(["'][^)]+["']\)\./g, "");
 }
@@ -22,10 +21,7 @@ const getType = (type: Type) => {
     return typeText;
 }
 
-/**
- * TODO: Falta soporte a recompilar un solo archivo y modificarlo en el objeto
- */
-export const scanClasspath = (tsConfigFilePath: string, buildRootDir: string, fileChanged?: string): ClasspathElement[] => {
+export const scanClasspath = (tsConfigFilePath: string, buildRootDir: string): ClasspathElement[] => {
     const seenClassNames = new Set<string>();
     const project = new Project({ tsConfigFilePath });
     const result: ClasspathElement[] = [];
@@ -45,11 +41,11 @@ export const scanClasspath = (tsConfigFilePath: string, buildRootDir: string, fi
             // --- Decoradores de la clase ---
             const classDecorators = cls
                 .getDecorators()
-                .map(d => d.getName());
+                .map(d => `@${d.getName()}`);
 
             // --- Propiedades ---
             const props: ClasspathProperty[] = cls.getProperties().map(prop => {
-                const decorators = prop.getDecorators().map(d => d.getName());
+                const decorators = prop.getDecorators().map(d => `@${d.getName()}`);
                 const type = getType(prop.getType());
 
                 return {

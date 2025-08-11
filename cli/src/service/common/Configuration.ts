@@ -2,7 +2,7 @@ import Logger from "@bigbyte/utils/logger";
 import { Addon, Command, Configuration, Flag, FlagType } from "@bigbyte/utils/integration";
 
 import { LIBRARY_NAME } from "../../constant";
-import { ConfigurationError } from "../../exception/ConfigurationError";
+import { ConfigurationError } from "../../exception";
 
 
 const log = new Logger(LIBRARY_NAME);

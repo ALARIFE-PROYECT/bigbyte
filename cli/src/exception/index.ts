@@ -1,3 +1,5 @@
+export { ConfigurationError } from '@bigbyte/utils'
+
 export * from './DuplicatePropertyError';
 export * from './MissingFileError';
 export * from './FormatError';
@@ -6,6 +8,5 @@ export * from './MissingArgumentError';
 export * from './MissingConfigurationError';
 export * from './MissingDependencyError';
 export * from './MissingFileError';
-export * from './ConfigurationError'
 export * from './CompilationError';
 export * from './DuplicateClassError';

@@ -1,4 +1,4 @@
-export * from './model/Classpath';
+export * from './model/classpath/ClasspathProperty';
+export * from './model/classpath/ClasspathMethod';
+export * from './model/classpath/ClasspathElement';
 export * from './service/ClasspathService';
-
-export { ENV_CLASS_PATH } from './constant';

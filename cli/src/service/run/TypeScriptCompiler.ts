@@ -7,7 +7,7 @@ import { ROOT_PATH } from "@bigbyte/utils/constant";
 import { MissingConfigurationError, MissingFileError, FormatError, CompilationErrorData } from "../../exception";
 import { TsConfigData } from "../../model/TsConfigData";
 import { loadingScreen } from "../Loading";
-import { scanClasspath } from "./ClasspathScanning";
+import { scanClasspath } from "./ClasspathScanner";
 
 
 let tscConfigPath = path.join(ROOT_PATH, 'tsconfig.json'); // ruta del tsconfig.json
@@ -106,7 +106,7 @@ export const readTsConfig = (): TsConfigData => {
 }
 
 export const compileTypeScript = async (fileChanged?: string) => {
-  const emitter = loadingScreen('Compiling TypeScript.');
+  const emitter = loadingScreen('Compiling TypeScript');
 
   let command = `npx tsc`;
 

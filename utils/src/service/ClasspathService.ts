@@ -1,4 +1,6 @@
-import { ClasspathElement, ClasspathMethod, ENV_CLASS_PATH } from "../classpath";
+import { ENV_CLASS_PATH } from "../constant";
+import { ClasspathElement, ClasspathMethod } from "../classpath";
+import { environmentService } from "./EnvironmentService";
 
 /**
  * Busca los valores de classpath en las env.
@@ -9,7 +11,7 @@ class ClasspathService {
     private classpath: ClasspathElement[];
 
     constructor() {
-        this.classpath = process.env[ENV_CLASS_PATH] ? JSON.parse(process.env[ENV_CLASS_PATH]) as ClasspathElement[] : [];
+        this.classpath = process.env[ENV_CLASS_PATH] !== undefined ? JSON.parse(process.env[ENV_CLASS_PATH]) as ClasspathElement[] : [];
     }
 
     getClassByName(name: string): ClasspathElement | undefined {

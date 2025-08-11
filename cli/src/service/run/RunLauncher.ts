@@ -57,21 +57,23 @@ export const launchRun = () => {
             }
         });
 
+        const strClasspath = JSON.stringify(tsConfigData.classpath);
         let forkOptions: ForkOptions = {
             // silent: true
-            env: {
-                [ENV_CLASS_PATH]: JSON.stringify(tsConfigData.classpath)
-            }
         };
 
         if ('injectEnvironment' in commandData.command && commandData.command.injectEnvironment === true && commandData.environmentValues) {
-            const env = {
-                ...process.env,
-                ...Object.fromEntries(commandData.environmentValues)
+            forkOptions.env = {
+                ...Object.fromEntries(commandData.environmentValues),
+                [ENV_CLASS_PATH]: strClasspath
             }
-
-            forkOptions.env = env;
+        } else {
+            forkOptions.env = {
+                [ENV_CLASS_PATH]: strClasspath
+            }
         }
+
+        log.dev(`Forking process with options:`, forkOptions);
 
         rootProcess = fork(appPath, argv, forkOptions);
 
