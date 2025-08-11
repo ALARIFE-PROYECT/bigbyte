@@ -96,7 +96,7 @@ export const readTsConfig = (): TsConfigData => {
 
   tsconfigData = content;
 
-  const classpath = scanClasspath(tscConfigPath, buildRootDir);
+  const classpath = scanClasspath(tscConfigPath, buildRootDir, buildOutDir);
 
   return {
     buildOutDir: buildOutDir,

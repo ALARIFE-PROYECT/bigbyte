@@ -3,7 +3,8 @@ import { ClasspathProperty } from "./ClasspathProperty";
 
 export interface ClasspathElement {
     name: string;
-    path: string; // ruta absoluta del archivo
+    rootPath: string; // ruta absoluta del archivo ts
+    outPath: string; // ruta absoluta del archivo js
     decorators: string[];
     props: ClasspathProperty[];
     methods: ClasspathMethod[];

@@ -4,6 +4,7 @@ import { Project, Type } from "ts-morph";
 import { ClasspathElement, ClasspathMethod, ClasspathProperty } from "@bigbyte/utils/lib/classpath";
 
 import { DuplicateClassError } from "../../exception";
+import { ROOT_PATH } from "@bigbyte/utils/constant";
 
 
 const cleanTypeText = (typeText: string): string => {
@@ -21,7 +22,7 @@ const getType = (type: Type) => {
     return typeText;
 }
 
-export const scanClasspath = (tsConfigFilePath: string, buildRootDir: string): ClasspathElement[] => {
+export const scanClasspath = (tsConfigFilePath: string, buildRootDir: string, buildOutDir: string): ClasspathElement[] => {
     const seenClassNames = new Set<string>();
     const project = new Project({ tsConfigFilePath });
     const result: ClasspathElement[] = [];
@@ -82,9 +83,14 @@ export const scanClasspath = (tsConfigFilePath: string, buildRootDir: string): C
                 };
             });
 
+            const rootPath = path.resolve(file.getFilePath());
+            const classRelativePath = rootPath.replace(path.join(ROOT_PATH, buildRootDir), '');
+            const outPath = path.join(ROOT_PATH, buildOutDir, classRelativePath.replace('.ts', '.js'));
+
             result.push({
                 name: className,
-                path: path.resolve(file.getFilePath()),
+                rootPath,
+                outPath,
                 decorators: classDecorators,
                 props,
                 methods

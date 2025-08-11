@@ -3,7 +3,7 @@ import { join } from "node:path";
 
 import Logger from "@bigbyte/utils/logger";
 import { CommandData } from "@bigbyte/utils/integration";
-import { ENV_CLASS_PATH, ROOT_PATH } from "@bigbyte/utils/constant";
+import { ENV_CLASS_PATH, ROOT_PATH, ENV_BUILD_OUT_DIR, ENV_BUILD_ROOT_DIR } from "@bigbyte/utils/constant";
 
 import { LIBRARY_NAME } from "../../constant";
 import { TsConfigData } from "../../model/TsConfigData";
@@ -57,21 +57,21 @@ export const launchRun = () => {
             }
         });
 
-        const strClasspath = JSON.stringify(tsConfigData.classpath);
         let forkOptions: ForkOptions = {
             // silent: true
+            env: {
+                [ENV_CLASS_PATH]: JSON.stringify(tsConfigData.classpath),
+                [ENV_BUILD_OUT_DIR]: tsConfigData.buildOutDir,
+                [ENV_BUILD_ROOT_DIR]: tsConfigData.buildRootDir
+            }
         };
 
         if ('injectEnvironment' in commandData.command && commandData.command.injectEnvironment === true && commandData.environmentValues) {
             forkOptions.env = {
-                ...Object.fromEntries(commandData.environmentValues),
-                [ENV_CLASS_PATH]: strClasspath
+                ...forkOptions.env,
+                ...Object.fromEntries(commandData.environmentValues)
             }
-        } else {
-            forkOptions.env = {
-                [ENV_CLASS_PATH]: strClasspath
-            }
-        }
+        } 
 
         log.dev(`Forking process with options:`, forkOptions);
 

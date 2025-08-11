@@ -20,3 +20,5 @@ export const ARGV_FLAG_DEBUG = '--debug';
 export const NODE_ENV = 'NODE_ENV';
 export const ENV_DEBUG_MODE = 'DEBUG_MODE';
 export const ENV_CLASS_PATH = 'CLASS_PATH';
+export const ENV_BUILD_OUT_DIR = 'BUILD_OUT_DIR';
+export const ENV_BUILD_ROOT_DIR = 'BUILD_ROOT_DIR';
