@@ -44,6 +44,9 @@
   },
   "typesVersions": {
     "*": {
+      ".": [
+        "./lib/index.d.ts"
+      ],
       "decorator": [
         "./lib/decorator.d.ts"
       ],
