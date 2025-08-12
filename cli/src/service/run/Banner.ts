@@ -16,6 +16,13 @@ logBanner.setOptions({ banner: true, header: false });
 const logData = new Logger(LIBRARY_NAME);
 logData.setOptions({ header: false })
 
+/** 
+ * * Banner display function
+ * 
+ * - WEB: https://devops.datenkollektiv.de/banner.txt/index.html
+ * - FONT: slant | starwars | sub-zero
+ * 
+ */
 export const displayBanner = (serverProperties: ServerProperty[]) => {
     const mainBanner = `${ROOT_PATH}/banner.txt`;
     const path = existsSync(mainBanner) ? mainBanner : DEFAULT_BANNER_PATH;

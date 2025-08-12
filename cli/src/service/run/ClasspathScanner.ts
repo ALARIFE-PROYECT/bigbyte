@@ -1,5 +1,5 @@
 import path from "node:path";
-import { Project, Type } from "ts-morph";
+import { Project, SyntaxKind, Type } from "ts-morph";
 
 import { ClasspathElement, ClasspathMethod, ClasspathProperty } from "@bigbyte/utils/lib/classpath";
 
@@ -21,6 +21,21 @@ const getType = (type: Type) => {
 
     return typeText;
 }
+
+const extractEnumValues = (type: Type): string[] | undefined => {
+    const symbol = type.getSymbol();
+    if (!symbol) return undefined;
+
+    const decl = symbol.getDeclarations()[0];
+    if (!decl) return undefined;
+
+    if (decl.getKind() === SyntaxKind.EnumDeclaration) {
+        const enumDecl = decl.asKindOrThrow(SyntaxKind.EnumDeclaration);
+        return enumDecl.getMembers().map(m => m.getName());
+    }
+
+    return undefined;
+};
 
 export const scanClasspath = (tsConfigFilePath: string, buildRootDir: string, buildOutDir: string): ClasspathElement[] => {
     const seenClassNames = new Set<string>();
@@ -49,10 +64,13 @@ export const scanClasspath = (tsConfigFilePath: string, buildRootDir: string, bu
                 const decorators = prop.getDecorators().map(d => `@${d.getName()}`);
                 const type = getType(prop.getType());
 
+                const enumValues = extractEnumValues(prop.getType());
+
                 return {
                     name: prop.getName(),
                     type: type,
-                    decorators
+                    decorators,
+                    enumValues
                 };
             });
 
@@ -97,5 +115,6 @@ export const scanClasspath = (tsConfigFilePath: string, buildRootDir: string, bu
             } as ClasspathElement);
         }
     }
+    
     return result;
 }
