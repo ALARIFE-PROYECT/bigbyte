@@ -1,13 +1,9 @@
 import path from "node:path";
 import { Project, SyntaxKind, Type } from "ts-morph";
 
+import { ClasspathElement, ClasspathMethod, ClasspathProperty } from "@bigbyte/classpath";
 import { ROOT_PATH } from "@bigbyte/utils/constant";
-
-import { DuplicateClassError } from "../exception/DuplicateClassError";
-
-import { ClasspathElement } from "../model/ClasspathElement";
-import { ClasspathMethod } from "../model/ClasspathMethod";
-import { ClasspathProperty } from "../model/ClasspathProperty";
+import { DuplicateClassError } from "../../exception";
 
 
 const cleanTypeText = (typeText: string): string => {

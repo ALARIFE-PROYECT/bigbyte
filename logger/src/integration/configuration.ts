@@ -1,4 +1,4 @@
-import { Configuration } from "@bigbyte/utils/integration";
+import { Configuration } from "@bigbyte/integration";
 import { ARGV_TRACE_LOG_FILE, ARGV_TRACE_LOG_FILE_SIZE_INTERVAL, ARGV_TRACE_LOG_FILE_TIME_INTERVAL, ENV_TRACE_LOG_FILE, ENV_TRACE_LOG_FILE_SIZE_INTERVAL, ENV_TRACE_LOG_FILE_TIME_INTERVAL } from "../constant";
 
 

@@ -1,12 +1,9 @@
-export { ConfigurationError } from '@bigbyte/utils'
+export { ConfigurationError, MissingFileError, FormatError } from '@bigbyte/utils/exception'
 
 export * from './DuplicatePropertyError';
-export * from './MissingFileError';
-export * from './FormatError';
 export * from './MalformedArgumentError';
 export * from './MissingArgumentError';
-export * from './MissingConfigurationError';
 export * from './MissingDependencyError';
-export * from './MissingFileError';
 export * from './CompilationError';
 export * from './DuplicateClassError';
+export * from './MissingConfigurationError';

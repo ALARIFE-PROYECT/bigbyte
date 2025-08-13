@@ -35,11 +35,6 @@
       "import": "./lib/exception/index.js",
       "require": "./lib/exception/index.js",
       "types": "./lib/exception/index.d.js"
-    },
-    "./utilities": {
-      "import": "./lib/util/index.js",
-      "require": "./lib/util/index.js",
-      "types": "./lib/util/index.d.js"
     }
   },
   "typesVersions": {
@@ -58,9 +53,6 @@
       ],
       "exception": [
         "./lib/exception/index.d.js"
-      ],
-      "utilities": [
-        "./lib/util/index.d.js"
       ]
     }
   },

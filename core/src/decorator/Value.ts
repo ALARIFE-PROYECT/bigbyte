@@ -6,7 +6,7 @@
  * * No se puede aplicar a propiedades privadas de ECMAScript (que comienzan con `#`).
  * 
  */
-import { DecoratorError } from '@bigbyte/utils/decorator';
+import { DecoratorError } from '@bigbyte/events';
 import { ctxStore } from '@bigbyte/ctx';
 
 

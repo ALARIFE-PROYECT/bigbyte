@@ -1,4 +1,4 @@
-import { ClasspathElement } from "@bigbyte/utils/classpath";
+import { ClasspathElement } from "@bigbyte/classpath";
 
 
 export interface TsConfigData {

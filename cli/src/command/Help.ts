@@ -1,5 +1,5 @@
 import { LIBRARY_ORGANIZATION_NAME } from "@bigbyte/utils/constant";
-import { Command, CommandData, Flag } from "@bigbyte/utils/integration";
+import { Command, CommandData, Flag } from "@bigbyte/integration";
 
 const showCommand = (command: Command) => {
     console.log(`Help for command: ${command.name} \n`);

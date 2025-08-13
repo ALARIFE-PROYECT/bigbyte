@@ -6,7 +6,8 @@
 
 import "reflect-metadata";
 
-import { METADATA_COMPONENT_TYPE, METADATA_DECORATOR_NAME } from "@bigbyte/utils/constant";import { declareDecorator, decoratorExecEvent, executeDecorator, getDecorators } from "@bigbyte/utils/decorator";
+import { METADATA_COMPONENT_TYPE, METADATA_DECORATOR_NAME } from "@bigbyte/utils/constant";
+import { declareDecorator, decoratorExecEvent, executeDecorator, getDecorators } from "@bigbyte/events";
 import { componentRegistry, ComponentType } from "@bigbyte/ioc";
 import Logger from "@bigbyte/utils/logger";
 

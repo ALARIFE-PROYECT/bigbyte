@@ -1,4 +1,4 @@
-import { environmentService } from "@bigbyte/utils";
+import { environmentService } from "@bigbyte/utils/environment";
 import Logger from "@bigbyte/utils/logger";
 
 import { StoreValue } from "../model/StoreValue";

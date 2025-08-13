@@ -2,7 +2,7 @@ import { ChildProcess, fork, ForkOptions } from "node:child_process";
 import { join } from "node:path";
 
 import Logger from "@bigbyte/utils/logger";
-import { CommandData } from "@bigbyte/utils/integration";
+import { CommandData } from "@bigbyte/integration";
 import { ENV_CLASS_PATH, ROOT_PATH, ENV_BUILD_OUT_DIR, ENV_BUILD_ROOT_DIR } from "@bigbyte/utils/constant";
 
 import { LIBRARY_NAME } from "../../constant";

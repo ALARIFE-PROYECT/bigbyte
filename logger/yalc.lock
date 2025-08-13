@@ -2,11 +2,19 @@
   "version": "v1",
   "packages": {
     "@bigbyte/utils": {
-      "signature": "6b7b1100f3d5d77af9d95baacce647ab",
+      "signature": "7e00aa775773013ad68e69c4f001f9ea",
       "file": true
     },
     "@bigbyte/ioc": {
       "signature": "368dce0d4624a7eb7a4ebb4e6b7b6d32",
+      "file": true
+    },
+    "@bigbyte/events": {
+      "signature": "64042ca65bb2e531d86fc7ac829a3902",
+      "file": true
+    },
+    "@bigbyte/integration": {
+      "signature": "c9e29a6d5f35ad3f403ec46d017c5279",
       "file": true
     }
   }

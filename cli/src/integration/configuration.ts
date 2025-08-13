@@ -1,7 +1,7 @@
 import path from "node:path";
 
 import { DEVELOPMENT, NODE_ENV, ENV_DEBUG_MODE, ARGV_FLAG_DEBUG } from "@bigbyte/utils/constant";
-import { Configuration } from "@bigbyte/utils/integration";
+import { Configuration } from "@bigbyte/integration";
 
 import { ENV_BANNER_MODE, ENV_DOCTOR_MODE, ENV_WATCH_MODE } from "../constant/environment";
 import { ARGV_COMMAND_HELP, ARGV_COMMAND_PACKAGE, ARGV_COMMAND_RUN, ARGV_FLAG_BANNER_MODE, ARGV_FLAG_DOCTOR, ARGV_FLAG_ENV, ARGV_FLAG_MINIFY, ARGV_FLAG_VERSION, ARGV_FLAG_VERSION_SHORT, ARGV_FLAG_WATCH } from "../constant/argv";

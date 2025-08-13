@@ -40,6 +40,7 @@
     "@bigbyte/classpath": "file:.yalc/@bigbyte/classpath",
     "@bigbyte/integration": "file:.yalc/@bigbyte/integration",
     "chokidar": "~4",
+    "ts-morph": "~26.0",
     "log-update": "~4",
     "reflect-metadata": "~0.2",
     "tslib": "~2"

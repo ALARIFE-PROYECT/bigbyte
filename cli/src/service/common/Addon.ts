@@ -3,11 +3,9 @@ import { existsSync } from "node:fs";
 
 import Logger from "@bigbyte/utils/logger";
 import { ROOT_PATH, LIBRARY_ORGANIZATION_NAME } from "@bigbyte/utils/constant";
+import { Addon, Dependency, Configuration } from "@bigbyte/integration";
 
-import { INTEGRATION_CONFIGURATION_PATH, LIBRARY_NAME } from "../constant";
-import { Addon } from "../model/Addon";
-import { Dependency } from "../model/Dependency";
-import { Configuration } from "../model/Configuration";
+import { INTEGRATION_CONFIGURATION_PATH, LIBRARY_NAME } from "../../constant";
 
 
 const log = new Logger(LIBRARY_NAME);

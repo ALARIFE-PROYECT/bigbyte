@@ -11,16 +11,16 @@
     "lib/**/*"
   ],
   "exports": {
-    "./decorator": {
-      "import": "./lib/decorator.js",
-      "require": "./lib/decorator.js",
-      "types": "./lib/decorator.d.ts"
+    ".": {
+      "import": "./lib/index.js",
+      "require": "./lib/index.js",
+      "types": "./lib/index.d.ts"
     }
   },
   "typesVersions": {
     "*": {
-      "decorator": [
-        "./lib/decorator.d.ts"
+      ".": [
+        "./lib/index.d.ts"
       ]
     }
   },

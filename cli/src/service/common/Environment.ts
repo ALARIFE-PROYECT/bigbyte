@@ -1,10 +1,10 @@
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 
-import { argumentsService } from "@bigbyte/utils";
+import { argumentsService } from "@bigbyte/utils/argument";
 import { ROOT_PATH } from "@bigbyte/utils/constant";
 import Logger from "@bigbyte/utils/logger";
-import { Command, Flag, FlagData } from "@bigbyte/utils/integration";
+import { Command, Flag, FlagData } from "@bigbyte/integration";
 
 import { DEFAULT_ENV_FILE_PATH, LIBRARY_NAME } from "../../constant";
 import { ARGV_FLAG_ENV } from "../../constant/argv";

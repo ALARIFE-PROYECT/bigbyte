@@ -3,13 +3,16 @@
 import { environmentPreSet, readEnvironments } from "./service/common/Environment";
 environmentPreSet();
 
-import { Addon, Command, CommandData, Dependency, FlagData, MainFile, getDependencies, readAddons, readConfigurations, getCommand } from "@bigbyte/utils/integration";
+import { Addon, Command, CommandData, Dependency, FlagData, MainFile } from "@bigbyte/integration";
 
 import { BIN_NAME } from "./constant";
 import { MissingArgumentError } from "./exception";
 
 import { getMainFile, readArguments } from "./service/common/Arguments";
 import { launchCommand } from "./service/common/CommandLauncher";
+import { getDependencies } from "./service/common/Package";
+import { readAddons } from "./service/common/Addon";
+import { getCommand, readConfigurations } from "./service/common/Configuration";
 
 
 const dependencies: Dependency[] = getDependencies();
