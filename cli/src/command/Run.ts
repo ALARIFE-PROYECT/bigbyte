@@ -1,4 +1,4 @@
-import Logger from "@bigbyte/utils/logger";
+import { Logger } from "@bigbyte/utils/service/Decorators";
 import { CommandData, Dependency } from "@bigbyte/utils/integration";
 import { ENV_DEBUG_MODE, ROOT_PATH } from "@bigbyte/utils/constant";
 

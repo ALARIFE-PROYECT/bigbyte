@@ -1,6 +1,7 @@
-import { ENV_CLASS_PATH } from "../constant";
-import { ClasspathElement, ClasspathMethod } from "../classpath";
-import { environmentService } from "./EnvironmentService";
+import { ENV_CLASS_PATH } from "@bigbyte/utils/constant";
+
+import { ClasspathElement } from "../model/ClasspathElement";
+import { ClasspathMethod } from "../model/ClasspathMethod";
 
 /**
  * Busca los valores de classpath en las env.

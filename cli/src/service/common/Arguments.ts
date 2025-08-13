@@ -1,9 +1,8 @@
 import path from "node:path";
 import { existsSync } from "node:fs";
-import { Command, Flag, FlagType, FlagData, MainFile } from "@bigbyte/utils/integration";
+import { Command, Flag, FlagType, FlagData, MainFile } from "@bigbyte/integration";
 import { ROOT_PATH } from "@bigbyte/utils/constant";
 import Logger from "@bigbyte/utils/logger";
-
 
 import { MissingArgumentError } from "../../exception/MissingArgumentError";
 

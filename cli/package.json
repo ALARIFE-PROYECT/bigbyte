@@ -30,22 +30,22 @@
   "scripts": {
     "copy-banner": "node copy.js ./src/constant/banner.txt ./lib/constant/banner.txt",
     "build": "npx tsc && npm run copy-banner",
-    "yalc:install": "npx yalc add @bigbyte/utils",
+    "yalc:install": "npx yalc add @bigbyte/utils && npx yalc add @bigbyte/classpath && npx yalc add @bigbyte/integration",
     "yalc:publish": "npm run build && npx yalc publish --push",
     "test": "npx tsc --project tsconfig.test.json && node --test dist/test",
     "test:one": "npx tsc --project tsconfig.test.json && node --test"
   },
   "dependencies": {
     "@bigbyte/utils": "file:.yalc/@bigbyte/utils",
+    "@bigbyte/classpath": "file:.yalc/@bigbyte/classpath",
+    "@bigbyte/integration": "file:.yalc/@bigbyte/integration",
     "chokidar": "~4",
     "log-update": "~4",
     "reflect-metadata": "~0.2",
-    "ts-morph": "~26.0",
     "tslib": "~2"
   },
   "devDependencies": {
     "@types/node": "~22",
-    "ts-node": "~10",
     "typescript": "~5.9"
   }
 }

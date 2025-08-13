@@ -1,5 +1,5 @@
 {
-  "name": "@bigbyte/core",
+  "name": "@bigbyte/integration",
   "version": "0.1.0",
   "author": "Jose Eduardo Soria Garcia <pepesoriagarcia99@gmail.com>",
   "license": "ISC",
@@ -26,24 +26,17 @@
   },
   "scripts": {
     "build": "npx tsc",
-    "yalc:install": "npx yalc add @bigbyte/utils && npx yalc add @bigbyte/ioc && npx yalc add @bigbyte/ctx && npx yalc add @bigbyte/events && npx yalc add @bigbyte/classpath",
+    "yalc:install": "npx yalc add @bigbyte/utils",
     "yalc:publish": "npm run build && npx yalc publish --push",
     "test": "npx tsc --project tsconfig.test.json && node --test dist/test"
   },
   "dependencies": {
     "@bigbyte/utils": "file:.yalc/@bigbyte/utils",
-    "@bigbyte/ioc": "file:.yalc/@bigbyte/ioc",
-    "@bigbyte/ctx": "file:.yalc/@bigbyte/ctx",
-    "@bigbyte/classpath": "file:.yalc/@bigbyte/classpath",
-    "@bigbyte/events": "file:.yalc/@bigbyte/events",
-    "chokidar": "~4.0.3",
-    "reflect-metadata": "~0.2.2",
     "tslib": "~2.3",
-    "uuid": "~11.1",
     "zone.js": "~0.14"
   },
   "devDependencies": {
-    "@types/node": "~22",
+    "@types/node": "^22.17.1",
     "typescript": "~5.9"
   }
 }

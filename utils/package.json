@@ -11,16 +11,6 @@
     "lib/**/*"
   ],
   "exports": {
-    ".": {
-      "import": "./lib/index.js",
-      "require": "./lib/index.js",
-      "types": "./lib/index.d.ts"
-    },
-    "./decorator": {
-      "import": "./lib/decorator.js",
-      "require": "./lib/decorator.js",
-      "types": "./lib/decorator.d.js"
-    },
     "./constant": {
       "import": "./lib/constant/index.js",
       "require": "./lib/constant/index.js",
@@ -31,36 +21,46 @@
       "require": "./lib/service/Logger.js",
       "types": "./lib/service/Logger.d.ts"
     },
-    "./integration": {
-      "import": "./lib/integration.js",
-      "require": "./lib/integration.js",
-      "types": "./lib/integration.d.js"
+    "./argument": {
+      "import": "./lib/service/ArgumentService.js",
+      "require": "./lib/service/ArgumentService.js",
+      "types": "./lib/service/ArgumentService.d.ts"
     },
-    "./classpath": {
-      "import": "./lib/classpath.js",
-      "require": "./lib/classpath.js",
-      "types": "./lib/classpath.d.js"
+    "./environment": {
+      "import": "./lib/service/EnvironmentService.js",
+      "require": "./lib/service/EnvironmentService.js",
+      "types": "./lib/service/EnvironmentService.d.ts"
+    },
+    "./exception": {
+      "import": "./lib/exception/index.js",
+      "require": "./lib/exception/index.js",
+      "types": "./lib/exception/index.d.js"
+    },
+    "./utilities": {
+      "import": "./lib/util/index.js",
+      "require": "./lib/util/index.js",
+      "types": "./lib/util/index.d.js"
     }
   },
   "typesVersions": {
     "*": {
-      ".": [
-        "./lib/index.d.ts"
-      ],
-      "decorator": [
-        "./lib/decorator.d.ts"
-      ],
       "constant": [
         "./lib/constant/index.d.ts"
       ],
       "logger": [
         "./lib/service/Logger.d.ts"
       ],
-      "integration": [
-        "./lib/integration.d.js"
+      "argument": [
+        "./lib/service/ArgumentService.d.ts"
       ],
-      "classpath": [
-        "./lib/classpath.d.js"
+      "environment": [
+        "./lib/service/EnvironmentService.d.ts"
+      ],
+      "exception": [
+        "./lib/exception/index.d.js"
+      ],
+      "utilities": [
+        "./lib/util/index.d.js"
       ]
     }
   },
@@ -77,7 +77,6 @@
   },
   "devDependencies": {
     "@types/node": "~22",
-    "@types/uuid": "~10",
     "typescript": "~5.9"
   }
 }

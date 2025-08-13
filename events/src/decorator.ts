@@ -1,6 +1,8 @@
 /** Events */
 export * from './service/DecoratorEvent';
+
+/** Util */
 export * from './service/DecoratorMetadata';
 
-/** Exceciones */
+/** Exception */
 export * from './exception/DecoratorError';

@@ -1,10 +1,10 @@
 import { LIBRARY_ORGANIZATION_NAME, ROOT_PATH } from "@bigbyte/utils/constant";
-import { Dependency } from '@bigbyte/utils/integration';
+import { readJsonFile } from "@bigbyte/utils/utilities";
 
-import { MissingConfigurationError } from "../../exception";
-import { readJsonFile } from "../../util/File";
-import { PackageModelLock, PackageModelLockDependency } from "../../model/PackageModelLock";
-import { PackageModel } from "../../model/PackageModel";
+import { PackageModel } from "../model/PackageModel";
+import { PackageModelLock, PackageModelLockDependency } from "../model/PackageModelLock";
+import { MissingConfigurationError } from "../exception/MissingConfigurationError";
+import { Dependency } from "../model/Dependency";
 
 let packageJson: PackageModel | undefined;
 let packageJsonLock: PackageModelLock | undefined;

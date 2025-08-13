@@ -1,8 +1,12 @@
 import Logger from "@bigbyte/utils/logger";
-import { Addon, Command, Configuration, Flag, FlagType } from "@bigbyte/utils/integration";
+import { ConfigurationError } from "@bigbyte/utils/exception";
 
-import { LIBRARY_NAME } from "../../constant";
-import { ConfigurationError } from "../../exception";
+import { LIBRARY_NAME } from "../constant";
+
+import { Command } from "../model/Command";
+import { Configuration } from "../model/Configuration";
+import { Flag, FlagType } from "../model/Flag";
+import { Addon } from "../model/Addon";
 
 
 const log = new Logger(LIBRARY_NAME);
@@ -43,7 +47,7 @@ const checkCommandFlags = (command: Command) => {
                     throw new ConfigurationError(command.name, `Flag in command ${command.name} has an invalid type: ${flag.type}.`);
                 }
 
-                if(!flag.env && flag.defaultValue) {
+                if (!flag.env && flag.defaultValue) {
                     throw new ConfigurationError(command.name, `The flag in the ${command.name} command has a default value but does not have an environment value key set.`);
 
                 }
