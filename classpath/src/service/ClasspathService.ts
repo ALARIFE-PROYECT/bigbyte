@@ -32,6 +32,10 @@ class ClasspathService {
 
         return classElement.methods.find((m) => m.name === methodName);
     }
+
+    getAll(): ClasspathElement[] {
+        return this.classpath;
+    }
 }
 
 export const classpathService = new ClasspathService();
