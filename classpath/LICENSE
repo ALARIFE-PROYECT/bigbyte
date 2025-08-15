@@ -21,10 +21,10 @@ limitations under the License.
 ---
 
 ## Project: alarife-project  
-### Component: bigbyte/utils (powered by the BigByte framework)
+### Component: bigbyte/classpath (powered by the BigByte framework)
 
 This component is part of the [ALARIFE-PROYECT](https://github.com/ALARIFE-PROYECT),  
 a modular architecture for backend development using TypeScript decorators and clean microservice principles.
 
-The `bigbyte/utils` module is licensed under the Apache License 2.0.  
+The `bigbyte/classpath` module is licensed under the Apache License 2.0.  
 Please refer to the main repository and documentation for usage guidelines, contribution rules, and integrations under the BigByte framework.
