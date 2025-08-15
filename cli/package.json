@@ -42,7 +42,6 @@
     "chokidar": "~4",
     "ts-morph": "~26.0",
     "log-update": "~4",
-    "reflect-metadata": "~0.2",
     "tslib": "~2"
   },
   "devDependencies": {
