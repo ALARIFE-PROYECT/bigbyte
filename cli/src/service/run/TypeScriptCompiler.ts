@@ -1,14 +1,18 @@
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { exec, ExecException } from "node:child_process";
+import EventEmitter from "node:events";
 
 import { ROOT_PATH } from "@bigbyte/utils/constant";
+import Logger from "@bigbyte/utils/logger";
 
 import { MissingConfigurationError, MissingFileError, FormatError, CompilationErrorData } from "../../exception";
 import { TsConfigData } from "../../model/TsConfigData";
 import { loadingScreen } from "../Loading";
-import { scanClasspath } from "./ClasspathScanner";
+import { LIBRARY_NAME } from "../../constant";
 
+
+const log = new Logger(LIBRARY_NAME);
 
 let tscConfigPath = path.join(ROOT_PATH, 'tsconfig.json'); // ruta del tsconfig.json
 let tsconfigData: any;
@@ -96,17 +100,20 @@ export const readTsConfig = (): TsConfigData => {
 
   tsconfigData = content;
 
-  const classpath = scanClasspath(tscConfigPath, buildRootDir, buildOutDir);
-
   return {
+    tsPath: tscConfigPath,
     buildOutDir: buildOutDir,
-    buildRootDir: buildRootDir,
-    classpath
+    buildRootDir: buildRootDir
   }
 }
 
 export const compileTypeScript = async (fileChanged?: string) => {
-  const emitter = loadingScreen('Compiling TypeScript');
+  const init = performance.now();
+
+  let emitter: EventEmitter | undefined;
+  if(!fileChanged) {
+    emitter = loadingScreen('Compiling TypeScript');
+  }
 
   let command = `npx tsc`;
 
@@ -119,7 +126,11 @@ export const compileTypeScript = async (fileChanged?: string) => {
 
   return new Promise((resolve, reject) => {
     exec(command, (error: ExecException | null, stdout: string, stderr: string) => {
-      emitter.emit('finish');
+      emitter?.emit('finish');
+
+      if(!fileChanged) {
+        log.debug(`TypeScript compilation finished in ${performance.now() - init} ms`);
+      }
 
       if (error) {
         return reject({

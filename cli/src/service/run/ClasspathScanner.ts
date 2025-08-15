@@ -3,8 +3,14 @@ import { Project, SyntaxKind, Type } from "ts-morph";
 
 import { ClasspathElement, ClasspathMethod, ClasspathProperty } from "@bigbyte/classpath";
 import { ROOT_PATH } from "@bigbyte/utils/constant";
-import { DuplicateClassError } from "../../exception";
+import Logger from "@bigbyte/utils/logger";
 
+import { DuplicateClassError } from "../../exception";
+import { TsConfigData } from "../../model/TsConfigData";
+import { LIBRARY_NAME } from "../../constant";
+
+
+const log = new Logger(LIBRARY_NAME);
 
 const cleanTypeText = (typeText: string): string => {
     return typeText.replace(/import\(["'][^)]+["']\)\./g, "");
@@ -36,9 +42,13 @@ const extractEnumValues = (type: Type): string[] | undefined => {
     return undefined;
 };
 
-export const scanClasspath = (tsConfigFilePath: string, buildRootDir: string, buildOutDir: string): ClasspathElement[] => {
+export const scanClasspath = (tsConfigData: TsConfigData): ClasspathElement[] => {
+    const initPerformance = performance.now();
+
+    const { tsPath, buildOutDir, buildRootDir } = tsConfigData;
+
     const seenClassNames = new Set<string>();
-    const project = new Project({ tsConfigFilePath });
+    const project = new Project({ tsConfigFilePath: tsPath });
     const result: ClasspathElement[] = [];
 
     // Aquí ajustas el patrón de búsqueda
@@ -114,6 +124,9 @@ export const scanClasspath = (tsConfigFilePath: string, buildRootDir: string, bu
             } as ClasspathElement);
         }
     }
-    
+
+    const endPerformance = performance.now();
+    log.dev(`Classpath scanned in ${Math.round(endPerformance - initPerformance)} ms. Found ${result.length} classes.`);
+
     return result;
 }

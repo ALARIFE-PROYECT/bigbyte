@@ -7,6 +7,7 @@ import { ENV_CLASS_PATH, ROOT_PATH, ENV_BUILD_OUT_DIR, ENV_BUILD_ROOT_DIR } from
 
 import { LIBRARY_NAME } from "../../constant";
 import { TsConfigData } from "../../model/TsConfigData";
+import { scanClasspath } from "./ClasspathScanner";
 
 
 const log = new Logger(LIBRARY_NAME);
@@ -57,10 +58,11 @@ export const launchRun = () => {
             }
         });
 
+        const classpath = scanClasspath(tsConfigData);
         let forkOptions: ForkOptions = {
             // silent: true
             env: {
-                [ENV_CLASS_PATH]: JSON.stringify(tsConfigData.classpath),
+                [ENV_CLASS_PATH]: JSON.stringify(classpath),
                 [ENV_BUILD_OUT_DIR]: tsConfigData.buildOutDir,
                 [ENV_BUILD_ROOT_DIR]: tsConfigData.buildRootDir
             }

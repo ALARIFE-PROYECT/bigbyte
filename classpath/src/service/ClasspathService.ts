@@ -19,13 +19,15 @@ class ClasspathService {
         return this.classpath.find((e) => e.name === name);
     }
 
-    getClassByDecorator(decorator: string): ClasspathElement[] {
-        return this.classpath.filter((e) => e.decorators.includes(decorator));
+    getClassByDecorator(...decorators: string[]): ClasspathElement[] {
+        return this.classpath.filter((e) =>
+            e.decorators.some(d => decorators.includes(d))
+        );
     }
 
     getMethodByClassAndName(className: string, methodName: string): ClasspathMethod | undefined {
         const classElement = this.getClassByName(className);
-        
+
         if (!classElement) {
             return undefined;
         }

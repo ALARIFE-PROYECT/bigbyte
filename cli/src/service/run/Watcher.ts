@@ -13,13 +13,12 @@ let watcherProcess: FSWatcher;
 
 /**
  * TODO: Implementar un hot-reload de los cambios en el código.
- * TODO: Tiene una alta complejidad, se tendran que abir canales de comunicación con el core
  * 
  * Handles file changes detected by the watcher.
  * 
  * @param filePath - The path of the file that has changed
  */
-const changeAction = async (filePath: string) => {
+const handlerChange = async (filePath: string) => {
   const relativePath = path.relative(ROOT_PATH, filePath);
   log.debug(`[${new Date().toLocaleTimeString()}] Modification: ${relativePath}`);
 
@@ -34,10 +33,7 @@ const changeAction = async (filePath: string) => {
 
 export const initChangeDetector = (buildRootDir: string) => {
   if (!watcherProcess) {
-    const watchPaths: string[] = [
-      path.join(ROOT_PATH, buildRootDir, '**', '*.{ts,js}'),
-      // path.join(ROOT_PATH, 'package.json')
-    ];
+    const watchPaths: string[] = [path.join(ROOT_PATH, buildRootDir, '**', '*.{ts,js}')];
 
     watcherProcess = chokidar.watch(watchPaths, {
       persistent: true,
@@ -48,9 +44,9 @@ export const initChangeDetector = (buildRootDir: string) => {
       }
     });
 
-    watcherProcess.on('change', changeAction);
-    watcherProcess.on('add', changeAction);
-    watcherProcess.on('unlink', changeAction);
+    watcherProcess.on('change', handlerChange);
+    watcherProcess.on('add', handlerChange);
+    watcherProcess.on('unlink', handlerChange);
     watcherProcess.on('error', error => {
       log.error(`Monitoring error: ${error}`);
     });

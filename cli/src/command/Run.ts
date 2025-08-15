@@ -34,6 +34,7 @@ export default async (commandData: CommandData) => {
     const debugIsActive = getActive(ENV_DEBUG_MODE);
     const watchIsActive = getActive(ENV_WATCH_MODE);
     const doctorIsActive = getActive(ENV_DOCTOR_MODE);
+    const bannerIsActive = getActive(ENV_BANNER_MODE);
 
     const tsConfigData: TsConfigData = readTsConfig();
 
@@ -51,7 +52,7 @@ export default async (commandData: CommandData) => {
         initDoctorServer();
     }
 
-    if (getActive(ENV_BANNER_MODE)) {
+    if (bannerIsActive) {
         const targetPackageJson = readJsonFile<PackageModel>(ROOT_PATH, 'package.json');
         const cliPackage: Dependency = commandData.dependencies.find((dependency: Dependency) => dependency.name === 'cli')!;
 
