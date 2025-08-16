@@ -1,3 +1,8 @@
-export * from './decorator/AppLogger';
-export * from './service/logger';
+/** Decorator */
+export * from './decorator/Logger';
+
+/** Util */
+export * from './service/log';
+
+/** Component service */
 export * from './service/LoggerService';

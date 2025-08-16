@@ -1,22 +1,22 @@
-import { logger } from "./logger";
+import { log } from "./log";
 
 export class LoggerService {
 
     constructor() { }
 
     public error(...args: any[]) {
-        logger.error(...args);
+        log.error(...args);
     }
 
     public warn(...args: any[]) {
-        logger.warn(...args);
+        log.warn(...args);
     }
 
     public info(...args: any[]) {
-        logger.info(...args);
+        log.info(...args);
     }
 
     public debug(...args: any[]) {
-        logger.debug(...args);
+        log.debug(...args);
     }
 }

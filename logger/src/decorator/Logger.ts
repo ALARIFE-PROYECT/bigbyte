@@ -16,7 +16,7 @@ import { LoggerService } from "../service/LoggerService";
 
 const log = new UtilsLogger(LIBRARY_NAME);
 
-export const AppLogger = (): ClassDecorator => {
+export const Logger = (): ClassDecorator => {
     declareDecorator(DECORATOR_LOGGER_NAME);
 
     return (Target: Function): void => {

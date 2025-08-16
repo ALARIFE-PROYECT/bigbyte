@@ -78,6 +78,10 @@ class ComponentRegistry {
         return injectable;
     }
 
+    getByName(name: string): Component | undefined {
+        return this.registry.find(c => c.name === name);
+    }
+
     /**
      * Comprueba si el componente existe en el registry por id o por clase.
      * 

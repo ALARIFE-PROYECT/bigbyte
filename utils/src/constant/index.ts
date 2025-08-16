@@ -7,6 +7,10 @@ export const ROOT_PATH = process.cwd();
 /** Metadata */
 export const METADATA_COMPONENT_TYPE = 'metadata:component_type';
 export const METADATA_DECORATOR_NAME = 'metadata:decorator_name';
+export const METADATA_CONFIGURATION = 'metadata:configuration';
+
+/** Metadata configuration */
+export const METADATA_CONFIGURATION_DATA = 'data';
 
 /** Values */
 export const DEVELOPMENT = 'development';
