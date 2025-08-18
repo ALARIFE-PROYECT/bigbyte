@@ -2,15 +2,15 @@
   "version": "v1",
   "packages": {
     "@bigbyte/utils": {
-      "signature": "6d1ddef4e825bcee39e08c21bc2fef02",
+      "signature": "73e615b7f3358b3a47e0ed48a4331c60",
       "file": true
     },
     "@bigbyte/classpath": {
-      "signature": "01488dcd70be93639a3d630a31a6980c",
+      "signature": "38c3bb0185c09c2ef3011642cd6f16ba",
       "file": true
     },
     "@bigbyte/integration": {
-      "signature": "c9e29a6d5f35ad3f403ec46d017c5279",
+      "signature": "7d9de30030c9bf7369a0031ffcc83840",
       "file": true
     }
   }

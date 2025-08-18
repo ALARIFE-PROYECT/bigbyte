@@ -5,7 +5,7 @@
  * usado como decorador de parametro de clase 
  */
 import 'reflect-metadata';
-import { DecoratorError } from '@bigbyte/events';
+import { DecoratorError } from '@bigbyte/utils/exception';
 import { componentRegistry } from "@bigbyte/ioc";
 
 

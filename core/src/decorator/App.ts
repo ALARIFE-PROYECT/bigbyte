@@ -7,13 +7,12 @@
 import "reflect-metadata";
 
 import { METADATA_COMPONENT_TYPE, METADATA_DECORATOR_NAME } from "@bigbyte/utils/constant";
-import { declareDecorator, decoratorExecEvent, executeDecorator, getDecorators } from "@bigbyte/events";
+import { declareDecorator, decoratorExecEvent, executeDecorator } from "@bigbyte/events";
 import { componentRegistry, ComponentType } from "@bigbyte/ioc";
 import Logger from "@bigbyte/utils/logger";
+import { checkFirstDecorator } from "@bigbyte/utils/utilities";
 
 import { DECORATOR_APP_NAME, LIBRARY_NAME } from "../constant";
-
-import { OrderDecoratorsError } from "../exception/OrderDecoratorsError";
 
 
 const log = new Logger(LIBRARY_NAME);
@@ -27,11 +26,7 @@ export const App = (): ClassDecorator => {
         const componentType = ComponentType.MAIN;
 
         // Valido que el decorador @App() es el primero que se aplica a la clase
-        const keys = Reflect.getMetadataKeys(Target);
-        const decorators = getDecorators(keys);    
-        if (decorators.length > 0) {
-            throw new OrderDecoratorsError(decorators);
-        }
+        checkFirstDecorator(Target);
 
         // Definicion d emetadatos
         Reflect.defineMetadata(METADATA_COMPONENT_TYPE, componentType, Target);

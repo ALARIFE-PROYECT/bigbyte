@@ -8,8 +8,9 @@ import "reflect-metadata";
 
 import { METADATA_COMPONENT_TYPE, METADATA_DECORATOR_NAME } from "@bigbyte/utils/constant";
 import Logger from "@bigbyte/utils/logger";
-import { declareDecorator, DecoratorError, decoratorExecEvent, executeDecorator, getDecorators } from "@bigbyte/events";
+import { declareDecorator, decoratorExecEvent, executeDecorator } from "@bigbyte/events";
 import { componentRegistry, ComponentType } from "@bigbyte/ioc";
+import { checkUniqueDecorator } from "@bigbyte/utils/utilities";
 
 import { DECORATOR_COMPONENT_NAME, DECORATOR_SERVICE_NAME, LIBRARY_NAME } from "../constant";
 
@@ -29,11 +30,7 @@ export const Component = (): ClassDecorator => {
 
         decoratorExecEvent.on('last', () => {
             // Valida que la clase no tenga mas de un decorador
-            const keys = Reflect.getMetadataKeys(Target);
-            const decorators = getDecorators(keys);
-            if (decorators.length > 1) {
-                throw new DecoratorError(`Class ${Target.name} is decorated with ${decorators.join(', ')} and @Component() does not allow it.`);
-            }
+            checkUniqueDecorator(Target);
 
             const paramTypes = Reflect.getMetadata("design:paramtypes", Target) ?? [];
             componentRegistry.add(Target, paramTypes, { type: componentType });

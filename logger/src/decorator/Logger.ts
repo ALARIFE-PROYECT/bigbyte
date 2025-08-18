@@ -9,6 +9,7 @@ import { METADATA_DECORATOR_NAME } from "@bigbyte/utils/constant";
 import { declareDecorator, executeDecorator } from "@bigbyte/events";
 import UtilsLogger from "@bigbyte/utils/logger";
 import { componentRegistry, ComponentType } from "@bigbyte/ioc";
+import { checkDecoratorExists } from "@bigbyte/utils/utilities";
 
 import { DECORATOR_LOGGER_NAME, LIBRARY_NAME, METADATA_LOGGER_DECORATED } from "../constant";
 import { LoggerService } from "../service/LoggerService";
@@ -21,6 +22,9 @@ export const Logger = (): ClassDecorator => {
 
     return (Target: Function): void => {
         log.dev(`${DECORATOR_LOGGER_NAME} decorator applied to ${Target.name}`);
+
+        // Valida que @App ya fue aplicado
+        checkDecoratorExists(Target, '@App');
 
         Reflect.defineMetadata(METADATA_LOGGER_DECORATED, true, Target);
         Reflect.defineMetadata(`${METADATA_DECORATOR_NAME}=${DECORATOR_LOGGER_NAME}`, true, Target);

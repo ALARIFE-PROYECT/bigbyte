@@ -26,7 +26,6 @@
   },
   "scripts": {
     "build": "npx tsc",
-    "yalc:install": "npx yalc add @bigbyte/utils",
     "yalc:publish": "npm run build && npx yalc publish --push",
     "test": "npx tsc --project tsconfig.test.json && node --test dist/test"
   },
