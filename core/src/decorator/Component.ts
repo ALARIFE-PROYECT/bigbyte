@@ -9,15 +9,16 @@ import "reflect-metadata";
 import { METADATA_COMPONENT_TYPE, METADATA_DECORATOR_NAME } from "@bigbyte/utils/constant";
 import Logger from "@bigbyte/utils/logger";
 import { declareDecorator, decoratorExecEvent, executeDecorator } from "@bigbyte/events";
-import { componentRegistry, ComponentType } from "@bigbyte/ioc";
+import { ComponentOptions, componentRegistry, ComponentType } from "@bigbyte/ioc";
 import { checkUniqueDecorator } from "@bigbyte/utils/utilities";
 
 import { DECORATOR_COMPONENT_NAME, DECORATOR_SERVICE_NAME, LIBRARY_NAME } from "../constant";
 
+type ReduceComponentOptions = Omit<ComponentOptions, "type">;
 
 const log = new Logger(LIBRARY_NAME);
 
-export const Component = (): ClassDecorator => {
+export const Component = (options: ReduceComponentOptions = {}): ClassDecorator => {
     declareDecorator(DECORATOR_COMPONENT_NAME);
 
     return (Target: Function): void => {
@@ -33,7 +34,10 @@ export const Component = (): ClassDecorator => {
             checkUniqueDecorator(Target);
 
             const paramTypes = Reflect.getMetadata("design:paramtypes", Target) ?? [];
-            componentRegistry.add(Target, paramTypes, { type: componentType });
+            componentRegistry.add(Target, paramTypes, {
+                ...options,
+                type: componentType 
+            });
         });
 
         executeDecorator(DECORATOR_COMPONENT_NAME);
