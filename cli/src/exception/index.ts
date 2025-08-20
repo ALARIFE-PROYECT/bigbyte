@@ -5,5 +5,4 @@ export * from './MalformedArgumentError';
 export * from './MissingArgumentError';
 export * from './MissingDependencyError';
 export * from './CompilationError';
-export * from './DuplicateClassError';
 export * from './MissingConfigurationError';

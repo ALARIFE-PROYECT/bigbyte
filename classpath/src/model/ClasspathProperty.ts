@@ -1,6 +1,7 @@
+import { ClasspathType } from "./ClasspathType";
+
 export interface ClasspathProperty {
     name: string;
-    type: string | string[];
+    type: ClasspathType;
     decorators: string[];
-    enumValues?: string[];
 }

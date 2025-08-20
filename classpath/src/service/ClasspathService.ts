@@ -21,7 +21,7 @@ class ClasspathService {
 
     getClassByDecorator(...decorators: string[]): ClasspathElement[] {
         return this.classpath.filter((e) =>
-            e.decorators.some(d => decorators.includes(d))
+            e.decorators?.some(d => decorators.includes(d))
         );
     }
 
@@ -32,7 +32,7 @@ class ClasspathService {
             return undefined;
         }
 
-        return classElement.methods.find((m) => m.name === methodName);
+        return classElement.methods?.find((m) => m.name === methodName);
     }
 
     getAll(): ClasspathElement[] {

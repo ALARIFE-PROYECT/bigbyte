@@ -1,132 +1,28 @@
-import path from "node:path";
-import { Project, SyntaxKind, Type } from "ts-morph";
+// import path from "node:path";
+// import { ClassDeclaration, InterfaceDeclaration, Project, SyntaxKind, Type } from "ts-morph";
+// import { v4 } from "uuid";
 
-import { ClasspathElement, ClasspathMethod, ClasspathProperty } from "@bigbyte/classpath";
-import { ROOT_PATH } from "@bigbyte/utils/constant";
-import Logger from "@bigbyte/utils/logger";
+import Logger from '@bigbyte/utils/logger';
+import { ClasspathElement } from '@bigbyte/classpath';
+import { ClasspathScanner } from '@bigbyte/classpath/scanner';
 
-import { DuplicateClassError } from "../../exception";
-import { TsConfigData } from "../../model/TsConfigData";
-import { LIBRARY_NAME } from "../../constant";
-
+import { TsConfigData } from '../../model/TsConfigData';
+import { LIBRARY_NAME } from '../../constant';
 
 const log = new Logger(LIBRARY_NAME);
 
-const cleanTypeText = (typeText: string): string => {
-    return typeText.replace(/import\(["'][^)]+["']\)\./g, "");
-}
-
-const getType = (type: Type) => {
-    let typeText: string | string[];
-    if (type.isUnion()) {
-        typeText = type.getUnionTypes().map(t => cleanTypeText(t.getText()));
-    } else {
-        typeText = cleanTypeText(type.getText());
-    }
-
-    return typeText;
-}
-
-const extractEnumValues = (type: Type): string[] | undefined => {
-    const symbol = type.getSymbol();
-    if (!symbol) return undefined;
-
-    const decl = symbol.getDeclarations()[0];
-    if (!decl) return undefined;
-
-    if (decl.getKind() === SyntaxKind.EnumDeclaration) {
-        const enumDecl = decl.asKindOrThrow(SyntaxKind.EnumDeclaration);
-        return enumDecl.getMembers().map(m => m.getName());
-    }
-
-    return undefined;
-};
-
 export const scanClasspath = (tsConfigData: TsConfigData): ClasspathElement[] => {
-    const initPerformance = performance.now();
+  const initPerformance = performance.now();
 
-    const { tsPath, buildOutDir, buildRootDir } = tsConfigData;
+  const { tsPath, buildOutDir, buildRootDir } = tsConfigData;
+  const scannerService = new ClasspathScanner(tsPath, buildOutDir, buildRootDir);
 
-    const seenClassNames = new Set<string>();
-    const project = new Project({ tsConfigFilePath: tsPath });
-    const result: ClasspathElement[] = [];
+  const classpath = scannerService.scan();
 
-    // Aquí ajustas el patrón de búsqueda
-    const files = project.getSourceFiles(`${buildRootDir}/**/*.ts`);
+  const endPerformance = performance.now();
+  log.dev(
+    `Classpath scanned in ${Math.round(endPerformance - initPerformance)} ms. Found ${classpath.length} classes.`
+  );
 
-    for (const file of files) {
-        for (const cls of file.getClasses()) {
-            const className = cls.getName() || "<anonymous>";
-
-            if (seenClassNames.has(className) && className !== "<anonymous>") {
-                throw new DuplicateClassError(`Duplicate class or interface names are not allowed. Name detected: ${className}`);
-            }
-            seenClassNames.add(className);
-
-            // --- Decoradores de la clase ---
-            const classDecorators = cls
-                .getDecorators()
-                .map(d => `@${d.getName()}`);
-
-            // --- Propiedades ---
-            const props: ClasspathProperty[] = cls.getProperties().map(prop => {
-                const decorators = prop.getDecorators().map(d => `@${d.getName()}`);
-                const type = getType(prop.getType());
-
-                const enumValues = extractEnumValues(prop.getType());
-
-                return {
-                    name: prop.getName(),
-                    type: type,
-                    decorators,
-                    enumValues
-                };
-            });
-
-            // --- Métodos ---
-            const methods: ClasspathMethod[] = cls.getMethods().map(method => {
-                const methodDecorators = method.getDecorators().map(d => `@${d.getName()}`);
-
-                // Parámetros
-                const params: ClasspathProperty[] = method.getParameters().map(param => {
-                    const paramDecorators = param.getDecorators().map(d => `@${d.getName()}`);
-                    const type = getType(param.getType());
-
-                    return {
-                        name: param.getName(),
-                        type: type,
-                        decorators: paramDecorators
-                    };
-                });
-
-                // Tipo de retorno
-                const returnType = getType(method.getReturnType());
-
-                return {
-                    name: method.getName(),
-                    decorators: methodDecorators,
-                    params,
-                    returnType: returnType
-                };
-            });
-
-            const rootPath = path.resolve(file.getFilePath());
-            const classRelativePath = rootPath.replace(path.join(ROOT_PATH, buildRootDir), '');
-            const outPath = path.join(ROOT_PATH, buildOutDir, classRelativePath.replace('.ts', '.js'));
-
-            result.push({
-                name: className,
-                rootPath,
-                outPath,
-                decorators: classDecorators,
-                props,
-                methods
-            } as ClasspathElement);
-        }
-    }
-
-    const endPerformance = performance.now();
-    log.dev(`Classpath scanned in ${Math.round(endPerformance - initPerformance)} ms. Found ${result.length} classes.`);
-
-    return result;
-}
+  return classpath;
+};

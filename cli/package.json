@@ -42,7 +42,8 @@
     "chokidar": "~4",
     "ts-morph": "~26.0",
     "log-update": "~4",
-    "tslib": "~2"
+    "tslib": "~2",
+    "uuid": "~11.1"
   },
   "devDependencies": {
     "@types/node": "~22",

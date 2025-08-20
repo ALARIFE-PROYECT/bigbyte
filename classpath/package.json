@@ -15,12 +15,28 @@
       "import": "./lib/index.js",
       "require": "./lib/index.js",
       "types": "./lib/index.d.ts"
+    },
+    "./constant": {
+      "import": "./lib/constant/index.js",
+      "require": "./lib/constant/index.js",
+      "types": "./lib/constant/index.d.ts"
+    },
+    "./scanner": {
+      "import": "./lib/service/scanner/ClasspathScanner.js",
+      "require": "./lib/service/scanner/ClasspathScanner.js",
+      "types": "./lib/service/scanner/ClasspathScanner.d.ts"
     }
   },
   "typesVersions": {
     "*": {
       ".": [
         "./lib/index.d.ts"
+      ],
+      "constant": [
+        "./lib/constant/index.d.ts"
+      ],
+      "scanner": [
+        "./lib/scanner/service/ClasspathScanner.d.ts"
       ]
     }
   },
@@ -32,11 +48,13 @@
   },
   "dependencies": {
     "@bigbyte/utils": "file:.yalc/@bigbyte/utils",
+    "ts-morph": "~26.0.0",
     "tslib": "~2.3",
+    "uuid": "~11.1.0",
     "zone.js": "~0.14"
   },
   "devDependencies": {
-    "@types/node": "^22.17.1",
+    "@types/node": "~22.17.1",
     "typescript": "~5.9"
   }
 }
