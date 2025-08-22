@@ -1,6 +1,6 @@
 import { ENV_CLASS_PATH } from "@bigbyte/utils/constant";
 
-import { ClasspathElement } from "../model/ClasspathElement";
+// import { ClasspathElement } from "../model/ClasspathElement";
 import { ClasspathMethod } from "../model/ClasspathMethod";
 
 /**
@@ -9,35 +9,35 @@ import { ClasspathMethod } from "../model/ClasspathMethod";
  */
 
 class ClasspathService {
-    private classpath: ClasspathElement[];
+    // private classpath: ClasspathElement[];
 
-    constructor() {
-        this.classpath = process.env[ENV_CLASS_PATH] !== undefined ? JSON.parse(process.env[ENV_CLASS_PATH]) as ClasspathElement[] : [];
-    }
+    // constructor() {
+    //     this.classpath = process.env[ENV_CLASS_PATH] !== undefined ? JSON.parse(process.env[ENV_CLASS_PATH]) as ClasspathElement[] : [];
+    // }
 
-    getClassByName(name: string): ClasspathElement | undefined {
-        return this.classpath.find((e) => e.name === name);
-    }
+    // getClassByName(name: string): ClasspathElement | undefined {
+    //     return this.classpath.find((e) => e.name === name);
+    // }
 
-    getClassByDecorator(...decorators: string[]): ClasspathElement[] {
-        return this.classpath.filter((e) =>
-            e.decorators?.some(d => decorators.includes(d))
-        );
-    }
+    // getClassByDecorator(...decorators: string[]): ClasspathElement[] {
+    //     return this.classpath.filter((e) =>
+    //         e.decorators?.some(d => decorators.includes(d))
+    //     );
+    // }
 
-    getMethodByClassAndName(className: string, methodName: string): ClasspathMethod | undefined {
-        const classElement = this.getClassByName(className);
+    // getMethodByClassAndName(className: string, methodName: string): ClasspathMethod | undefined {
+    //     const classElement = this.getClassByName(className);
 
-        if (!classElement) {
-            return undefined;
-        }
+    //     if (!classElement) {
+    //         return undefined;
+    //     }
 
-        return classElement.methods?.find((m) => m.name === methodName);
-    }
+    //     return classElement.methods?.find((m) => m.name === methodName);
+    // }
 
-    getAll(): ClasspathElement[] {
-        return this.classpath;
-    }
+    // getAll(): ClasspathElement[] {
+    //     return this.classpath;
+    // }
 }
 
 export const classpathService = new ClasspathService();

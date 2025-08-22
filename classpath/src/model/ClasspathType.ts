@@ -15,7 +15,12 @@ interface ClasspathUtilType {
 //     value: string;
 // }
 
-export type KindType = 'union' | 'intersection' | 'alias' | 'array' | 'tuple' | 'object' | 'primitive' | 'collection' | 'unknown';
+export type KindType = 'union' | 'intersection' | 'alias' | 'array' | 'object' | 'inline-object' | 'primitive' | 'enum';
+
+interface PropertyType {
+  name: string;
+  type: ClasspathType;
+}
 
 export interface ClasspathType {
     kind: KindType;
@@ -26,24 +31,28 @@ export interface ClasspathType {
     types?: ClasspathType[];
 
     /**
-     * Primitive
+     * primitive
      */
     text?: string;
 
     /**
-     * Alias
+     * alias
      */
     name?: string;
     arguments?: ClasspathType[];
-    // ref?: string;
 
     /**
-     * Object
+     * Object o enum
      */
-    properties?: { name: string; type: ClasspathType }[];
+    ref?: string;
 
     /**
-     * Array
+     * inline-object
      */
-    elementType?: ClasspathType;
+    properties?: PropertyType[];
+
+    /**
+     * array
+     */
+    type?: ClasspathType;
 }

@@ -18,6 +18,13 @@ import { ARGV_COMMAND_HELP, ARGV_COMMAND_PACKAGE, ARGV_COMMAND_RUN, ARGV_FLAG_BA
 export default {
     newCommands: [
         {
+            name: 'scan',
+            path: path.join(__dirname, '../command/Scan.ts'),
+            requiresMainFile: false,
+            injectEnvironment: false,
+            flags: '-',
+        },
+        {
             name: ARGV_FLAG_VERSION,
             path: path.join(__dirname, '../command/Version.ts'),
             requiresMainFile: false,

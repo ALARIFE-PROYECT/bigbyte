@@ -4,6 +4,6 @@ import { ClasspathType } from "./ClasspathType";
 export interface ClasspathMethod {
     name: string;
     decorators: string[];
-    params: ClasspathProperty[];
+    parameters: ClasspathProperty[];
     returnType: ClasspathType;
 }

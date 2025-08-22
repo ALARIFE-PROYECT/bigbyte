@@ -36,7 +36,7 @@
         "./lib/constant/index.d.ts"
       ],
       "scanner": [
-        "./lib/scanner/service/ClasspathScanner.d.ts"
+        "./lib/service/scanner/ClasspathScanner.d.ts"
       ]
     }
   },

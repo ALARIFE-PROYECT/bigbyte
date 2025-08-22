@@ -124,23 +124,22 @@ export const compileTypeScript = async (fileChanged?: string) => {
     command += ` --project ${tscConfigPath}`;
   }
 
-  return Promise.resolve(true);
-  // return new Promise((resolve, reject) => {
-  //   exec(command, (error: ExecException | null, stdout: string, stderr: string) => {
-  //     emitter?.emit('finish');
+  return new Promise((resolve, reject) => {
+    exec(command, (error: ExecException | null, stdout: string, stderr: string) => {
+      emitter?.emit('finish');
 
-  //     if(!fileChanged) {
-  //       log.debug(`TypeScript compilation finished in ${performance.now() - init} ms`);
-  //     }
+      if(!fileChanged) {
+        log.debug(`TypeScript compilation finished in ${performance.now() - init} ms`);
+      }
 
-  //     if (error) {
-  //       return reject({
-  //         resume: stdout + stderr,
-  //         code: error.code,
-  //       } as CompilationErrorData);
-  //     }
+      if (error) {
+        return reject({
+          resume: stdout + stderr,
+          code: error.code,
+        } as CompilationErrorData);
+      }
 
-  //     resolve(true);
-  //   });
-  // });
+      resolve(true);
+    });
+  });
 }
