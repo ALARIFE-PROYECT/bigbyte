@@ -71,7 +71,8 @@ export class ClasspathScanner {
     }
 
     console.log('RESULT');
-    console.log(JSON.stringify(this.classpathElements, null, 2));
+    // console.log(JSON.stringify(this.classpathElements, null, 2));
+    console.log(JSON.stringify(this.classpathEnums, null, 2));
 
     return this.referencingElements(this.classpathElements);
   }

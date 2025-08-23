@@ -1,7 +1,7 @@
 import { SourceFile } from 'ts-morph';
 import { v4 } from 'uuid';
 
-import { ClasspathEnumElement } from '../../../model/ClasspathElement';
+import { ClasspathEnumElement, ClasspathEnumType } from '../../../model/ClasspathElement';
 import { ClasspathUtils } from '../ClasspathUtils';
 
 export class ClasspathEnumScanner {
@@ -19,14 +19,32 @@ export class ClasspathEnumScanner {
     for (const enumDecl of file.getEnums()) {
       const name = enumDecl.getName();
       const path = this.classpathUtils.getPath(file);
-      const values: Map<string, any> = new Map();
-      const members = enumDecl.getMembers();
-      
-      for (const member of members) {
+      const values: Array<ClasspathEnumType> = [];
+
+      enumDecl.getMembers().forEach((member) => {
         const name = member.getName();
-        const value = member.getValue();
-        values.set(name, value);
-      }
+        let value: string;
+
+        if (member.getInitializer()) {
+          const initializer = member.getInitializer()!;
+          const literalValue = initializer.getText();
+
+          if (/^\d+$/.test(literalValue)) {
+            value = literalValue;
+          } else if (
+            (literalValue.startsWith('"') && literalValue.endsWith('"')) ||
+            (literalValue.startsWith("'") && literalValue.endsWith("'"))
+          ) {
+            value = literalValue.slice(1, -1);
+          } else {
+            value = literalValue;
+          }
+        } else {
+          value = enumDecl.getMembers().indexOf(member).toString();
+        }
+
+        values.push({ name, value });
+      });
 
       this.classpathEnumElements.push({
         id: v4(),
