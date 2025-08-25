@@ -32,7 +32,7 @@ export class ClasspathClassScanner {
       const name = cls.getName() || '<anonymous>';
       this.classpathUtils.checkName(name);
 
-      // console.log('|||||||||||||||||||||||| CLASS Name:', name);
+      console.log('|||||||||||||||||||||||| CLASS Name:', name);
 
       const path = this.classpathUtils.getPath(file);
 

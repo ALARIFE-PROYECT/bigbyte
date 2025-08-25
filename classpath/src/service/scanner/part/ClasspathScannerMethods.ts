@@ -21,7 +21,7 @@ export class ClasspathScannerMethods {
       }
 
       const parameters: ClasspathProperty[] = method.getParameters().map((param) => {
-        // console.log('||||||||||||| PARAM Name:', param.getName());
+        // console.log(')))))))))))) PARAM Name:', param.getName());
         const paramDecorators = param.getDecorators().map((d) => `@${d.getName()}`);
         const type = this.classpathScannerType.getType(param.getType());
 
@@ -32,7 +32,7 @@ export class ClasspathScannerMethods {
         };
       });
 
-      // console.log('||||||||||||| RETURN');
+      // console.log(')))))))))))) RETURN');
       const returnType = this.classpathScannerType.getType(method.getReturnType());
 
       return {
