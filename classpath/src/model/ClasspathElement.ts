@@ -1,24 +1,12 @@
 import { ClasspathMethod } from './ClasspathMethod';
 import { ClasspathProperty } from './ClasspathProperty';
+import { ClasspathType } from './ClasspathType';
 
 export enum ClasspathElementType {
   CLASS = 'CLASS',
-  INTERFACE = 'INTERFACE'
-}
-
-export interface ClasspathElementCommon {
-  id: string;
-  name: string;
-  rootPath: string; // ruta absoluta del archivo ts
-  outPath: string; // ruta absoluta del archivo js
-}
-
-export interface ClasspathElement extends ClasspathElementCommon {
-  type: ClasspathElementType;
-
-  properties: ClasspathProperty[];
-  methods: ClasspathMethod[];
-  decorators?: string[];
+  INTERFACE = 'INTERFACE',
+  ENUM = 'ENUM',
+  FUNCTION = 'FUNCTION'
 }
 
 export interface ClasspathEnumType {
@@ -26,6 +14,24 @@ export interface ClasspathEnumType {
   value: string;
 }
 
-export interface ClasspathEnumElement extends ClasspathElementCommon {
-  values: ClasspathEnumType[];
+export interface ClasspathElement {
+  id: string;
+  name: string;
+  rootPath: string; // ruta absoluta del archivo ts
+  outPath: string; // ruta absoluta del archivo js
+  type: ClasspathElementType;
+  
+
+  decorators?: string[]; // usado en Class y Function
+
+  /** Class & Interface */
+  properties?: ClasspathProperty[];
+  methods?: ClasspathMethod[];
+
+  /** Enum */
+  values?: ClasspathEnumType[];
+
+  /** Function */
+  parameters?: ClasspathProperty[];
+  returnType?: ClasspathType;
 }

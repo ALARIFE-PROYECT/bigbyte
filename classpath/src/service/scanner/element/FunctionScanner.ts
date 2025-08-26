@@ -1,6 +1,12 @@
 import { SourceFile } from 'ts-morph';
+import Logger from '@bigbyte/utils/logger';
 
-export class ClasspathFunctionScanner {
+import { LIBRARY_NAME } from '../../../constant';
+
+
+const log = new Logger(LIBRARY_NAME);
+
+export class FunctionScanner {
   constructor() {}
 
   public scan(file: SourceFile) {

@@ -1,31 +1,35 @@
 import { SourceFile } from 'ts-morph';
 import { v4 } from 'uuid';
+import Logger from '@bigbyte/utils/logger';
 
 import { ClasspathElementType, ClasspathElement } from '../../../model/ClasspathElement';
 import { ClasspathUtils } from '../ClasspathUtils';
-import { ClasspathScannerMethods } from '../part/ClasspathScannerMethods';
-import { ClasspathScannerProperties } from '../part/ClasspathScannerProperties';
 import { ClasspathProperty } from '../../../model/ClasspathProperty';
 import { ClasspathMethod } from '../../../model/ClasspathMethod';
+import { MethodScanner } from '../part/MethodScanner';
+import { PropertyScanner } from '../part/PropertyScanner';
+import { LIBRARY_NAME } from '../../../constant';
 
-export class ClasspathInterfaceScanner {
+
+const log = new Logger(LIBRARY_NAME);
+
+export class InterfaceScanner {
   private classpathUtils: ClasspathUtils;
 
-  private classpathElements: Array<ClasspathElement>;
+  private propertyScanner: PropertyScanner;
 
-  private classpathScannerProperties: ClasspathScannerProperties;
-
-  private classpathScannerMethods: ClasspathScannerMethods;
+  private methodScanner: MethodScanner;
 
   constructor(classpathUtils: ClasspathUtils) {
-    this.classpathElements = [];
     this.classpathUtils = classpathUtils;
 
-    this.classpathScannerProperties = new ClasspathScannerProperties();
-    this.classpathScannerMethods = new ClasspathScannerMethods();
+    this.propertyScanner = new PropertyScanner();
+    this.methodScanner = new MethodScanner();
   }
 
   public scan(file: SourceFile): ClasspathElement[] {
+    const interfaceElements: Array<ClasspathElement> = [];
+
     for (const iface of file.getInterfaces()) {
       const name = iface.getName();
       this.classpathUtils.checkName(name);
@@ -33,10 +37,10 @@ export class ClasspathInterfaceScanner {
       // console.log('|||||||||||||||||||||||| INTERFACE Name:', name);
 
       const path = this.classpathUtils.getPath(file);
-      const properties: ClasspathProperty[] = this.classpathScannerProperties.scanProperties(iface);
-      const methods: ClasspathMethod[] = this.classpathScannerMethods.scanMethods(iface);
+      const properties: ClasspathProperty[] = this.propertyScanner.scanProperties(iface);
+      const methods: ClasspathMethod[] = this.methodScanner.scanMethods(iface);
 
-      this.classpathElements.push({
+      interfaceElements.push({
         id: v4(),
         name,
         type: ClasspathElementType.INTERFACE,
@@ -47,7 +51,6 @@ export class ClasspathInterfaceScanner {
       });
     }
 
-    // console.log('RESULT : ', JSON.stringify(this.classpathElements, null, 2));
-    return this.classpathElements;
+    return interfaceElements;
   }
 }

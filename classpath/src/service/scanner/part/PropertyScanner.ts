@@ -1,11 +1,17 @@
 import { ClassDeclaration, InterfaceDeclaration } from 'ts-morph';
-import { ClasspathScannerType } from './ClasspathScannerType';
+import Logger from '@bigbyte/utils/logger';
 
-export class ClasspathScannerProperties {
-  private classpathScannerType: ClasspathScannerType;
+import { TypeScanner } from './TypeScanner';
+import { LIBRARY_NAME } from '../../../constant';
+
+
+const log = new Logger(LIBRARY_NAME);
+
+export class PropertyScanner {
+  private typeScanner: TypeScanner;
 
   constructor() {
-    this.classpathScannerType = new ClasspathScannerType();
+    this.typeScanner = new TypeScanner();
   }
 
   public scanProperties(element: ClassDeclaration | InterfaceDeclaration) {
@@ -17,8 +23,7 @@ export class ClasspathScannerProperties {
         decorators = prop.getDecorators().map((d) => `@${d.getName()}`);
       }
 
-      const type = this.classpathScannerType.getType(prop.getType(), prop.getTypeNode());
-      // console.log('🚀 ~ ClasspathScanner ~ getProperties ~ type:', JSON.stringify(type));
+      const type = this.typeScanner.getType(prop.getType(), prop.getTypeNode());
 
       return {
         name: prop.getName(),

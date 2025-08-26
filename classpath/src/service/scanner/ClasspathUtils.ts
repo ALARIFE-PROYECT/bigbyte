@@ -32,7 +32,11 @@ export class ClasspathUtils {
   }
 
   public checkName(name: string): void {
-    if (this.classControlName.has(name) && name !== '<anonymous>') {
+    if(name.includes('anonymous')) {
+      return;
+    }
+
+    if (this.classControlName.has(name)) {
       throw new DuplicateClassError(`Duplicate class or interface names are not allowed. Name detected: ${name}`);
     }
     this.classControlName.add(name);

@@ -1,12 +1,15 @@
 import { SyntaxKind, Type, TypeAliasDeclaration, TypeNode } from 'ts-morph';
+import Logger from '@bigbyte/utils/logger';
+
 import { ClasspathType } from '../../../model/ClasspathType';
+import { LIBRARY_NAME } from '../../../constant';
 
-export class ClasspathScannerType {
+
+
+const log = new Logger(LIBRARY_NAME);
+
+export class TypeScanner {
   constructor() {}
-
-  // private cleanTypeText(typeText: string): string {
-  //   return typeText.replace(/import\(["'][^)]+["']\)\./g, '');
-  // }
 
   public getType(type: Type, typeNode?: TypeNode): ClasspathType {
     const symbol = type.getSymbol();
@@ -35,6 +38,7 @@ export class ClasspathScannerType {
         symbol.getDeclarations().some((d) => d.getKind() === SyntaxKind.EnumDeclaration)
       ) {
         // console.log('ENUM NODE -------------> ', symbol?.getName());
+
         return { kind: 'enum', name: symbol?.getName(), ref: type.getText() };
       } else if (typeArgs.length > 0) {
         // console.log('ALIAS NODE -------------> ', type.getText());
@@ -46,6 +50,7 @@ export class ClasspathScannerType {
         };
       } else {
         // console.log('OBJECT NODE -------------> ', type.getText());
+
         return {
           kind: 'object',
           name: typeName,
@@ -88,10 +93,10 @@ export class ClasspathScannerType {
       const arrayNode = typeNode.asKindOrThrow(SyntaxKind.ArrayType);
       const elementType = arrayNode.getElementTypeNode();
 
-      return { kind: 'array', type: this.getType(elementType.getType(), elementType) };
+      return { kind: 'array', elementType: this.getType(elementType.getType(), elementType) };
     } else if (type.isArray()) {
       const elementType = type.getArrayElementTypeOrThrow();
-      return { kind: 'array', type: this.getType(elementType) };
+      return { kind: 'array', elementType: this.getType(elementType) };
     }
 
     if (aliasSymbol) {
@@ -119,11 +124,28 @@ export class ClasspathScannerType {
 
       if (symbol) {
         // console.log('OBJECT -------------> ', symbol.getName());
-        return {
+
+        /**
+         * Existe el caso de que no exportes una interfaz o clase o enum o funcion, pero aun asi se tiene que referenciar.
+         * Entonces se añade manualmente la palabra import(), asi despues el erferenciador puede identificarlo.
+         */
+        let ref = type.getText();
+        if(!ref.includes('import(')) {
+          ref = `import("${symbol.getDeclarations()[0].getSourceFile().getFilePath()}").${ref}`;
+        }
+
+        const object: ClasspathType = {
           kind: 'object',
           name: symbol.getName(),
-          ref: type.getText()
+          ref
         };
+
+        const typeArgs = type.getTypeArguments();
+        if (typeArgs.length > 0) {
+          object.generic = typeArgs.map((t) => this.getType(t));
+        }
+
+        return object;
       }
     }
 

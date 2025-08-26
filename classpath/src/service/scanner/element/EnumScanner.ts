@@ -1,21 +1,26 @@
 import { SourceFile } from 'ts-morph';
 import { v4 } from 'uuid';
+import Logger from '@bigbyte/utils/logger';
 
-import { ClasspathEnumElement, ClasspathEnumType } from '../../../model/ClasspathElement';
+import { ClasspathElement, ClasspathElementType, ClasspathEnumType } from '../../../model/ClasspathElement';
 import { ClasspathUtils } from '../ClasspathUtils';
+import { LIBRARY_NAME } from '../../../constant';
 
-export class ClasspathEnumScanner {
+
+
+const log = new Logger(LIBRARY_NAME);
+
+export class EnumScanner {
   private classpathUtils: ClasspathUtils;
 
-  private classpathEnumElements: Array<ClasspathEnumElement>;
 
   constructor(classpathUtils: ClasspathUtils) {
     this.classpathUtils = classpathUtils;
-
-    this.classpathEnumElements = [];
   }
 
-  public scan(file: SourceFile): ClasspathEnumElement[] {
+  public scan(file: SourceFile): ClasspathElement[] {
+    const enumElements: Array<ClasspathElement> = [];
+
     for (const enumDecl of file.getEnums()) {
       const name = enumDecl.getName();
       const path = this.classpathUtils.getPath(file);
@@ -46,15 +51,16 @@ export class ClasspathEnumScanner {
         values.push({ name, value });
       });
 
-      this.classpathEnumElements.push({
+      enumElements.push({
         id: v4(),
         name,
         rootPath: path.rootPath,
         outPath: path.outPath,
+        type: ClasspathElementType.ENUM,
         values
       });
     }
 
-    return this.classpathEnumElements;
+    return enumElements;
   }
 }
