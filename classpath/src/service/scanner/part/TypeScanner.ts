@@ -5,7 +5,6 @@ import { ClasspathType } from '../../../model/ClasspathType';
 import { LIBRARY_NAME } from '../../../constant';
 
 
-
 const log = new Logger(LIBRARY_NAME);
 
 export class TypeScanner {
@@ -37,11 +36,11 @@ export class TypeScanner {
         symbol.getName() === typeName &&
         symbol.getDeclarations().some((d) => d.getKind() === SyntaxKind.EnumDeclaration)
       ) {
-        // console.log('ENUM NODE -------------> ', symbol?.getName());
+        // log.dev('ENUM NODE -> ', symbol?.getName());
 
         return { kind: 'enum', name: symbol?.getName(), ref: type.getText() };
       } else if (typeArgs.length > 0) {
-        // console.log('ALIAS NODE -------------> ', type.getText());
+        // log.dev('ALIAS NODE -> ', type.getText());
 
         return {
           kind: 'alias',
@@ -49,7 +48,7 @@ export class TypeScanner {
           arguments: typeArgs.map((t) => this.getType(t.getType(), t))
         };
       } else {
-        // console.log('OBJECT NODE -------------> ', type.getText());
+        // log.dev('OBJECT NODE -> ', type.getText());
 
         return {
           kind: 'object',
@@ -58,33 +57,33 @@ export class TypeScanner {
         };
       }
     } else if (type.isEnum() || type.isEnumLiteral()) {
-      // console.log('ENUM -------------> ', symbol?.getName());
+      // log.dev('ENUM -> ', symbol?.getName());
       return { kind: 'enum', name: symbol?.getName(), ref: type.getText() };
     }
 
     /** UNION */
     if (typeNode && typeNode.getKind() === SyntaxKind.UnionType) {
-      // console.log('UNION NODE -------------> ', typeNode.getText());
+      // log.dev('UNION NODE -> ', typeNode.getText());
       const unionNode = typeNode.asKindOrThrow(SyntaxKind.UnionType);
       return {
         kind: 'union',
         types: unionNode.getTypeNodes().map((n) => this.getType(n.getType(), n))
       };
     } else if (type.isUnion()) {
-      // console.log('UNION -------------> ', type.getText());
+      // log.dev('UNION -> ', type.getText());
       return { kind: 'union', types: type.getUnionTypes().map((t) => this.getType(t)) };
     }
 
     /** INTERSECTION */
     if (typeNode && typeNode.getKind() === SyntaxKind.IntersectionType) {
-      // console.log('INTERSECTION NODE -------------> ', type.getText());
+      // log.dev('INTERSECTION NODE -> ', type.getText());
       const intersectionNode = typeNode.asKindOrThrow(SyntaxKind.IntersectionType);
       return {
         kind: 'intersection',
         types: intersectionNode.getTypeNodes().map((n) => this.getType(n.getType(), n))
       };
     } else if (type.isIntersection()) {
-      // console.log('INTERSECTION -------------> ', type.getText());
+      // log.dev('INTERSECTION -> ', type.getText());
       return { kind: 'intersection', types: type.getIntersectionTypes().map((t) => this.getType(t)) };
     }
 
@@ -100,7 +99,7 @@ export class TypeScanner {
     }
 
     if (aliasSymbol) {
-      // console.log('ALIAS -------------> ', type.getText());
+      // log.dev('ALIAS -> ', type.getText());
       return {
         kind: 'alias',
         name: aliasSymbol.getName(),
@@ -111,7 +110,7 @@ export class TypeScanner {
     if (type.isObject()) {
       const name = symbol?.getName();
       if (!symbol || name === '__type' || name === '__object') {
-        // console.log('INLINE OBJECT -------------> ', type.getText());
+        // log.dev('INLINE OBJECT -> ', type.getText());
 
         return {
           kind: 'inline-object',
@@ -123,7 +122,8 @@ export class TypeScanner {
       }
 
       if (symbol) {
-        // console.log('OBJECT -------------> ', symbol.getName());
+        const name = symbol.getName();
+        // log.dev('OBJECT -> ', name);
 
         /**
          * Existe el caso de que no exportes una interfaz o clase o enum o funcion, pero aun asi se tiene que referenciar.
@@ -136,7 +136,7 @@ export class TypeScanner {
 
         const object: ClasspathType = {
           kind: 'object',
-          name: symbol.getName(),
+          name,
           ref
         };
 
@@ -149,7 +149,7 @@ export class TypeScanner {
       }
     }
 
-    // console.log('PRIMITIVE -------------> ', type.getText());
+    // log.dev('PRIMITIVE -> ', type.getText());
     return { kind: 'primitive', text: type.getText() };
   }
 }

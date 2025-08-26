@@ -4,7 +4,6 @@ import Logger from '@bigbyte/utils/logger';
 import { TypeScanner } from './TypeScanner';
 import { LIBRARY_NAME } from '../../../constant';
 
-
 const log = new Logger(LIBRARY_NAME);
 
 export class PropertyScanner {
@@ -16,7 +15,8 @@ export class PropertyScanner {
 
   public scanProperties(element: ClassDeclaration | InterfaceDeclaration) {
     return element.getProperties().map((prop) => {
-      // console.log('(((((((((((((( PROPERTY Name:', prop.getName());
+      const name = prop.getName();
+      // log.dev('-----> PROPERTY Name:', name);
 
       let decorators: string[] = [];
       if ('getDecorators' in prop) {
@@ -26,7 +26,7 @@ export class PropertyScanner {
       const type = this.typeScanner.getType(prop.getType(), prop.getTypeNode());
 
       return {
-        name: prop.getName(),
+        name,
         type,
         decorators
       };

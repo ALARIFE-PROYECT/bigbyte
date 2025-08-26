@@ -28,8 +28,9 @@ export class EnumScanner {
 
       enumDecl.getMembers().forEach((member) => {
         const name = member.getName();
-        let value: string;
+        // log.dev('----------> ENUM Name:', name);
 
+        let value: string;
         if (member.getInitializer()) {
           const initializer = member.getInitializer()!;
           const literalValue = initializer.getText();

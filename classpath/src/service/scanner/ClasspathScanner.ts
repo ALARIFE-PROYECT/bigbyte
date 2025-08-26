@@ -57,11 +57,6 @@ export class ClasspathScanner {
       this.classpathElements.push(...enumElements);
     }
 
-    const result = this.referenceStep.resolveReferences(this.classpathElements);
-
-    console.log('RESULT-----------------------------------------------------------');
-    console.log(JSON.stringify(result, null, 2));
-
-    return result;
+    return this.referenceStep.resolveReferences(this.classpathElements);
   }
 }

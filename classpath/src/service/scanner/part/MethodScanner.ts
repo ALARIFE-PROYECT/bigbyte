@@ -19,7 +19,8 @@ export class MethodScanner {
 
   public scanMethods(element: ClassDeclaration | InterfaceDeclaration): ClasspathMethod[] {
     return element.getMethods().map((method) => {
-      // console.log('||||||||||||| METHOD Name:', method.getName());
+      const methodName = method.getName();
+      // log.dev('-----> METHOD Name:', methodName);
 
       let decorators: string[] = [];
       if ('getDecorators' in method) {
@@ -27,22 +28,23 @@ export class MethodScanner {
       }
 
       const parameters: ClasspathProperty[] = method.getParameters().map((param) => {
-        // console.log(')))))))))))) PARAM Name:', param.getName());
+        const name = param.getName();
+        // log.dev('---> PARAM Name:', name);
         const paramDecorators = param.getDecorators().map((d) => `@${d.getName()}`);
         const type = this.typeScanner.getType(param.getType());
 
         return {
-          name: param.getName(),
+          name,
           type: type,
           decorators: paramDecorators
         };
       });
 
-      // console.log(')))))))))))) RETURN');
+      // log.dev('---> RETURN: ');
       const returnType = this.typeScanner.getType(method.getReturnType());
 
       return {
-        name: method.getName(),
+        name: methodName,
         decorators,
         parameters,
         returnType: returnType

@@ -34,7 +34,7 @@ export class InterfaceScanner {
       const name = iface.getName();
       this.classpathUtils.checkName(name);
 
-      // console.log('|||||||||||||||||||||||| INTERFACE Name:', name);
+      // log.dev('----------> INTERFACE Name:', name);
 
       const path = this.classpathUtils.getPath(file);
       const properties: ClasspathProperty[] = this.propertyScanner.scanProperties(iface);

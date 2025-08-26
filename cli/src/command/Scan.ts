@@ -27,12 +27,17 @@ export default async (commandData: CommandData) => {
   const scannerService = new ClasspathScanner(tsPath, buildOutDir, buildRootDir);
 
   const classpath = scannerService.scan();
+
+  console.log('RESULT-----------------------------------------------------------');
+  console.log(JSON.stringify(classpath, null, 2));
+
   logMemoryUsage();
 
-  const endPerformance = performance.now();
   const end = process.cpuUsage(start);
   console.log(`User CPU time: ${end.user / 1000} ms`);
   console.log(`System CPU time: ${end.system / 1000} ms`);
+
+  const endPerformance = performance.now();
   log.info(
     `Classpath scanned in ${Math.round(endPerformance - initPerformance)} ms. Found ${classpath.length} classes.`
   );

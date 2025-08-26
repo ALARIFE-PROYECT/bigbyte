@@ -22,6 +22,8 @@ export default {
             path: path.join(__dirname, '../command/Scan.ts'),
             requiresMainFile: false,
             injectEnvironment: false,
+            description: 'The structure of the typescript is analyzed and a parallel structure is generated for its use.',
+            detail: 'The structure of typescript is analyzed, generating a structure of classes, interfaces, functions, enums and types.',
             flags: '-',
         },
         {
