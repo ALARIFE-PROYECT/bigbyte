@@ -28,7 +28,7 @@ export interface ClasspathType {
    * Object o enum
    */
   ref?: string;
-  generic?: ClasspathType[];
+  generic?: ClasspathType[]; // tipo generico, si el tipo contiene un subtype generico el realmente es el objetivo
 
   /**
    * inline-object
