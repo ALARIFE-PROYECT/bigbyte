@@ -1,4 +1,4 @@
-# 🧬 @bigbyte/ioc - Inversion of Control
+# 🔄️ @bigbyte/ioc - Inversion of Control
 
 <div align="center">
 
@@ -15,23 +15,22 @@
 - [Features](#-features)
 - [Installation](#-installation) 
 - [Basic Usage](#-basic-usage)
-- [Component Types](#-component-types)
-- [Complete API](#-complete-api)
-- [Error Handling](#-error-handling)
+- [Detailed API](#-detailed-api)
 - [Architecture](#-architecture)
+- [Error Handling](#-error-handling)
 - [Advanced Examples](#-advanced-examples)
 - [License](#-license)
 
 ## ✨ Features
 
 - 🔄 **Automatic dependency injection** based on TypeScript metadata
-- 🏗️ **Component registry** with strong typing
+- 🏗️ **Component registration** with strong typing
 - 🎯 **Multiple component types** (Service, Repository, Controller, etc.)
 - 🔍 **Intelligent resolution** of circular dependencies
 - 📊 **Event system** for dynamic components
 - 🛡️ **Robust error handling** with specific exceptions
-- 🎮 **Programmatic API** flexible and extensible
-- 🔧 **Granular configuration** of components
+- 🎮 **Flexible and extensible** programmatic API
+- 🔧 **Granular component configuration**
 - 📝 **Native TypeScript** with full type support
 
 ## 🚀 Installation
@@ -40,7 +39,7 @@
 npm install @bigbyte/ioc
 ```
 
-## 🎯 Basic Usage
+## 🔧 Basic Usage
 
 ### Manual component registration
 
@@ -88,7 +87,22 @@ if (injector.has(UserService)) {
 }
 ```
 
-## 🏷️ Component Types
+## 🔍 Detailed API
+
+### Component
+
+Each registered component has the following properties:
+
+```typescript
+interface Component {
+  readonly id: string;        // Unique generated ID
+  readonly name: string;      // Class name
+  readonly class: any;        // Class reference
+  readonly instance: any;     // Component instance
+  readonly options: ComponentOptions; // Configuration
+  readonly createAt: Date;    // Creation date
+}
+```
 
 The system supports different component types to better organize your architecture:
 
@@ -117,8 +131,6 @@ const options: ComponentOptions = {
 componentRegistry.add(UserService, [DatabaseService], options);
 ```
 
-## 📚 Complete API
-
 ### ComponentRegistry
 
 #### `add(Target, dependencies, options?): string`
@@ -137,7 +149,7 @@ Gets a component by its class.
 
 ```typescript
 const component = componentRegistry.getByClass(UserService);
-// With strict=false doesn't throw exception if not found
+// With strict=false doesn't throw exception if it doesn't exist
 const optional = componentRegistry.getByClass(OptionalService, false);
 ```
 
@@ -173,21 +185,6 @@ componentRegistry.onComponentByName('UserService', (component) => {
 });
 ```
 
-### Component
-
-Each registered component has the following properties:
-
-```typescript
-interface Component {
-  readonly id: string;        // Generated unique ID
-  readonly name: string;      // Class name
-  readonly class: any;        // Class reference
-  readonly instance: any;     // Component instance
-  readonly options: ComponentOptions; // Configuration
-  readonly createAt: Date;    // Creation date
-}
-```
-
 ### Injector
 
 High-level service that is part of the component registry to access it programmatically.
@@ -199,6 +196,27 @@ injector.add(MyService);           // Add component
 const component = injector.get(MyService);  // Get component
 const exists = injector.has(MyService);     // Check existence
 ```
+
+## 🏗️ Architecture
+
+### Registration Flow
+
+```mermaid
+graph TD
+    A[Class + Dependencies] --> B[ComponentRegistry.add()]
+    B --> C[Resolve Dependencies]
+    C --> D[Create Component]
+    D --> E[Create Instance]
+    E --> F[Emit Events]
+    F --> G[Store in Registry]
+```
+
+### Internal Structure
+
+- **ComponentRegistry**: Centralized component management
+- **Component**: Instance wrapper with metadata
+- **Injector**: High-level API for programmatic use
+- **BufferComponent**: Event system for dynamic components
 
 ## ⚠️ Error Handling
 
@@ -239,27 +257,6 @@ class ServiceB {
   constructor(serviceA: ServiceA) {}
 }
 ```
-
-## 🏗️ Architecture
-
-### Registration Flow
-
-```mermaid
-graph TD
-    A[Class + Dependencies] --> B[ComponentRegistry.add()]
-    B --> C[Resolve Dependencies]
-    C --> D[Create Component]
-    D --> E[Create Instance]
-    E --> F[Emit Events]
-    F --> G[Store in Registry]
-```
-
-### Internal Structure
-
-- **ComponentRegistry**: Centralized component management
-- **Component**: Instance wrapper with metadata
-- **Injector**: High-level API for programmatic use
-- **BufferComponent**: Event system for dynamic components
 
 ## 🔧 Advanced Examples
 
@@ -304,7 +301,7 @@ componentRegistry.add(UserService, [DatabaseUserRepository], {
 ### Event System
 
 ```typescript
-// Listen to multiple components
+// Listen for multiple components
 const requiredServices = ['UserService', 'EmailService', 'LoggerService'];
 
 requiredServices.forEach(serviceName => {
@@ -341,28 +338,9 @@ if (componentRegistry.has(CacheService)) {
 }
 ```
 
-<!-- ## 🛠️ Future Improvements
-
-- 🔄 **@Lazy**: Decorator for deferred initialization
-- 🎯 **@Primary**: Decorator to resolve ambiguities
-- 🔧 **@Qualifier**: Decorator for specific injection
-- 📦 **Scopes**: Singleton, Prototype, Request, Session
-- 🎮 **Factory Methods**: Custom instance creation
-- 🔍 **AOP**: Aspect-oriented programming -->
-
-<!-- ## 🤝 Contributing
-
-Contributions are welcome! Please:
-
-1. Fork the repository
-2. Create a branch for your feature (`git checkout -b feature/new-functionality`)
-3. Commit your changes (`git commit -am 'Add new functionality'`)
-4. Push to the branch (`git push origin feature/new-functionality`)
-5. Open a Pull Request -->
-
 ## 📄 License
 
-This project is under the ISC license. See the [LICENSE](LICENSE) file for more details.
+This project is licensed under the ISC License. See the [LICENSE](LICENSE) file for more details.
 
 ---
 

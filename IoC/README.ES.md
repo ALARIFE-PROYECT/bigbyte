@@ -1,4 +1,4 @@
-# 🧬 @bigbyte/ioc - Inversión de Control
+# 🔄️ @bigbyte/ioc - Inversión de Control
 
 <div align="center">
 
@@ -15,10 +15,9 @@
 - [Características](#-características)
 - [Instalación](#-instalación) 
 - [Uso Básico](#-uso-básico)
-- [Tipos de Componentes](#-tipos-de-componentes)
-- [API Completa](#-api-completa)
-- [Manejo de Errores](#-manejo-de-errores)
+- [API Detallada](#-api-detallada)
 - [Arquitectura](#-arquitectura)
+- [Manejo de Errores](#-manejo-de-errores)
 - [Ejemplos Avanzados](#-ejemplos-avanzados)
 - [Licencia](#-licencia)
 
@@ -40,7 +39,7 @@
 npm install @bigbyte/ioc
 ```
 
-## 🎯 Uso Básico
+## 🔧 Uso Básico
 
 ### Registro manual de componentes
 
@@ -88,7 +87,22 @@ if (injector.has(UserService)) {
 }
 ```
 
-## 🏷️ Tipos de Componentes
+## 🔍 API Detallada
+
+### Component
+
+Cada componente registrado tiene las siguientes propiedades:
+
+```typescript
+interface Component {
+  readonly id: string;        // ID único generado
+  readonly name: string;      // Nombre de la clase
+  readonly class: any;        // Referencia a la clase
+  readonly instance: any;     // Instancia del componente
+  readonly options: ComponentOptions; // Configuración
+  readonly createAt: Date;    // Fecha de creación
+}
+```
 
 El sistema soporta diferentes tipos de componentes para organizar mejor tu arquitectura:
 
@@ -116,8 +130,6 @@ const options: ComponentOptions = {
 
 componentRegistry.add(UserService, [DatabaseService], options);
 ```
-
-## 📚 API Completa
 
 ### ComponentRegistry
 
@@ -173,20 +185,7 @@ componentRegistry.onComponentByName('UserService', (component) => {
 });
 ```
 
-### Component
 
-Cada componente registrado tiene las siguientes propiedades:
-
-```typescript
-interface Component {
-  readonly id: string;        // ID único generado
-  readonly name: string;      // Nombre de la clase
-  readonly class: any;        // Referencia a la clase
-  readonly instance: any;     // Instancia del componente
-  readonly options: ComponentOptions; // Configuración
-  readonly createAt: Date;    // Fecha de creación
-}
-```
 
 ### Injector
 
@@ -199,6 +198,28 @@ injector.add(MyService);           // Agregar componente
 const component = injector.get(MyService);  // Obtener componente
 const exists = injector.has(MyService);     // Verificar existencia
 ```
+
+## 🏗️ Arquitectura
+
+### Flujo de Registro
+
+```mermaid
+graph TD
+    A[Clase + Dependencias] --> B[ComponentRegistry.add()]
+    B --> C[Resolver Dependencias]
+    C --> D[Crear Component]
+    D --> E[Crear Instancia]
+    E --> F[Emitir Eventos]
+    F --> G[Almacenar en Registry]
+```
+
+### Estructura Interna
+
+- **ComponentRegistry**: Gestión centralizada de componentes
+- **Component**: Wrapper de instancias con metadatos
+- **Injector**: API de alto nivel para uso programático
+- **BufferComponent**: Sistema de eventos para componentes dinámicos
+
 
 ## ⚠️ Manejo de Errores
 
@@ -240,26 +261,6 @@ class ServiceB {
 }
 ```
 
-## 🏗️ Arquitectura
-
-### Flujo de Registro
-
-```mermaid
-graph TD
-    A[Clase + Dependencias] --> B[ComponentRegistry.add()]
-    B --> C[Resolver Dependencias]
-    C --> D[Crear Component]
-    D --> E[Crear Instancia]
-    E --> F[Emitir Eventos]
-    F --> G[Almacenar en Registry]
-```
-
-### Estructura Interna
-
-- **ComponentRegistry**: Gestión centralizada de componentes
-- **Component**: Wrapper de instancias con metadatos
-- **Injector**: API de alto nivel para uso programático
-- **BufferComponent**: Sistema de eventos para componentes dinámicos
 
 ## 🔧 Ejemplos Avanzados
 
@@ -340,25 +341,6 @@ if (componentRegistry.has(CacheService)) {
   // Usar cache solo si está disponible
 }
 ```
-
-<!-- ## 🛠️ Mejoras Futuras
-
-- 🔄 **@Lazy**: Decorador para inicialización diferida
-- 🎯 **@Primary**: Decorador para resolver ambigüedades
-- 🔧 **@Qualifier**: Decorador para inyección específica
-- 📦 **Scopes**: Singleton, Prototype, Request, Session
-- 🎮 **Factory Methods**: Creación personalizada de instancias
-- 🔍 **AOP**: Programación orientada a aspectos -->
-
-<!-- ## 🤝 Contribución
-
-¡Las contribuciones son bienvenidas! Por favor:
-
-1. Haz fork del repositorio
-2. Crea una rama para tu feature (`git checkout -b feature/nueva-funcionalidad`)
-3. Commit tus cambios (`git commit -am 'Agrega nueva funcionalidad'`)
-4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
-5. Abre un Pull Request -->
 
 ## 📄 Licencia
 
