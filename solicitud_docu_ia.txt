@@ -1,5 +1,6 @@
 Este es un subconjunto de funcionalidades de mi libreria bigbyte usado para [uso], 
 quiero que me crees un Readme atractivo y tecnico que explique que contiene, en español.
+En el archivo README.ES.md.
  Usa como modelo TEMPLATE.README.md, este tiene una serie de comentarios en cada punto, siguelos.
  Ademas hay algunas variables que tienes que sustituir:
  - [name]: Nombre del paquete
