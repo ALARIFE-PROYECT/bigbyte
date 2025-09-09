@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Pepe Soria
+ * Copyright (c) 2025 Jose Eduardo Soria
  *
  * This file is part of [Nombre de tu proyecto].
  *
