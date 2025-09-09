@@ -14,6 +14,7 @@
 
 - [Características](#-características)
 - [Instalación](#-instalación)
+- [Comandos](#-comandos)
 - [Decoradores](#-decoradores)
 - [Uso Básico](#-uso-básico)
 - [API Detallada](#-api-detallada)
@@ -30,6 +31,21 @@
 ```bash
 npm install @bigbyte/[name]
 ```
+
+## 🖥️ Comandos
+
+<!-- Lista de Comandos nuevos o editados para añadirle nuevos flags -->
+
+<!-- ejemplo:  -->
+<!-- ### run 
+
+descripcion simple del comando
+
+### --watch
+
+**[ENVIRONMENT_KEY]** // si tiene
+
+descripcion del flag -->
 
 ## 🤖 Decoradores
 <!-- Lista de los decoradores: que hacen y sus inputs y configuraciones. Indicar si tienen que respetar algun orden -->
