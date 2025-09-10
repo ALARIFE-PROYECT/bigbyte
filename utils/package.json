@@ -65,7 +65,7 @@
     }
   },
   "scripts": {
-    "build": "npx tsc && node ../add-license.js --project=./lib --project-name=@bigbyte/utils --ext=.ts,.js",
+    "build": "npx tsc",
     "yalc:publish": "npm run build && npx yalc publish --push",
     "test": "npx tsc --project tsconfig.test.json && node --test dist/test"
   },
