@@ -1,7 +1,7 @@
 {
   "name": "@bigbyte/integration",
   "version": "0.1.0",
-  "author": "Jose Eduardo Soria Garcia <pepesoriagarcia99@gmail.com>",
+  "author": "Jose Eduardo Soria Garcia",
   "license": "Apache 2.0",
   "private": false,
   "type": "commonjs",
