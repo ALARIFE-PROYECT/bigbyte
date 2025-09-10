@@ -336,7 +336,7 @@ Este proyecto está bajo la licencia ISC. Ver el archivo [LICENSE](LICENSE) para
 
 <div align="center">
 
-**Desarrollado con ❤️ por [Jose Eduardo Soria Garcia](mailto:pepesoriagarcia99@gmail.com)**
+**Desarrollado con ❤️ por [Jose Eduardo Soria Garcia](mailto:alarifeproyect@gmail.com)**
 
 *Parte del ecosistema BigByte*
 
