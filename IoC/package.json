@@ -2,7 +2,7 @@
   "name": "@bigbyte/ioc",
   "version": "0.1.0",
   "author": "Jose Eduardo Soria Garcia <pepesoriagarcia99@gmail.com>",
-  "license": "ISC",
+  "license": "Apache 2.0",
   "private": false,
   "type": "commonjs",
   "main": "./lib/index.js",
