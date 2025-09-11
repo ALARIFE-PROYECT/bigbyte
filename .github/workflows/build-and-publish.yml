@@ -22,9 +22,9 @@ jobs:
   utils:
     name: Publish @bigbyte/utils
     runs-on: ubuntu-latest
-    concurrency:
-      group: publish-bigbyte-utils
-      cancel-in-progress: true
+    # concurrency:
+    #   group: publish-bigbyte-utils
+    #   cancel-in-progress: true
     steps:
       - name: Checkout
         uses: actions/checkout@v4
