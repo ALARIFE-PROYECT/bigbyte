@@ -3,7 +3,7 @@ name: Publish @bigbyte packages
 on:
   push:
     branches:
-      - '**'
+      - 'main'
     paths:
       - 'utils/**'
       # - 'IoC/**'
@@ -14,15 +14,13 @@ on:
       # - 'core/**'
       # - 'logger/**'
       # - 'cli/**'
-  workflow_dispatch:
-
 
 permissions:
   contents: read
 
 jobs:
   utils:
-    name: Publish utils
+    name: Publish @bigbyte/utils
     runs-on: ubuntu-latest
     concurrency:
       group: publish-bigbyte-utils
