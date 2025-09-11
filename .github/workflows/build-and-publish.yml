@@ -1,0 +1,385 @@
+name: Publish @bigbyte packages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'utils/**'
+      # - 'IoC/**'
+      # - 'classpath/**'
+      # - 'ctx/**'
+      # - 'events/**'
+      # - 'integration/**'
+      # - 'core/**'
+      # - 'logger/**'
+      # - 'cli/**'
+      # - '.github/workflows/build-and-publish.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  utils:
+    name: Publish @bigbyte/utils
+    runs-on: ubuntu-latest
+    concurrency:
+      group: publish-bigbyte-utils
+      cancel-in-progress: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org/
+          always-auth: true
+          cache: npm
+      - name: Install
+        working-directory: utils
+        run: npm install
+      - name: Build
+        working-directory: utils
+        run: npm run build
+      - name: Check version exists
+        id: version_check
+        working-directory: utils
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          NAME=$(node -p "require('./package.json').name")
+          if npm view "$NAME@$VERSION" >/dev/null 2>&1; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "La versión $NAME@$VERSION ya está publicada."
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+      - name: Publish
+        if: steps.version_check.outputs.exists == 'false'
+        working-directory: utils
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public
+
+  # events:
+  #   name: Publish @bigbyte/events
+  #   runs-on: ubuntu-latest
+  #   needs: [utils]
+  #   concurrency:
+  #     group: publish-bigbyte-events
+  #     cancel-in-progress: true
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with: { fetch-depth: 0 }
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 22
+  #         registry-url: https://registry.npmjs.org/
+  #         always-auth: true
+  #         cache: npm
+  #     - name: Install
+  #       working-directory: events
+  #       run: npm install
+  #     - name: Build
+  #       working-directory: events
+  #       run: npm run build
+  #     - name: Check version exists
+  #       id: version_check
+  #       working-directory: events
+  #       run: |
+  #         VERSION=$(node -p "require('./package.json').version")
+  #         NAME=$(node -p "require('./package.json').name")
+  #         if npm view "$NAME@$VERSION" >/dev/null 2>&1; then
+  #           echo "exists=true" >> $GITHUB_OUTPUT
+  #         else
+  #           echo "exists=false" >> $GITHUB_OUTPUT
+  #         fi
+  #     - name: Publish
+  #       if: steps.version_check.outputs.exists == 'false'
+  #       working-directory: events
+  #       env:
+  #         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+  #       run: npm publish --access public
+
+  # ioc:
+  #   name: Publish @bigbyte/ioc
+  #   runs-on: ubuntu-latest
+  #   needs: [utils]
+  #   concurrency:
+  #     group: publish-bigbyte-ioc
+  #     cancel-in-progress: true
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with: { fetch-depth: 0 }
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 22
+  #         registry-url: https://registry.npmjs.org/
+  #         always-auth: true
+  #         cache: npm
+  #     - name: Install
+  #       working-directory: IoC
+  #       run: npm install
+  #     - name: Build
+  #       working-directory: IoC
+  #       run: npm run build
+  #     - name: Check version exists
+  #       id: version_check
+  #       working-directory: IoC
+  #       run: |
+  #         VERSION=$(node -p "require('./package.json').version")
+  #         NAME=$(node -p "require('./package.json').name")
+  #         if npm view "$NAME@$VERSION" >/dev/null 2>&1; then
+  #           echo "exists=true" >> $GITHUB_OUTPUT
+  #         else
+  #           echo "exists=false" >> $GITHUB_OUTPUT
+  #         fi
+  #     - name: Publish
+  #       if: steps.version_check.outputs.exists == 'false'
+  #       working-directory: IoC
+  #       env:
+  #         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+  #       run: npm publish --access public
+
+  # classpath:
+  #   name: Publish @bigbyte/classpath
+  #   runs-on: ubuntu-latest
+  #   needs: [utils]
+  #   concurrency:
+  #     group: publish-bigbyte-classpath
+  #     cancel-in-progress: true
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with: { fetch-depth: 0 }
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 22
+  #         registry-url: https://registry.npmjs.org/
+  #         always-auth: true
+  #         cache: npm
+  #     - name: Install
+  #       working-directory: classpath
+  #       run: npm install
+  #     - name: Build
+  #       working-directory: classpath
+  #       run: npm run build
+  #     - name: Check version exists
+  #       id: version_check
+  #       working-directory: classpath
+  #       run: |
+  #         VERSION=$(node -p "require('./package.json').version")
+  #         NAME=$(node -p "require('./package.json').name")
+  #         if npm view "$NAME@$VERSION" >/dev/null 2>&1; then
+  #           echo "exists=true" >> $GITHUB_OUTPUT
+  #         else
+  #           echo "exists=false" >> $GITHUB_OUTPUT
+  #         fi
+  #     - name: Publish
+  #       if: steps.version_check.outputs.exists == 'false'
+  #       working-directory: classpath
+  #       env:
+  #         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+  #       run: npm publish --access public
+
+  # integration:
+  #   name: Publish @bigbyte/integration
+  #   runs-on: ubuntu-latest
+  #   needs: [utils]
+  #   concurrency:
+  #     group: publish-bigbyte-integration
+  #     cancel-in-progress: true
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with: { fetch-depth: 0 }
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 22
+  #         registry-url: https://registry.npmjs.org/
+  #         always-auth: true
+  #         cache: npm
+  #     - name: Install
+  #       working-directory: integration
+  #       run: npm install
+  #     - name: Build
+  #       working-directory: integration
+  #       run: npm run build
+  #     - name: Check version exists
+  #       id: version_check
+  #       working-directory: integration
+  #       run: |
+  #         VERSION=$(node -p "require('./package.json').version")
+  #         NAME=$(node -p "require('./package.json').name")
+  #         if npm view "$NAME@$VERSION" >/dev/null 2>&1; then
+  #           echo "exists=true" >> $GITHUB_OUTPUT
+  #         else
+  #           echo "exists=false" >> $GITHUB_OUTPUT
+  #         fi
+  #     - name: Publish
+  #       if: steps.version_check.outputs.exists == 'false'
+  #       working-directory: integration
+  #       env:
+  #         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+  #       run: npm publish --access public
+
+  # ctx:
+  #   name: Publish @bigbyte/ctx
+  #   runs-on: ubuntu-latest
+  #   needs: [utils, ioc]
+  #   concurrency:
+  #     group: publish-bigbyte-ctx
+  #     cancel-in-progress: true
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with: { fetch-depth: 0 }
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 22
+  #         registry-url: https://registry.npmjs.org/
+  #         always-auth: true
+  #         cache: npm
+  #     - name: Install
+  #       working-directory: ctx
+  #       run: npm install
+  #     - name: Build
+  #       working-directory: ctx
+  #       run: npm run build
+  #     - name: Check version exists
+  #       id: version_check
+  #       working-directory: ctx
+  #       run: |
+  #         VERSION=$(node -p "require('./package.json').version")
+  #         NAME=$(node -p "require('./package.json').name")
+  #         if npm view "$NAME@$VERSION" >/dev/null 2>&1; then
+  #           echo "exists=true" >> $GITHUB_OUTPUT
+  #         else
+  #           echo "exists=false" >> $GITHUB_OUTPUT
+  #         fi
+  #     - name: Publish
+  #       if: steps.version_check.outputs.exists == 'false'
+  #       working-directory: ctx
+  #       env:
+  #         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+  #       run: npm publish --access public
+
+  # core:
+  #   name: Publish @bigbyte/core
+  #   runs-on: ubuntu-latest
+  #   needs: [utils, ioc, ctx, classpath, events]
+  #   concurrency:
+  #     group: publish-bigbyte-core
+  #     cancel-in-progress: true
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with: { fetch-depth: 0 }
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 22
+  #         registry-url: https://registry.npmjs.org/
+  #         always-auth: true
+  #         cache: npm
+  #     - name: Install
+  #       working-directory: core
+  #       run: npm install
+  #     - name: Build
+  #       working-directory: core
+  #       run: npm run build
+  #     - name: Check version exists
+  #       id: version_check
+  #       working-directory: core
+  #       run: |
+  #         VERSION=$(node -p "require('./package.json').version")
+  #         NAME=$(node -p "require('./package.json').name")
+  #         if npm view "$NAME@$VERSION" >/dev/null 2>&1; then
+  #           echo "exists=true" >> $GITHUB_OUTPUT
+  #         else
+  #           echo "exists=false" >> $GITHUB_OUTPUT
+  #         fi
+  #     - name: Publish
+  #       if: steps.version_check.outputs.exists == 'false'
+  #       working-directory: core
+  #       env:
+  #         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+  #       run: npm publish --access public
+
+  # logger:
+  #   name: Publish @bigbyte/logger
+  #   runs-on: ubuntu-latest
+  #   needs: [utils, ioc, events, integration]
+  #   concurrency:
+  #     group: publish-bigbyte-logger
+  #     cancel-in-progress: true
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with: { fetch-depth: 0 }
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 22
+  #         registry-url: https://registry.npmjs.org/
+  #         always-auth: true
+  #         cache: npm
+  #     - name: Install
+  #       working-directory: logger
+  #       run: npm install
+  #     - name: Build
+  #       working-directory: logger
+  #       run: npm run build
+  #     - name: Check version exists
+  #       id: version_check
+  #       working-directory: logger
+  #       run: |
+  #         VERSION=$(node -p "require('./package.json').version")
+  #         NAME=$(node -p "require('./package.json').name")
+  #         if npm view "$NAME@$VERSION" >/dev/null 2>&1; then
+  #           echo "exists=true" >> $GITHUB_OUTPUT
+  #         else
+  #           echo "exists=false" >> $GITHUB_OUTPUT
+  #         fi
+  #     - name: Publish
+  #       if: steps.version_check.outputs.exists == 'false'
+  #       working-directory: logger
+  #       env:
+  #         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+  #       run: npm publish --access public
+
+  # cli:
+    name: Publish @bigbyte/cli
+    runs-on: ubuntu-latest
+    needs: [utils, classpath, integration]
+    concurrency:
+      group: publish-bigbyte-cli
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org/
+          always-auth: true
+          cache: npm
+      - name: Install
+        working-directory: cli
+        run: npm install
+      - name: Build
+        working-directory: cli
+        run: npm run build
+      - name: Check version exists
+        id: version_check
+        working-directory: cli
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          NAME=$(node -p "require('./package.json').name")
+          if npm view "$NAME@$VERSION" >/dev/null 2>&1; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+      - name: Publish
+        if: steps.version_check.outputs.exists == 'false'
+        working-directory: cli
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public

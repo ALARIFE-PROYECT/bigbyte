@@ -203,7 +203,7 @@ This project is under the ISC license. See the [LICENSE](LICENSE) file for more 
 
 <div align="center">
 
-**Developed with ❤️ by [Jose Eduardo Soria Garcia](mailto:pepesoriagarcia99@gmail.com)**
+**Developed with ❤️ by [Jose Eduardo Soria Garcia](mailto:alarifeproyect@gmail.com)**
 
 _Part of the BigByte ecosystem_
 

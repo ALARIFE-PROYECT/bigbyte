@@ -1,1 +1,0 @@
-// bat para desplegar el proyecto en npm
