@@ -2,9 +2,8 @@ name: Publish @bigbyte packages
 
 on:
   push:
-    # * Bypass, test
-    # branches:
-    #   - main
+    branches:
+      - development
     paths:
       - 'utils/**'
       # - 'IoC/**'
@@ -69,18 +68,18 @@ jobs:
       - name: Build
         working-directory: utils
         run: npm run build
-      - name: Check version exists
-        id: version_check
-        working-directory: utils
-        run: |
-          VERSION=$(node -p "require('./package.json').version")
-          NAME=$(node -p "require('./package.json').name")
-          if npm view "$NAME@$VERSION" >/dev/null 2>&1; then
-            echo "exists=true" >> $GITHUB_OUTPUT
-            echo "La versión $NAME@$VERSION ya está publicada."
-          else
-            echo "exists=false" >> $GITHUB_OUTPUT
-          fi
+      # - name: Check version exists
+      #   id: version_check
+      #   working-directory: utils
+      #   run: |
+      #     VERSION=$(node -p "require('./package.json').version")
+      #     NAME=$(node -p "require('./package.json').name")
+      #     if npm view "$NAME@$VERSION" >/dev/null 2>&1; then
+      #       echo "exists=true" >> $GITHUB_OUTPUT
+      #       echo "La versión $NAME@$VERSION ya está publicada."
+      #     else
+      #       echo "exists=false" >> $GITHUB_OUTPUT
+      #     fi
       - name: Publish
         if: steps.version_check.outputs.exists == 'false'
         working-directory: utils
