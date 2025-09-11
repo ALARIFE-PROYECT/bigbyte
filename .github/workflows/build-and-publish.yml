@@ -3,7 +3,7 @@ name: Publish @bigbyte packages
 on:
   push:
     branches:
-      - '**'
+      - 'main'
     paths:
       - 'utils/**'
       # - 'IoC/**'
