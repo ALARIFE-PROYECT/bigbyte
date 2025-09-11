@@ -27,7 +27,7 @@
       ]
     }
   },
-    "repository": {
+  "repository": {
     "type": "git",
     "url": "git+https://github.com/ALARIFE-PROYECT/bigbyte.git"
   },
@@ -36,25 +36,25 @@
     "url": "https://github.com/ALARIFE-PROYECT/bigbyte/issues"
   },
   "scripts": {
-    "copy-banner": "node copy.js ./src/constant/banner.txt ./lib/constant/banner.txt",
-    "build": "npx tsc && npm run copy-banner && common add-license --path=./lib --ext=.js,.ts --project-name=@bigbyte/cli --project-author=Jose_Eduardo_Soria --project-license=Apache_2.0",
+    "copy-banner": "common copy ./src/constant/banner.txt ./lib/constant/banner.txt",
+    "build": "npx tsc && npm run copy-banner && common add-license --path=./lib --ext=.js,.ts --project-name=@bigbyte/cli --project-author=Jose_Eduardo_Soria --project-license=Apache-2.0",
     "yalc:install": "npx yalc add @bigbyte/utils && npx yalc add @bigbyte/classpath && npx yalc add @bigbyte/integration",
     "yalc:publish": "npm run build && npx yalc publish --push",
     "test": "npx tsc --project tsconfig.test.json && node --test dist/test",
     "test:one": "npx tsc --project tsconfig.test.json && node --test"
   },
   "dependencies": {
-    "@bigbyte/utils": "file:.yalc/@bigbyte/utils",
     "@bigbyte/classpath": "file:.yalc/@bigbyte/classpath",
     "@bigbyte/integration": "file:.yalc/@bigbyte/integration",
+    "@bigbyte/utils": "file:.yalc/@bigbyte/utils",
     "chokidar": "~4",
-    "ts-morph": "~26.0",
     "log-update": "~4",
+    "ts-morph": "~26.0",
     "tslib": "~2",
     "uuid": "~11.1"
   },
   "devDependencies": {
-    "@alarife/common": "~0.3.0",
+    "@alarife/common": "~0.7.0",
     "@types/node": "~22",
     "typescript": "~5.9"
   }

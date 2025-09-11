@@ -33,7 +33,7 @@
     "url": "https://github.com/ALARIFE-PROYECT/bigbyte/issues"
   },
   "scripts": {
-    "build": "npx tsc && common add-license --path=./lib --ext=.js,.ts --project-name=@bigbyte/ioc --project-author=Jose_Eduardo_Soria --project-license=Apache_2.0",
+    "build": "npx tsc && common add-license --path=./lib --ext=.js,.ts --project-name=@bigbyte/ioc --project-author=Jose_Eduardo_Soria --project-license=Apache-2.0",
     "yalc:publish": "npm run build && npx yalc publish --push",
     "test": "npx tsc --project tsconfig.test.json && node --test dist/test"
   },
@@ -44,7 +44,7 @@
     "zone.js": "~0.14"
   },
   "devDependencies": {
-    "@alarife/common": "~0.3.0",
+    "@alarife/common": "~0.7.0",
     "@types/node": "~22",
     "typescript": "~5.9"
   }
