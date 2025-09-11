@@ -2,8 +2,9 @@ name: Publish @bigbyte packages
 
 on:
   push:
-    branches:
-      - main
+    # * Bypass, test
+    # branches:
+    #   - main
     paths:
       - 'utils/**'
       # - 'IoC/**'
