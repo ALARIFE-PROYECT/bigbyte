@@ -38,7 +38,6 @@ jobs:
           node-version: 22
           registry-url: https://registry.npmjs.org/
           always-auth: true
-          cache: npm
       - name: Install
         working-directory: utils
         run: npm install
