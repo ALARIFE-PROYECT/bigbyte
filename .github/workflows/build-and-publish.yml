@@ -16,6 +16,7 @@ on:
       # - 'cli/**'
   workflow_dispatch:
 
+
 permissions:
   contents: read
 
