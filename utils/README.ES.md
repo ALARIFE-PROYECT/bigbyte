@@ -330,7 +330,7 @@ function Route(method: string, path: string): ClassDecorator {
 
 ## 📄 Licencia
 
-Este proyecto está bajo la licencia ISC. Ver el archivo [LICENSE](LICENSE) para más detalles.
+Este proyecto está bajo la licencia Apache 2.0. Ver el archivo [LICENSE](LICENSE) para más detalles.
 
 ---
 

@@ -197,7 +197,7 @@ class Main {
 
 ## 📄 License
 
-This project is under the ISC license. See the [LICENSE](LICENSE) file for more details.
+This project is under the Apache 2.0 license. See the [LICENSE](LICENSE) file for more details.
 
 ---
 
