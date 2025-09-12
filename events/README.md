@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[![NPM Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://www.npmjs.com/package/@bigbyte/events) [![License](https://img.shields.io/badge/license-ISC-green.svg)](LICENSE) [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
+[![NPM Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://www.npmjs.com/package/@bigbyte/events) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE) [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
 
 **Advanced event system for managing and monitoring TypeScript decorator execution**
 Decorator execution happens from **top to bottom** when talking about the same element, and the execution order of elements is **parameters, methods/accessors/properties, and finally classes**.
