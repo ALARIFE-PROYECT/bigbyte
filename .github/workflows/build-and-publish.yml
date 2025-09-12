@@ -16,5 +16,16 @@ jobs:
     name: Publish @bigbyte/utils
     runs-on: ubuntu-latest
     steps:
-      - name: Mostrar mensaje
-        run: echo "Hola desde el workflow mínimo"
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org/
+          always-auth: true
+      - name: Install
+        working-directory: utils
+        run: npm install
