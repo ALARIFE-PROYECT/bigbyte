@@ -5,7 +5,7 @@
 
 <div align="center">
 
-[![NPM Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://www.npmjs.com/package/@bigbyte/events) [![License](https://img.shields.io/badge/license-ISC-green.svg)](LICENSE) [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
+[![NPM Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://www.npmjs.com/package/@bigbyte/events) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE) [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
 
 **Sistema avanzado de eventos para gestión y monitoreo de la ejecución de decoradores TypeScript**
 La ejecucion de decoradores se hace de **arriba a abajo** si hablamos del mismo elemento y el orden de ejecucion de los elementos es **parametros, metodos/accessors/propiedades y por ultimo clases**.
@@ -200,7 +200,7 @@ class Main {
 
 ## 📄 Licencia
 
-Este proyecto está bajo la licencia ISC. Ver el archivo [LICENSE](LICENSE) para más detalles.
+Este proyecto está bajo la licencia Apache 2.0. Ver el archivo [LICENSE](LICENSE) para más detalles.
 
 ---
 
