@@ -8,8 +8,12 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
-  echo:
+  utils:
+    name: Publish @bigbyte/utils
     runs-on: ubuntu-latest
     steps:
       - name: Mostrar mensaje
