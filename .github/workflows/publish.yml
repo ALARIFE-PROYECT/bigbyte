@@ -11,7 +11,7 @@ on:
       - 'utils/**'
 
 jobs:
-  publish-npm:
+  utils:
     name: Publish @bigbyte/utils
     runs-on: ubuntu-latest
     concurrency:
@@ -39,6 +39,7 @@ jobs:
       #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       #   run: |
       #     npm publish --access public
+
 
 
 # name: Publish @bigbyte packages
