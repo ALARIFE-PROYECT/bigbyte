@@ -29,3 +29,11 @@ jobs:
       - name: Install
         working-directory: utils
         run: npm install
+      - name: Build
+        working-directory: utils
+        run: npm run build
+      - name: Publish
+        working-directory: utils
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public
