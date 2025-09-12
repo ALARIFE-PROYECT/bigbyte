@@ -6,6 +6,8 @@ name: Publish @bigbyte packages
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'utils/**'
   workflow_dispatch:
 
 jobs:
