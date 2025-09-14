@@ -12,34 +12,10 @@ permissions:
   contents: read
 
 jobs:
-  classpath:
-    name: Publish @bigbyte/classpath
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          registry-url: https://registry.npmjs.org/
-          always-auth: true
-      - name: Install
-        working-directory: classpath
-        run: npm install
-      - name: Build
-        working-directory: classpath
-        run: npm run build
-      - name: Publish
-        working-directory: classpath
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish --access public
 
-  cli:
-    name: Publish @bigbyte/cli
+  # Sin dependencias
+  utils:
+    name: Publish @bigbyte/utils
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -53,91 +29,13 @@ jobs:
           registry-url: https://registry.npmjs.org/
           always-auth: true
       - name: Install
-        working-directory: cli
+        working-directory: utils
         run: npm install
       - name: Build
-        working-directory: cli
+        working-directory: utils
         run: npm run build
       - name: Publish
-        working-directory: cli
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish --access public
-
-  core:
-    name: Publish @bigbyte/core
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          registry-url: https://registry.npmjs.org/
-          always-auth: true
-      - name: Install
-        working-directory: core
-        run: npm install
-      - name: Build
-        working-directory: core
-        run: npm run build
-      - name: Publish
-        working-directory: core
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish --access public
-
-  ctx:
-    name: Publish @bigbyte/ctx
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          registry-url: https://registry.npmjs.org/
-          always-auth: true
-      - name: Install
-        working-directory: ctx
-        run: npm install
-      - name: Build
-        working-directory: ctx
-        run: npm run build
-      - name: Publish
-        working-directory: ctx
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish --access public
-
-  events:
-    name: Publish @bigbyte/events
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          registry-url: https://registry.npmjs.org/
-          always-auth: true
-      - name: Install
-        working-directory: events
-        run: npm install
-      - name: Build
-        working-directory: events
-        run: npm run build
-      - name: Publish
-        working-directory: events
+        working-directory: utils
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish --access public
@@ -168,7 +66,35 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish --access public
 
+  events:
+    name: Publish @bigbyte/events
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org/
+          always-auth: true
+      - name: Install
+        working-directory: events
+        run: npm install
+      - name: Build
+        working-directory: events
+        run: npm run build
+      - name: Publish
+        working-directory: events
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public
+
+# Requieren utils
   ioc:
+    needs: [utils]
     name: Publish @bigbyte/IoC
     runs-on: ubuntu-latest
     steps:
@@ -194,7 +120,36 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish --access public
 
+  classpath:
+    needs: [utils]
+    name: Publish @bigbyte/classpath
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org/
+          always-auth: true
+      - name: Install
+        working-directory: classpath
+        run: npm install
+      - name: Build
+        working-directory: classpath
+        run: npm run build
+      - name: Publish
+        working-directory: classpath
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public
+  
+  # Requiere IoC
   logger:
+    needs: [utils, ioc, events, integration]
     name: Publish @bigbyte/logger
     runs-on: ubuntu-latest
     steps:
@@ -220,8 +175,9 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish --access public
 
-  utils:
-    name: Publish @bigbyte/utils
+  ctx:
+    needs: [utils, ioc]
+    name: Publish @bigbyte/ctx
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -235,13 +191,69 @@ jobs:
           registry-url: https://registry.npmjs.org/
           always-auth: true
       - name: Install
-        working-directory: utils
+        working-directory: ctx
         run: npm install
       - name: Build
-        working-directory: utils
+        working-directory: ctx
         run: npm run build
       - name: Publish
-        working-directory: utils
+        working-directory: ctx
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public
+
+# Requiere classpath
+  cli:
+    needs: [utils, integration, classpath]
+    name: Publish @bigbyte/cli
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org/
+          always-auth: true
+      - name: Install
+        working-directory: cli
+        run: npm install
+      - name: Build
+        working-directory: cli
+        run: npm run build
+      - name: Publish
+        working-directory: cli
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public
+
+# Requiere ctx
+  core:
+    needs: [utils, ioc, classpath, ctx]
+    name: Publish @bigbyte/core
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org/
+          always-auth: true
+      - name: Install
+        working-directory: core
+        run: npm install
+      - name: Build
+        working-directory: core
+        run: npm run build
+      - name: Publish
+        working-directory: core
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish --access public
