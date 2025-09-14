@@ -1,6 +1,6 @@
 {
   "name": "@bigbyte/logger",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "author": "Jose Eduardo Soria Garcia <alarifeproyect@gmail.com>",
   "license": "Apache-2.0",
   "private": false,
@@ -39,10 +39,10 @@
     "test": "npx tsc --project tsconfig.test.json && node --test dist/test"
   },
   "dependencies": {
-    "@bigbyte/utils": "0.5.0",
-    "@bigbyte/ioc": "0.5.0",
-    "@bigbyte/events": "0.5.0",
-    "@bigbyte/integration": "0.5.0",
+    "@bigbyte/utils": "0.6.0",
+    "@bigbyte/ioc": "0.6.0",
+    "@bigbyte/events": "0.6.0",
+    "@bigbyte/integration": "0.6.0",
     "reflect-metadata": "~0.2.2",
     "tslib": "~2.3",
     "zone.js": "~0.14"
