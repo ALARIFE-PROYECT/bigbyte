@@ -109,13 +109,13 @@ jobs:
           registry-url: https://registry.npmjs.org/
           always-auth: true
       - name: Install
-        working-directory: ioc
+        working-directory: IoC
         run: npm install
       - name: Build
-        working-directory: ioc
+        working-directory: IoC
         run: npm run build
       - name: Publish
-        working-directory: ioc
+        working-directory: IoC
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish --access public
