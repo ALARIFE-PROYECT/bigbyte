@@ -45,8 +45,8 @@
   },
   "dependencies": {
     "@bigbyte/classpath": "file:.yalc/@bigbyte/classpath",
-    "@bigbyte/integration": "file:.yalc/@bigbyte/integration",
-    "@bigbyte/utils": "file:.yalc/@bigbyte/utils",
+    "@bigbyte/integration": "0.5.0",
+    "@bigbyte/utils": "0.5.0",
     "chokidar": "~4",
     "log-update": "~4",
     "ts-morph": "~26.0",
