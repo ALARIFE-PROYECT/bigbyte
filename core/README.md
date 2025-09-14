@@ -1,4 +1,4 @@
-# 🔄️ @bigbyte/core - Core Decorators & Dependency Injection Runtime
+# 🔄️ @bigbyte/core - Core Decorators & Dependency Injection
 
 <div align="center">
 
@@ -6,7 +6,7 @@
 [![License](https://img.shields.io/badge/license-Apache--2.0-green.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
 
-**Foundational decorators (@App, @Component, @Service, @Inject, @Value) and orchestration runtime for the BigByte ecosystem: typed component registry, event–driven boot cycle and contextual value resolution.**
+**Foundational decorators (@App, @Component, @Service, @Inject, @Value) and orchestration runtime for the BigByte ecosystem: typed component registry, event-driven bootstrap lifecycle and contextual value resolution.**
 
 </div>
 
@@ -25,17 +25,17 @@
 
 ## ✨ Features
 
-* High‑level decorators: @App, @Component, @Service for declarative registration.
-* Type‑based dependency injection via @Inject.
-* External / contextual value injection with @Value(key).
-* Automatic ordering & uniqueness validation of decorators.
-* Central registry via `componentRegistry` (@bigbyte/ioc).
-* Event–driven boot lifecycle (@bigbyte/events) with declaration → execution → instantiation phases.
-* Uses `reflect-metadata` to read constructor / property types.
-* Categorized components (MAIN, COMPONENT, SERVICE) for graph semantics.
-* Lazy & safe resolution: explicit error if a dependency is missing.
-* Value context integration (`ctxStore` from @bigbyte/ctx) for config / constants.
-* Ready for watch / reload environments (chokidar integration through @bigbyte/cli).
+* High-level decorators: @App, @Component, @Service for declarative registration.
+* Type-based dependency injection via @Inject.
+* External value injection (dynamic context) with @Value(key).
+* Order and uniqueness control for decorators (automatic validations).
+* Centralized registry in `componentRegistry` (@bigbyte/ioc).
+* Bootstrap cycle orchestrated by an event bus (@bigbyte/events) with phases (declaration, execution, instantiation).
+* Integration with `reflect-metadata` to extract constructor / property types.
+* Categorized components (MAIN, COMPONENT, SERVICE) for clear graph semantics.
+* Lazy and safe resolution: explicit error if the injected component does not exist.
+* Integration with value context (`ctxStore` from @bigbyte/ctx) for configuration / constants.
+* Ready for watch / reload environments (chokidar in @bigbyte/cli).
 
 ## 🚀 Installation
 
@@ -45,29 +45,30 @@ npm install @bigbyte/core
 
 ## 🖥️ Commands
 
-This package does not expose its own CLI commands. Functionality is activated declaratively by importing the decorators in your application code.
+This package does not expose its own CLI commands. Its functionality is activated declaratively by importing the decorators within your application code.
 
-For runtime / scaffolding operations use `@bigbyte/cli` (if present).
+For scaffolding / execution operations use the `@bigbyte/cli` package (if present in the project).
 
 ## 🤖 Decorators
 
-List & purpose:
+List and main purpose:
 
-1. **@App()**  Marks the root application class. Must be the first decorator on that class. Triggers final phase that instantiates the graph after all decorators have executed.
-2. **@Component(options?)**  Registers a generic component (type COMPONENT). Accepts container options (`alias`, `scope`, etc. if supported by @bigbyte/ioc).
-3. **@Service()**  Semantic shortcut for business logic components (type SERVICE). No options in this version.
-4. **@Inject()**  Property decorator. Injects an instance whose type matches the decorated property type.
-5. **@Value(key)**  Property decorator. Injects an immutable value looked up from `ctxStore` by key.
+1. **@App()**  Marks the main (root) application class. Must be the first decorator applied on that class. Triggers the final phase that instantiates the graph once all decorators have been processed.
+2. **@Component(options?)**  Registers a class as a generic component (type COMPONENT). Allows additional container options (scope, alias, etc. if supported by @bigbyte/ioc).
+3. **@Service()**  Semantic shortcut for business logic components (type SERVICE). Does not accept options in this version.
+4. **@Inject()**  Property decorator. Injects the instance of a registered component whose type matches the decorated property's type.
+5. **@Value(key)**  Property decorator. Injects an immutable value dynamically resolved from `ctxStore` by its key.
 
-Rules:
-* **@App** only once, only on the root class.
-* **@Component** and **@Service** are mutually exclusive (do not combine on same class nor with other component decorators).
-* **@Inject** and **@Value** cannot decorate private `#` fields.
-* Registration materializes at the end (event `last`).
+Order / Rules:
+* **@App** only once and only on the root class.
+* **@Component** and **@Service** are mutually exclusive (do not combine them on the same class nor with other component-type decorators).
+* **@Inject** and **@Value** cannot be applied to private properties using the `#` syntax.
+* The registry is materialized after the decorator execution chain finishes (event 'last').
 
 ## 🔧 Basic Usage
 
-Minimal example:
+Minimal application example:
+
 ```ts
 import 'reflect-metadata';
 import { App, Service, Inject, Value, Component } from '@bigbyte/core';
@@ -84,87 +85,94 @@ class Printer {
 
 @App()
 class MainApp {
-  @Inject() private timeService!: TimeService; // pulled from registry
-  @Inject() private printer?: Printer; // remains undefined if not instantiated
+  @Inject() private printer?: Printer; // Undefined value until resolved lazily
+
   @Value('app.name') private appName!: string;
 
-  run() {
+  // Automatic constructor dependency injection
+  run(private timeService: TimeService) {
     this.printer?.print(`${this.appName} started @ ${this.timeService.now()}`);
   }
 }
 ```
-> Ensure `ctxStore` (module @bigbyte/ctx) contains the key `app.name` before using @Value('app.name').
+
+> For @Value('app.name') to work, ensure the value is previously loaded in the `ctxStore` (@bigbyte/ctx module).
 
 ## 🔍 Detailed API
 
 ### @App()
 * Type: ClassDecorator
-* Effects: Declares MAIN component. Validates it is the first decorator. Registers a `last` listener adding the class to `componentRegistry` then emits `instantiated`.
-* Metadata applied: `METADATA_COMPONENT_TYPE=MAIN`, `METADATA_DECORATOR_NAME=App`.
+* Effects: Declares the MAIN component. Validates it is the first decorator on the class. Registers a listener on the 'last' event that adds the class to the `componentRegistry` and then emits 'instantiated'.
+* Metadata applied: METADATA_COMPONENT_TYPE=MAIN, METADATA_DECORATOR_NAME=App.
+* Constructor dependencies are injected.
 
-### @Component(options?: ComponentOptions without `type`)
-* Registers the class with type COMPONENT.
-* Validates uniqueness.
-* Uses metadata tags for classification.
+### @Component(options?: ComponentOptions without 'type')
+* Registers the class with type COMPONENT. Allows `alias`, `scope`, and other compatible fields defined in @bigbyte/ioc.
+* Validates uniqueness of the component decorator.
+* Uses metadata to differentiate the type.
+* Constructor dependencies are injected.
 
 ### @Service()
-* Same internal behavior as @Component but semantic type SERVICE and no options.
+* Same as **@Component** but semantically differentiated and without options. Type SERVICE.
+* Constructor dependencies are injected.
 
 ### @Inject()
-* PropertyDecorator. Uses `design:type` to find constructor to inject.
-* Looks up in `componentRegistry`. Throws DecoratorError if missing.
-* Defines a dynamic getter (always resolves current instance from registry).
+* PropertyDecorator. Uses `design:type` to identify the constructor to inject.
+* Looks up the component in `componentRegistry`. If not found, throws DecoratorError.
+* Defines a dynamic getter (does not overwrite the value, always accesses the current instance in the registry).
 
 ### @Value(key: string)
-* PropertyDecorator. Resolves `ctxStore.getByKey(key)?.value`.
-* Read‑only (no setter defined).
+* PropertyDecorator. Resolves `ctxStore.getByKey(key)` and exposes its `.value` via a getter.
+* Immutable from the consumer perspective (no setter defined).
 
 ### Internal Registration Flow
-1. Each decorator calls `declareDecorator(name)` on application.
-2. Each subscribes logic to `decoratorExecEvent.on('last', ...)`.
-3. `executeDecorator(name)` marks execution; once all declared decorators finish, event `last` fires final registrations.
-4. **@App** emits `instantiated` after container population enabling upper-layer bootstrap hooks.
+1. Each decorator invokes `declareDecorator(name)` when applied.
+2. Each subscribes logic to the event `decoratorExecEvent.on('last', ...)`.
+3. `executeDecorator(name)` marks execution; when all declarations have been processed, the 'last' event fires the definitive registration.
+4. **@App** emits 'instantiated' after populating the container, enabling startup hooks in higher layers.
 
 ## 🏗️ Architecture
 
-Simplified structure:
+Simplified module structure:
 ```
 src/
-├── index.ts                 # Public exports
+├── index.ts                 # Public export point
 ├── constant/
-│   └── index.ts             # Decorator names & internal constants
+│   └── index.ts             # Decorator names and internal constants (LIBRARY_NAME, etc.)
 └── decorator/
-    ├── App.ts               # Root (MAIN) decorator & instantiation trigger
+    ├── App.ts               # Root decorator (MAIN) and instantiation trigger
     ├── Component.ts         # Generic component decorator
-    ├── Service.ts           # Service specialization
+    ├── Service.ts           # Specialized logical decorator
     ├── Inject.ts            # Type-based injection
     └── Value.ts             # Context value injection
 ```
 Key dependencies:
-* @bigbyte/utils  (constants, logger, validation utilities)
-* @bigbyte/ioc    (componentRegistry, component categorization)
-* @bigbyte/events (decorator execution cycle)
-* @bigbyte/ctx    (value store used by @Value)
-* reflect-metadata (runtime type metadata)
+* @bigbyte/utils  (constants, logger, validation utilities).
+* @bigbyte/ioc    (componentRegistry, component types).
+* @bigbyte/events (decorator execution lifecycle).
+* @bigbyte/ctx    (context storage for **@Value**).
+* reflect-metadata (type metaprogramming).
 
 ## ⚠️ Error Handling
 
 Relevant errors (from @bigbyte/utils/exception):
-* DecoratorError when:
-  - Decorating a private `#` field with **@Inject** or **@Value**.
-  - Missing component for requested type in **@Inject**.
-  - Violating uniqueness / ordering rules (`checkFirstDecorator`, `checkUniqueDecorator`).
+* DecoratorError: thrown when:
+  - Attempting to decorate a private property with **@Inject** or **@Value**.
+  - A component for the requested type in **@Inject** is not found.
+  - Decorator uniqueness rules are violated (utilities like `checkFirstDecorator`, `checkUniqueDecorator` may trigger internal exceptions).
 
 Best practices:
-* Export all decorated classes (helps higher‑level scanning/tooling).
-* Avoid side effects needing instances before `instantiated` event fires.
+* Ensure all decorated classes are exported (facilitates scanning in upper layers).
+* Avoid side-effects requiring instances before the 'instantiated' event.
 
 ## 🔧 Advanced Examples
 
-### Chained Injection & Config Values
+### Chained Injection and Configuration Values
 ```ts
 @Service()
-class ConfigService { get(key: string) { /* ... */ } }
+class ConfigService {
+  get(key: string) { /* ... */ }
+}
 
 @Service()
 class GreetingService {
@@ -199,7 +207,7 @@ class Bootstrap {
 
 ## 📄 License
 
-This project is licensed under Apache-2.0. See the LICENSE file for details.
+This project is licensed under the Apache-2.0 license. See the LICENSE file for details.
 
 ---
 

@@ -85,11 +85,12 @@ class Printer {
 
 @App()
 class MainApp {
-  @Inject() private timeService!: TimeService; // Valor rescatado del registry
   @Inject() private printer?: Printer; // Valor undefined
+
   @Value('app.name') private appName!: string;
 
-  run() {
+  // inyeccion atuomatica de dependencias
+  run(private timeService: TimeService) {
     this.printer.print(`${this.appName} iniciado @ ${this.timeService.now()}`);
   }
 }
@@ -103,14 +104,17 @@ class MainApp {
 * Tipo: ClassDecorator
 * Efectos: Declara el componente MAIN. Valida que sea el primer decorador de la clase. Registra un listener al evento 'last' que añade la clase al `componentRegistry` y posteriormente emite 'instantiated'.
 * Metadatos aplicados: METADATA_COMPONENT_TYPE=MAIN, METADATA_DECORATOR_NAME=App.
+* Las dependencias añadidadas en el constructor son inyectadas.
 
 ### @Component(options?: ComponentOptions sin 'type')
 * Registra la clase con type COMPONENT. Permite `alias`, `scope`, u otros campos compatibles definidos en @bigbyte/ioc.
 * Valida unicidad de decorador de componente.
 * Usa metadatos para diferenciar el tipo.
+* Las dependencias añadidadas en el constructor son inyectadas.
 
 ### @Service()
 * Igual a **@Component** pero semánticamente diferenciado y sin opciones. type SERVICE.
+* Las dependencias añadidadas en el constructor son inyectadas.
 
 ### @Inject()
 * PropertyDecorator. Usa `design:type` para identificar el constructor a inyectar.
