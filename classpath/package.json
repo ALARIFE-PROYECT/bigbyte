@@ -1,6 +1,6 @@
 {
   "name": "@bigbyte/classpath",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "author": "Jose Eduardo Soria Garcia <alarifeproyect@gmail.com>",
   "license": "Apache-2.0",
   "private": false,
@@ -55,7 +55,7 @@
     "test": "npx tsc --project tsconfig.test.json && node --test dist/test"
   },
   "dependencies": {
-    "@bigbyte/utils": "0.7.0",
+    "@bigbyte/utils": "0.8.0",
     "ts-morph": "~26.0.0",
     "tslib": "~2.3",
     "uuid": "~11.1.0",
