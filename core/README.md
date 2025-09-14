@@ -1,323 +1,212 @@
-<!-- 
-* Nueva documentation
+# 🔄️ @bigbyte/core - Core Decorators & Dependency Injection Runtime
 
-** descripcion del proyecto
+<div align="center">
 
-** descripcion de los puntos para las apps
-(Environment, Service, Value, Logger, Worker, Utils)
+[![NPM Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://www.npmjs.com/package/@bigbyte/core)
+[![License](https://img.shields.io/badge/license-Apache--2.0-green.svg)](LICENSE)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
 
-Decoradores: (App, Service, Value, Logger, Worker y Lombok)
+**Foundational decorators (@App, @Component, @Service, @Inject, @Value) and orchestration runtime for the BigByte ecosystem: typed component registry, event–driven boot cycle and contextual value resolution.**
 
-Configuraciones: (Archivo banner en la raiz)(Archivo enviroment en la raiz)(Parametros de ejecucion NODE_ENV y ENV_FILE)
+</div>
 
-** descripcion de los puntos para los plugins
-(CoreConfig, , valueStore, Store model, Banner, DeveloperError, launcher, Logger, workerpool, utils)
+## 📋 Table of Contents
 
-** Related
+- [Features](#-features)
+- [Installation](#-installation)
+- [Commands](#-commands)
+- [Decorators](#-decorators)
+- [Basic Usage](#-basic-usage)
+- [Detailed API](#-detailed-api)
+- [Architecture](#-architecture)
+- [Error Handling](#-error-handling)
+- [Advanced Examples](#-advanced-examples)
+- [License](#-license)
 
--->
+## ✨ Features
 
+* High‑level decorators: @App, @Component, @Service for declarative registration.
+* Type‑based dependency injection via @Inject.
+* External / contextual value injection with @Value(key).
+* Automatic ordering & uniqueness validation of decorators.
+* Central registry via `componentRegistry` (@bigbyte/ioc).
+* Event–driven boot lifecycle (@bigbyte/events) with declaration → execution → instantiation phases.
+* Uses `reflect-metadata` to read constructor / property types.
+* Categorized components (MAIN, COMPONENT, SERVICE) for graph semantics.
+* Lazy & safe resolution: explicit error if a dependency is missing.
+* Value context integration (`ctxStore` from @bigbyte/ctx) for config / constants.
+* Ready for watch / reload environments (chokidar integration through @bigbyte/cli).
 
-# Alarife
+## 🚀 Installation
 
-[Alarife](https://es.wikipedia.org/wiki/Alarife) is an Iberian term that referred to Mudejarian architects and master builders.
-
-What is this library? This library provides a framework for creating applications with a decorator pattern.
-
-- It is inspired by **Spring Boot**.
-- It makes use of the proposal of decorators ([plugin-proposal-decorators](https://babeljs.io/docs/babel-plugin-proposal-decorators)) from babel.
-
-Application example code [alarife](https://github.com/pepesoriagarcia99/alarife-example).
-
-## Decorators
-
-### @App
-
-App is a **class** decorator.
-
-The **@App** decorator injects the Logger module.
-
-> When using **@App** with other plugins **@App** should always be on top of them all.
-
-This decorator instantiates the class to which it is applied to launch its constructor, so you can add additional configuration.
-
-You can add the parameters belonging to **Core** to your instance with **@Value**.
-
-> **core** includes: environment, version
-> **configuration** includes: traceLog
-
-```JS
-import { App, Value } from '@alarife/core/decorators';
-
-@App()
-class Main {
-
-  @Value('Core.environment') environment;
-
-  @Value('Core.version') coreVersion;
-
-  @Value('Core.rootPath') rootPath;
-
-  @Value('Core.traceLog') traceLog;
-
-  @Value('configuration') configuration;
-
-  constructor() {
-    this.configuration.traceLog({ levels : ['info', 'debug', 'error', 'warn'] });
-  }
-}
+```bash
+npm install @bigbyte/core
 ```
 
-### @Service
+## 🖥️ Commands
 
-Service is a **class** decorator.
+This package does not expose its own CLI commands. Functionality is activated declaratively by importing the decorators in your application code.
 
-The **@Service** decorator injects the Logger module.
+For runtime / scaffolding operations use `@bigbyte/cli` (if present).
 
-The **@Service** decorator instantiates the class for further injection into other classes.
+## 🤖 Decorators
 
-The **@AutoWired** decorator used on fields injects the value of the instantiated class.
+List & purpose:
 
-```JS
-import { App, Service, AutoWired } from '@alarife/core/decorators';
+1. **@App()**  Marks the root application class. Must be the first decorator on that class. Triggers final phase that instantiates the graph after all decorators have executed.
+2. **@Component(options?)**  Registers a generic component (type COMPONENT). Accepts container options (`alias`, `scope`, etc. if supported by @bigbyte/ioc).
+3. **@Service()**  Semantic shortcut for business logic components (type SERVICE). No options in this version.
+4. **@Inject()**  Property decorator. Injects an instance whose type matches the decorated property type.
+5. **@Value(key)**  Property decorator. Injects an immutable value looked up from `ctxStore` by key.
+
+Rules:
+* **@App** only once, only on the root class.
+* **@Component** and **@Service** are mutually exclusive (do not combine on same class nor with other component decorators).
+* **@Inject** and **@Value** cannot decorate private `#` fields.
+* Registration materializes at the end (event `last`).
+
+## 🔧 Basic Usage
+
+Minimal example:
+```ts
+import 'reflect-metadata';
+import { App, Service, Inject, Value, Component } from '@bigbyte/core';
 
 @Service()
-class UserService {
+class TimeService {
+  now() { return new Date().toISOString(); }
+}
 
-  getAllUsers() {
-    return [
-      { id   : 1, name : 'Jhon' }
-    ];
-  }
+@Component({ injectable: false })
+class Printer {
+  print(msg: string) { console.log('[PRINT]', msg); }
 }
 
 @App()
-class Main {
+class MainApp {
+  @Inject() private timeService!: TimeService; // pulled from registry
+  @Inject() private printer?: Printer; // remains undefined if not instantiated
+  @Value('app.name') private appName!: string;
 
-  @AutoWired(UserService) #userService;
-
-  constructor() {
-    this.configuration.traceLog({ levels : ['info', 'debug', 'error', 'warn'] });
-
-    this.#userService.getAllUsers();
+  run() {
+    this.printer?.print(`${this.appName} started @ ${this.timeService.now()}`);
   }
 }
 ```
+> Ensure `ctxStore` (module @bigbyte/ctx) contains the key `app.name` before using @Value('app.name').
 
+## 🔍 Detailed API
 
-### @Value
+### @App()
+* Type: ClassDecorator
+* Effects: Declares MAIN component. Validates it is the first decorator. Registers a `last` listener adding the class to `componentRegistry` then emits `instantiated`.
+* Metadata applied: `METADATA_COMPONENT_TYPE=MAIN`, `METADATA_DECORATOR_NAME=App`.
 
-Value is a **field** decorator.
+### @Component(options?: ComponentOptions without `type`)
+* Registers the class with type COMPONENT.
+* Validates uniqueness.
+* Uses metadata tags for classification.
 
-**@Value** manages a store of data that you can inject into your classes.
+### @Service()
+* Same internal behavior as @Component but semantic type SERVICE and no options.
 
-```JS
-import { App, Value } from '@alarife/core/decorators';
-import { valueStore } from '@alarife/core/modules';
+### @Inject()
+* PropertyDecorator. Uses `design:type` to find constructor to inject.
+* Looks up in `componentRegistry`. Throws DecoratorError if missing.
+* Defines a dynamic getter (always resolves current instance from registry).
 
-valueStore.set('app.ip', '0.0.0.0')
+### @Value(key: string)
+* PropertyDecorator. Resolves `ctxStore.getByKey(key)?.value`.
+* Read‑only (no setter defined).
 
-@App()
-class Main {
+### Internal Registration Flow
+1. Each decorator calls `declareDecorator(name)` on application.
+2. Each subscribes logic to `decoratorExecEvent.on('last', ...)`.
+3. `executeDecorator(name)` marks execution; once all declared decorators finish, event `last` fires final registrations.
+4. **@App** emits `instantiated` after container population enabling upper-layer bootstrap hooks.
 
-  @Value('app.ip') ip;
+## 🏗️ Architecture
 
-  constructor() {
-    this.log.info('server ip: ' this.ip);
-  }
-}
+Simplified structure:
 ```
-
-#### ValueStore
-
-Revisar docu, solo indicar que se usa el modelo de store
-
-<!-- You can save your own values to reuse them in your app.
-
-> By default, the **configuration** object is added to store the configuration methods.
-
-```JS
-import { valueStore } from '@alarife/core/modules';
-
-// Store options
-valueStore.set('app.url', mongooseUrl)
-valueStore.merge('app.configuration', { ... }) // Merge over existing objects
-valueStore.get('app.url')
-valueStore.delete('app.url')
-``` -->
-
-### @Logger
-
-Logger is a **class** decorator.
-Insert the entire Logger module to the class.
-
-```JS
-import { Logger } from '@alarife/core/decorators';
-
-@Logger()
-class Service {
-  constructor() {
-    this.log.info('Message');
-  }
-}
+src/
+├── index.ts                 # Public exports
+├── constant/
+│   └── index.ts             # Decorator names & internal constants
+└── decorator/
+    ├── App.ts               # Root (MAIN) decorator & instantiation trigger
+    ├── Component.ts         # Generic component decorator
+    ├── Service.ts           # Service specialization
+    ├── Inject.ts            # Type-based injection
+    └── Value.ts             # Context value injection
 ```
+Key dependencies:
+* @bigbyte/utils  (constants, logger, validation utilities)
+* @bigbyte/ioc    (componentRegistry, component categorization)
+* @bigbyte/events (decorator execution cycle)
+* @bigbyte/ctx    (value store used by @Value)
+* reflect-metadata (runtime type metadata)
 
-### @Worker
+## ⚠️ Error Handling
 
-Worker is a **method** decorator. You can use it in any class.
+Relevant errors (from @bigbyte/utils/exception):
+* DecoratorError when:
+  - Decorating a private `#` field with **@Inject** or **@Value**.
+  - Missing component for requested type in **@Inject**.
+  - Violating uniqueness / ordering rules (`checkFirstDecorator`, `checkUniqueDecorator`).
 
-You use the [workerpool](https://www.npmjs.com/package/workerpool) library, you work with the worker as you would work with promises.
+Best practices:
+* Export all decorated classes (helps higher‑level scanning/tooling).
+* Avoid side effects needing instances before `instantiated` event fires.
 
-> The method does not have access to this.
-> Worker parameters must be serializable.
+## 🔧 Advanced Examples
 
-Allows you to launch blocking functions within your code without blocking the main thread.
-
-```JS
-import { Worker, Service, App, AutoWired } from '@alarife/core/decorators';
+### Chained Injection & Config Values
+```ts
+@Service()
+class ConfigService { get(key: string) { /* ... */ } }
 
 @Service()
-class TestService {
-
-  @Worker()
-  blockingMethod(range) {
-    const start = new Date();
-
-    let total = 0;
-    for (let index = 0; index < range; index++) {
-      total += index;
-    }
-
-    const end = new Date();
-
-    console.log(`Delay: ${end - start} ms`);
-
-    return total;
-  }
+class GreetingService {
+  constructor(private config: ConfigService) {}
+  message() { return `Hello ${this.config.get('user.name')}`; }
 }
 
+@Component()
+class Greeter {
+  @Inject() private greeting!: GreetingService;
+  greet() { console.log(this.greeting.message()); }
+}
+```
+
+### Using @Value for Feature Flags
+```ts
+@Component()
+class FeatureToggle {
+  @Value('feature.new-ui') private enabled!: boolean;
+  isEnabled() { return !!this.enabled; }
+}
+```
+
+### Root Pattern with @App
+```ts
 @App()
-class Main {
-
-  @AutoWired(TestService) #testService;
-
-  constructor() {
-    this.#testService.blockingMethod(9000000000)
-      .then(result => {
-        this.log.info(result);
-      })
-      .catch(err => {
-        this.log.error(err);
-      });
-  }
+class Bootstrap {
+  @Inject() private greeter!: Greeter;
+  start() { this.greeter.greet(); }
 }
 ```
 
-## Environment
+## 📄 License
 
-<!-- El sistema obtiene automaticamente los archivo .env.production, .env.development y .env.test automaticamente, los guarda en el coreConfig en una store para su posterior uso en modulos y apps
+This project is licensed under Apache-2.0. See the LICENSE file for details.
 
-Para personalizar la ubicacion del archivo .env utilizar los parametros del process
+---
 
-vars:
-NODE_ENV
-ENV_FILE
+<div align="center">
 
-files:
-.env.development
-.env.production
-.env.test
+**Built with ❤️ by Jose Eduardo Soria Garcia (mailto:alarifeproyect@gmail.com)**
 
-```
-  "start": "nodemon --exec babel-node src/app.js ENV_FILE=/dir/dir/.env"
-``` -->
+*Part of the BigByte ecosystem*
 
-<!-- ! Muy feo -->
-<!-- para usar las enviroments en la app seria coreConfiguration.enviroments -->
-
-<!-- * Solucion: -->
-<!-- exportar en package un env y almacenar todo ahi -->
-
-## Models
-
-<!-- Modelo de Store
-
-Indicar el sistema de objetos
-
-mongo.ddbb
-mongo.url
-
-si buscas la key devuelve el string
-si soliciata mongo devuelve un objeto con las dos keys -->
-
-```JS
-import { Store } from '@alarife/core/models';
-
-
-```
-
-## Addons
-
-Some of the additional functionalities that the library contains are listed.
-
-### DeveloperError
-
-Exception Management for Development
-
-```JS
-  throw new DeveloperError('The Service Document can only be applied to classes.');
-```
-
-### Logger
-
-The **App**, **Controller**, and **Service** decorators add this functionality.
-
-Future plugin for **server log** and **access log** management
-
-[Morgan](https://www.npmjs.com/package/morgan) is used as a library for access log.
-
-Configurations:
-* Allows different output levels **('info', 'debug', 'error', 'warn')**.
-
-```JS
-this.log.info('New message');
-this.log.error('Error message', error);
-this.log.warn('Warn message');
-```
-
-### Lombok
-
-<!-- **Developing**
-Proposal for a decorator based on [Lombok](https://projectlombok.org/) to decorate classes in javascript. -->
-
-### Banner
-
-The banner functionality is added at the beginning of the project.
-
-If a **banner.txt** file does not exist in the root of the project, use the one with the default library.
-
-## Utils
-
-Type validation capabilities
-
-```JS
-  /** return true or false */
-  isDefined(value);
-  isFunction(value);
-  isClass(value);
-  isObject(value);
-  isString(value);
-  isNumber(value);
-```
-
-Object functionalities
-
-```JS
-  defineProperty(prototype, key, value);
-  merge(target, source);
-```
-
-## Related
-
-- [alarife-http](https://www.npmjs.com/package/@alarife/http) - Library to create HTTP servers.
-- [alarife-mongo](https://www.npmjs.com/package/@alarife/mongo) - Library to use Mongo database.
+</div>
