@@ -1,6 +1,6 @@
 {
   "name": "@bigbyte/cli",
-  "version": "0.1.0",
+  "version": "0.5.0",
   "author": "Jose Eduardo Soria Garcia <alarifeproyect@gmail.com>",
   "license": "Apache-2.0",
   "private": false,
@@ -44,7 +44,7 @@
     "test:one": "npx tsc --project tsconfig.test.json && node --test"
   },
   "dependencies": {
-    "@bigbyte/classpath": "file:.yalc/@bigbyte/classpath",
+    "@bigbyte/classpath": "0.5.0",
     "@bigbyte/integration": "0.5.0",
     "@bigbyte/utils": "0.5.0",
     "chokidar": "~4",

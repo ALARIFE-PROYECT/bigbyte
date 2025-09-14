@@ -1,6 +1,6 @@
 {
   "name": "@bigbyte/ioc",
-  "version": "0.1.0",
+  "version": "0.5.0",
   "author": "Jose Eduardo Soria Garcia <alarifeproyect@gmail.com>",
   "license": "Apache-2.0",
   "private": false,
@@ -38,7 +38,7 @@
     "test": "npx tsc --project tsconfig.test.json && node --test dist/test"
   },
   "dependencies": {
-    "@bigbyte/utils": "file:.yalc/@bigbyte/utils",
+    "@bigbyte/utils": "0.5.0",
     "reflect-metadata": "~0.2.2",
     "tslib": "~2.3",
     "zone.js": "~0.14"
