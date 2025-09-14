@@ -1,323 +1,200 @@
-<!-- 
-* Nueva documentation
+# 🔄️ @bigbyte/cli - BigByte Command Line Interface
 
-** descripcion del proyecto
+<div align="center">
 
-** descripcion de los puntos para las apps
-(Environment, Service, Value, Logger, Worker, Utils)
+[![NPM Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://www.npmjs.com/package/@bigbyte/cli)
+[![License](https://img.shields.io/badge/license-Apache_2.0-green.svg)](LICENSE)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
 
-Decoradores: (App, Service, Value, Logger, Worker y Lombok)
+**Modular CLI to run, analyze, diagnose and package TypeScript applications inside the BigByte ecosystem.**
 
-Configuraciones: (Archivo banner en la raiz)(Archivo enviroment en la raiz)(Parametros de ejecucion NODE_ENV y ENV_FILE)
+</div>
 
-** descripcion de los puntos para los plugins
-(CoreConfig, , valueStore, Store model, Banner, DeveloperError, launcher, Logger, workerpool, utils)
+## 📋 Table of Contents
 
-** Related
+- [Features](#-features)
+- [Installation](#-installation)
+- [Commands](#-commands)
+- [Basic Usage](#-basic-usage)
+- [Detailed API](#-detailed-api)
+- [Advanced Examples](#-advanced-examples)
+- [License](#-license)
 
--->
+## ✨ Features
 
+- Typed execution of TypeScript applications (`run`)
+- Automatic pre-compilation (leverages `tsc` + project configuration)
+- Controlled environment injection with defaults (`NODE_ENV=development`)
+- Watch mode with incremental reload (`--watch`)
+- Live diagnostic doctor mode (`--doctor`)
+- Dynamic informational banner with app metadata (`--banner`)
+- Debug mode with extended logging (`--debug`)
+- Custom `.env` file loading (`--env=<path>`)
+- Structural code analysis and classpath model generation (`scan`)
+- Packaging with optional minification (`package --minify`)
+- Version flags (`--version`, `-v`) and contextual help (`help`)
+- Integration with other BigByte libraries: `@bigbyte/utils`, `@bigbyte/integration`, `@bigbyte/classpath`
+- Extensible architecture driven by declarative command configuration
 
-# Alarife
+## 🚀 Installation
 
-[Alarife](https://es.wikipedia.org/wiki/Alarife) is an Iberian term that referred to Mudejarian architects and master builders.
+```bash
+npm install @bigbyte/cli --save-dev
+```
 
-What is this library? This library provides a framework for creating applications with a decorator pattern.
+Executable available as `bbyte` binary.
 
-- It is inspired by **Spring Boot**.
-- It makes use of the proposal of decorators ([plugin-proposal-decorators](https://babeljs.io/docs/babel-plugin-proposal-decorators)) from babel.
+## 🖥️ Commands
 
-Application example code [alarife](https://github.com/pepesoriagarcia99/alarife-example).
+Below is the set of commands and flags discovered from the internal configuration (`src/integration/configuration.ts`).
 
-## Decorators
+### run
+Executes the main application by compiling and launching the provided entrypoint.
 
-### @App
+Flags:
+- `--doctor` Enables diagnostic mode (env: `DOCTOR_MODE`).
+- `--watch` Enables change detection (env: `WATCH_MODE`).
+- `--debug` Enables debug mode (env: `DEBUG_MODE`).
+- `--env=<file>` Sets an alternative environment file.
+- `--banner` Enables (default) banner output (env: `BANNER`).
 
-App is a **class** decorator.
+### package
+Generates a distributable package of the application.
 
-The **@App** decorator injects the Logger module.
+Flags:
+- `--minify` Enables output minification.
 
-> When using **@App** with other plugins **@App** should always be on top of them all.
+### scan
+Analyzes TypeScript structure and generates a structural model (classes, interfaces, enums, types, functions). No additional flags.
 
-This decorator instantiates the class to which it is applied to launch its constructor, so you can add additional configuration.
+### help
+Shows contextual help. Supports granular queries: `help`, `help run`, `help run --watch`, `help --doctor`.
 
-You can add the parameters belonging to **Core** to your instance with **@Value**.
+### --version / -v
+Prints the current CLI version.
 
-> **core** includes: environment, version
-> **configuration** includes: traceLog
+## 🔧 Basic Usage
 
-```JS
-import { App, Value } from '@alarife/core/decorators';
+Run an application (main entrypoint):
+```bash
+bbyte run ./src/index.ts
+```
 
-@App()
-class Main {
+Development with live reload & diagnostics:
+```bash
+bbyte run ./src/index.ts --watch --doctor --debug
+```
 
-  @Value('Core.environment') environment;
+Use a specific environment file:
+```bash
+bbyte run ./src/index.ts --env=.env.local
+```
 
-  @Value('Core.version') coreVersion;
+Show CLI version:
+```bash
+bbyte --version
+# or
+bbyte -v
+```
 
-  @Value('Core.rootPath') rootPath;
+Analyze project structure:
+```bash
+bbyte scan
+```
 
-  @Value('Core.traceLog') traceLog;
+Package with minification:
+```bash
+bbyte package --minify
+```
 
-  @Value('configuration') configuration;
+Show help for a specific flag:
+```bash
+bbyte help run --watch
+```
 
-  constructor() {
-    this.configuration.traceLog({ levels : ['info', 'debug', 'error', 'warn'] });
-  }
+## 🔍 Detailed API
+
+### Command Model (`run`)
+- Requires a main file (`mainFile`).
+- Injects environment with default: `NODE_ENV=development`.
+- Internal phases:
+  1. Read `tsconfig`.
+  2. TypeScript compilation (errors wrapped in `CompilationError`).
+  3. Conditional activation: Watcher (`chokidar`), Doctor, Banner, Debug logs.
+  4. Runtime launch.
+  5. Compilation time metrics.
+
+### Run Command Flags
+- `--doctor` (switch) Enables diagnostic service/server. Default: `false`.
+- `--watch` (switch) Watches for changes & recompiles. Default: `false`.
+- `--debug` (switch) Enables extended logs. Default: `false`.
+- `--env=<file>` (file) Specifies alternative `.env`. Falls back to project root if omitted.
+- `--banner` (switch) Shows banner with metadata (App Name, Version, Cli Version). Default: `true`.
+
+### Related Environment Variables
+- `NODE_ENV` Execution environment (default: `development`).
+- `BANNER` Controls banner display (`true` / `false`).
+- `DOCTOR_MODE` Doctor mode state (internal read-only after activation).
+- `WATCH_MODE` Watch mode state (internal read-only after activation).
+- `DEBUG_MODE` Debug mode state.
+
+### package Command
+- Generates distributable artifact.
+- Flag: `--minify` (reduces size removing whitespace/comments).
+
+### scan Command
+- Builds structural representation using `ts-morph`.
+- Useful for tooling, metadata generation, static analysis.
+
+### help Command
+- Contextual resolution of actions & flags.
+- Supports combinations: action + flag.
+
+### Version Flags
+- `--version` / `-v` quick version query.
+
+## 🔧 Advanced Examples
+
+Silent run without banner:
+```bash
+# (If implementation supports disabling the banner via env var)
+BANNER=false bbyte run ./src/index.ts
+```
+
+Full development pipeline (watch + debug + doctor):
+```bash
+bbyte run ./src/index.ts --watch --debug --doctor
+```
+
+Generate optimized package:
+```bash
+bbyte package --minify
+```
+
+Integrate with npm scripts:
+```json
+"scripts": {
+  "start": "bbyte run ./src/index.ts --watch",
+  "analyze": "bbyte scan",
+  "build:pkg": "bbyte package --minify"
 }
 ```
 
-### @Service
-
-Service is a **class** decorator.
-
-The **@Service** decorator injects the Logger module.
-
-The **@Service** decorator instantiates the class for further injection into other classes.
-
-The **@AutoWired** decorator used on fields injects the value of the instantiated class.
-
-```JS
-import { App, Service, AutoWired } from '@alarife/core/decorators';
-
-@Service()
-class UserService {
-
-  getAllUsers() {
-    return [
-      { id   : 1, name : 'Jhon' }
-    ];
-  }
-}
-
-@App()
-class Main {
-
-  @AutoWired(UserService) #userService;
-
-  constructor() {
-    this.configuration.traceLog({ levels : ['info', 'debug', 'error', 'warn'] });
-
-    this.#userService.getAllUsers();
-  }
-}
+Inspect help for a specific flag:
+```bash
+bbyte help run --env
 ```
 
+## 📄 License
 
-### @Value
+This project is licensed under Apache-2.0. See the [LICENSE](LICENSE) file for details.
 
-Value is a **field** decorator.
+---
 
-**@Value** manages a store of data that you can inject into your classes.
+<div align="center">
 
-```JS
-import { App, Value } from '@alarife/core/decorators';
-import { valueStore } from '@alarife/core/modules';
+**Built with ❤️ by [Jose Eduardo Soria Garcia](mailto:alarifeproyect@gmail.com)**
 
-valueStore.set('app.ip', '0.0.0.0')
+*Part of the BigByte ecosystem*
 
-@App()
-class Main {
-
-  @Value('app.ip') ip;
-
-  constructor() {
-    this.log.info('server ip: ' this.ip);
-  }
-}
-```
-
-#### ValueStore
-
-Revisar docu, solo indicar que se usa el modelo de store
-
-<!-- You can save your own values to reuse them in your app.
-
-> By default, the **configuration** object is added to store the configuration methods.
-
-```JS
-import { valueStore } from '@alarife/core/modules';
-
-// Store options
-valueStore.set('app.url', mongooseUrl)
-valueStore.merge('app.configuration', { ... }) // Merge over existing objects
-valueStore.get('app.url')
-valueStore.delete('app.url')
-``` -->
-
-### @Logger
-
-Logger is a **class** decorator.
-Insert the entire Logger module to the class.
-
-```JS
-import { Logger } from '@alarife/core/decorators';
-
-@Logger()
-class Service {
-  constructor() {
-    this.log.info('Message');
-  }
-}
-```
-
-### @Worker
-
-Worker is a **method** decorator. You can use it in any class.
-
-You use the [workerpool](https://www.npmjs.com/package/workerpool) library, you work with the worker as you would work with promises.
-
-> The method does not have access to this.
-> Worker parameters must be serializable.
-
-Allows you to launch blocking functions within your code without blocking the main thread.
-
-```JS
-import { Worker, Service, App, AutoWired } from '@alarife/core/decorators';
-
-@Service()
-class TestService {
-
-  @Worker()
-  blockingMethod(range) {
-    const start = new Date();
-
-    let total = 0;
-    for (let index = 0; index < range; index++) {
-      total += index;
-    }
-
-    const end = new Date();
-
-    console.log(`Delay: ${end - start} ms`);
-
-    return total;
-  }
-}
-
-@App()
-class Main {
-
-  @AutoWired(TestService) #testService;
-
-  constructor() {
-    this.#testService.blockingMethod(9000000000)
-      .then(result => {
-        this.log.info(result);
-      })
-      .catch(err => {
-        this.log.error(err);
-      });
-  }
-}
-```
-
-## Environment
-
-<!-- El sistema obtiene automaticamente los archivo .env.production, .env.development y .env.test automaticamente, los guarda en el coreConfig en una store para su posterior uso en modulos y apps
-
-Para personalizar la ubicacion del archivo .env utilizar los parametros del process
-
-vars:
-NODE_ENV
-ENV_FILE
-
-files:
-.env.development
-.env.production
-.env.test
-
-```
-  "start": "nodemon --exec babel-node src/app.js ENV_FILE=/dir/dir/.env"
-``` -->
-
-<!-- ! Muy feo -->
-<!-- para usar las enviroments en la app seria coreConfiguration.enviroments -->
-
-<!-- * Solucion: -->
-<!-- exportar en package un env y almacenar todo ahi -->
-
-## Models
-
-<!-- Modelo de Store
-
-Indicar el sistema de objetos
-
-mongo.ddbb
-mongo.url
-
-si buscas la key devuelve el string
-si soliciata mongo devuelve un objeto con las dos keys -->
-
-```JS
-import { Store } from '@alarife/core/models';
-
-
-```
-
-## Addons
-
-Some of the additional functionalities that the library contains are listed.
-
-### DeveloperError
-
-Exception Management for Development
-
-```JS
-  throw new DeveloperError('The Service Document can only be applied to classes.');
-```
-
-### Logger
-
-The **App**, **Controller**, and **Service** decorators add this functionality.
-
-Future plugin for **server log** and **access log** management
-
-[Morgan](https://www.npmjs.com/package/morgan) is used as a library for access log.
-
-Configurations:
-* Allows different output levels **('info', 'debug', 'error', 'warn')**.
-
-```JS
-this.log.info('New message');
-this.log.error('Error message', error);
-this.log.warn('Warn message');
-```
-
-### Lombok
-
-<!-- **Developing**
-Proposal for a decorator based on [Lombok](https://projectlombok.org/) to decorate classes in javascript. -->
-
-### Banner
-
-The banner functionality is added at the beginning of the project.
-
-If a **banner.txt** file does not exist in the root of the project, use the one with the default library.
-
-## Utils
-
-Type validation capabilities
-
-```JS
-  /** return true or false */
-  isDefined(value);
-  isFunction(value);
-  isClass(value);
-  isObject(value);
-  isString(value);
-  isNumber(value);
-```
-
-Object functionalities
-
-```JS
-  defineProperty(prototype, key, value);
-  merge(target, source);
-```
-
-## Related
-
-- [alarife-http](https://www.npmjs.com/package/@alarife/http) - Library to create HTTP servers.
-- [alarife-mongo](https://www.npmjs.com/package/@alarife/mongo) - Library to use Mongo database.
+</div>
