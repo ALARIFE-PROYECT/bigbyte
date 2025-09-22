@@ -33,7 +33,11 @@ const initStream = (): WriteStream | undefined => {
     if (path) {
         if (!stream) {
             if(!existsSync(path)) {
-                mkdirSync(path, { recursive: true });
+                try {
+                    mkdirSync(path, { recursive: true });
+                } catch (error) {
+                    console.error(`Error creating log directory ${path}:`, error);
+                }                
             }
 
             stream = createWriteStream(path + '/trace.log', { flags: 'a' });
