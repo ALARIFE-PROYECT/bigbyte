@@ -1,6 +1,6 @@
 {
   "name": "@bigbyte/core",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "author": "Jose Eduardo Soria Garcia <alarifeproyect@gmail.com>",
   "license": "Apache-2.0",
   "private": false,
@@ -39,11 +39,11 @@
     "test": "npx tsc --project tsconfig.test.json && node --test dist/test"
   },
   "dependencies": {
-    "@bigbyte/utils": "0.8.1",
-    "@bigbyte/ioc": "0.8.1",
-    "@bigbyte/ctx": "0.8.1",
-    "@bigbyte/classpath": "0.8.1",
-    "@bigbyte/events": "0.8.1",
+    "@bigbyte/utils": "0.8.2",
+    "@bigbyte/ioc": "0.8.2",
+    "@bigbyte/ctx": "0.8.2",
+    "@bigbyte/classpath": "0.8.2",
+    "@bigbyte/events": "0.8.2",
     "chokidar": "~4.0.3",
     "reflect-metadata": "~0.2.2",
     "tslib": "~2.3",

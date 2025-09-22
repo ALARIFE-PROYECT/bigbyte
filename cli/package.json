@@ -1,6 +1,6 @@
 {
   "name": "@bigbyte/cli",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "author": "Jose Eduardo Soria Garcia <alarifeproyect@gmail.com>",
   "license": "Apache-2.0",
   "private": false,
@@ -44,9 +44,9 @@
     "test:one": "npx tsc --project tsconfig.test.json && node --test"
   },
   "dependencies": {
-    "@bigbyte/classpath": "0.8.1",
-    "@bigbyte/integration": "0.8.1",
-    "@bigbyte/utils": "0.8.1",
+    "@bigbyte/classpath": "0.8.2",
+    "@bigbyte/integration": "0.8.2",
+    "@bigbyte/utils": "0.8.2",
     "chokidar": "~4",
     "log-update": "~4",
     "ts-morph": "~26.0",
