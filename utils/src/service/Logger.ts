@@ -36,7 +36,7 @@ const initStream = (): WriteStream | undefined => {
                 try {
                     mkdirSync(path, { recursive: true });
                 } catch (error) {
-                    console.error(`Error creating log directory ${path}:`, error);
+                    console.error(`Error creating log directory:`, error);
                 }                
             }
 
