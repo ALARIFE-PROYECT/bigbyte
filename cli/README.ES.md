@@ -26,7 +26,7 @@
 - Compilación previa automática (usa `tsc` + configuración del proyecto)
 - Inyección controlada de entorno y valores por defecto (`NODE_ENV=development`)
 - Modo Watch con recarga incremental (`--watch`)
-- Doctor de diagnóstico en vivo (`--doctor`)
+- Doctor de diagnóstico en vivo (`--doctor`)  **Proximas versiones**
 - Banner informativo dinámico con metadatos de la app (`--banner`)
 - Modo depuración para trazas extendidas (`--debug`)
 - Carga de archivo `.env` custom (`--env=<ruta>`)
@@ -86,12 +86,12 @@ bbyte run ./src/index.ts
 
 Ejecución en modo desarrollo con recarga y diagnóstico:
 ```bash
-bbyte run ./src/index.ts --watch --doctor --debug
+bbyte run --watch --doctor --debug ./src/index.ts
 ```
 
 Usando un archivo de entorno específico:
 ```bash
-bbyte run ./src/index.ts --env=.env.local
+bbyte run --env=.env.local ./src/index.ts
 ```
 
 Ver versión del CLI:
@@ -102,6 +102,7 @@ bbyte -v
 ```
 
 Analizar estructura del proyecto:
+**Usado para desarrollar**
 ```bash
 bbyte scan
 ```
@@ -129,7 +130,7 @@ bbyte help run --watch
   5. Métricas de tiempo de compilación.
 
 ### Flags del comando run
-- `--doctor` (switch) Habilita servidor/servicio de diagnóstico. Default: `false`.
+- `--doctor` (switch) Habilita servidor/servicio de diagnóstico. Default: `false` **Proximas versiones**.
 - `--watch` (switch) Observa cambios y recompila. Default: `false`.
 - `--debug` (switch) Activa logs extendidos. Default: `false`.
 - `--env=<file>` (file) Define archivo `.env` alternativo. Si no se especifica usa raíz del proyecto.

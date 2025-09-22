@@ -26,7 +26,7 @@
 - Automatic pre-compilation (leverages `tsc` + project configuration)
 - Controlled environment injection with defaults (`NODE_ENV=development`)
 - Watch mode with incremental reload (`--watch`)
-- Live diagnostic doctor mode (`--doctor`)
+- Live diagnostic doctor mode (`--doctor`) **Upcoming releases**
 - Dynamic informational banner with app metadata (`--banner`)
 - Debug mode with extended logging (`--debug`)
 - Custom `.env` file loading (`--env=<path>`)
@@ -52,7 +52,7 @@ Below is the set of commands and flags discovered from the internal configuratio
 Executes the main application by compiling and launching the provided entrypoint.
 
 Flags:
-- `--doctor` Enables diagnostic mode (env: `DOCTOR_MODE`).
+- `--doctor` Enables diagnostic mode (env: `DOCTOR_MODE`) **Upcoming releases**.
 - `--watch` Enables change detection (env: `WATCH_MODE`).
 - `--debug` Enables debug mode (env: `DEBUG_MODE`).
 - `--env=<file>` Sets an alternative environment file.
@@ -82,12 +82,12 @@ bbyte run ./src/index.ts
 
 Development with live reload & diagnostics:
 ```bash
-bbyte run ./src/index.ts --watch --doctor --debug
+bbyte --watch --doctor --debug run ./src/index.ts
 ```
 
 Use a specific environment file:
 ```bash
-bbyte run ./src/index.ts --env=.env.local
+bbyte run --env=.env.local ./src/index.ts
 ```
 
 Show CLI version:
@@ -98,6 +98,7 @@ bbyte -v
 ```
 
 Analyze project structure:
+**Used to develop**
 ```bash
 bbyte scan
 ```
@@ -125,7 +126,7 @@ bbyte help run --watch
   5. Compilation time metrics.
 
 ### Run Command Flags
-- `--doctor` (switch) Enables diagnostic service/server. Default: `false`.
+- `--doctor` (switch) Enables diagnostic service/server. Default: `false` **Upcoming releases**.
 - `--watch` (switch) Watches for changes & recompiles. Default: `false`.
 - `--debug` (switch) Enables extended logs. Default: `false`.
 - `--env=<file>` (file) Specifies alternative `.env`. Falls back to project root if omitted.
